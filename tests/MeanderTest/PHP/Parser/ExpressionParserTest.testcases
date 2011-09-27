@@ -1,0 +1,549 @@
+IN
+---
+$a
+---
+OUT
+---
+<ast>
+    <variable>a</variable>
+</ast>
+---
+
+IN
+---
+$a = $x * $b
+---
+OUT
+---
+<ast>
+    <binary-expression>
+        <variable>a</variable>
+        <operator>=</operator>
+        <binary-expression>
+            <variable>x</variable>
+            <operator>*</operator>
+            <variable>b</variable>
+        </binary-expression>
+    </binary-expression>
+</ast>
+---
+
+
+IN
+---
+$a = $x * $b -1
+---
+OUT
+---
+<ast>
+    <binary-expression>
+        <variable>a</variable>
+        <operator>=</operator>
+        <binary-expression>
+            <binary-expression>
+                <variable>x</variable>
+                <operator>*</operator>
+                <variable>b</variable>
+            </binary-expression>
+            <operator>-</operator>
+            <integer>1</integer>
+        </binary-expression>
+    </binary-expression>
+</ast>
+---
+
+
+IN
+---
+$a = $x - $b * 2
+---
+OUT
+---
+<ast>
+    <binary-expression>
+        <variable>a</variable>
+        <operator>=</operator>
+        <binary-expression>
+            <variable>x</variable>
+            <operator>-</operator>
+            <binary-expression>
+                <variable>b</variable>
+                <operator>*</operator>
+                <integer>2</integer>
+            </binary-expression>
+        </binary-expression>
+    </binary-expression>
+</ast>
+---
+
+
+IN
+---
+$q instanceof Name
+---
+OUT
+---
+<ast>
+    <binary-expression>
+        <variable>q</variable>
+        <operator>instanceof</operator>
+        <name>Name</name>
+    </binary-expression>
+</ast>
+---
+
+
+
+IN
+---
+! $q instanceof Name
+---
+OUT
+---
+<ast>
+    <unary-expression>
+        <operator>!</operator>
+        <binary-expression>
+            <variable>q</variable>
+            <operator>instanceof</operator>
+            <name>Name</name>
+        </binary-expression>
+    </unary-expression>
+</ast>
+---
+
+
+IN
+---
+! ! false
+---
+OUT
+---
+<ast>
+    <unary-expression>
+        <operator>!</operator>
+        <unary-expression>
+            <operator>!</operator>
+            <boolean>false</boolean>
+        </unary-expression>
+    </unary-expression>
+</ast>
+---
+
+
+IN
+---
+true === !false !== !true
+---
+OUT
+---
+<ast>
+    <binary-expression>
+        <boolean>true</boolean>
+        <operator>===</operator>
+        <binary-expression>
+            <unary-expression>
+                <operator>!</operator>
+                <boolean>false</boolean>
+            </unary-expression>
+            <operator>!==</operator>
+            <unary-expression>
+                <operator>!</operator>
+                <boolean>true</boolean>
+            </unary-expression>
+        </binary-expression>
+    </binary-expression>
+</ast>
+---
+
+
+IN
+---
+!$a || $b
+---
+OUT
+---
+<ast>
+    <binary-expression>
+        <unary-expression>
+            <operator>!</operator>
+            <variable>a</variable>
+        </unary-expression>
+        <operator>||</operator>
+        <variable>b</variable>
+    </binary-expression>
+</ast>
+---
+
+IN
+---
+!$a || $b || $c
+---
+OUT
+---
+<ast>
+    <binary-expression>
+        <unary-expression>
+            <operator>!</operator>
+            <variable>a</variable>
+        </unary-expression>
+        <operator>||</operator>
+        <binary-expression>
+            <variable>b</variable>
+            <operator>||</operator>
+            <variable>c</variable>
+        </binary-expression>
+    </binary-expression>
+</ast>
+---
+
+
+IN
+---
+!$a .= $b
+---
+OUT
+---
+<ast>
+    <binary-expression>
+        <unary-expression>
+            <operator>!</operator>
+            <variable>a</variable>
+        </unary-expression>
+        <operator>.=</operator>
+        <variable>b</variable>
+    </binary-expression>
+</ast>
+---
+
+IN
+---
+!($a || $b)
+---
+OUT
+---
+<ast>
+    <unary-expression>
+        <operator>!</operator>
+        <binary-expression>
+            <variable>a</variable>
+            <operator>||</operator>
+            <variable>b</variable>
+        </binary-expression>
+    </unary-expression>
+</ast>
+---
+
+
+IN
+---
+!($a || !($b))
+---
+OUT
+---
+<ast>
+    <unary-expression>
+        <operator>!</operator>
+        <binary-expression>
+            <variable>a</variable>
+            <operator>||</operator>
+            <unary-expression>
+                <operator>!</operator>
+                <variable>b</variable>
+            </unary-expression>
+        </binary-expression>
+    </unary-expression>
+</ast>
+---
+
+
+IN
+---
+a($a, $b)
+---
+OUT
+---
+<ast>
+    <call>
+        <name>a</name>
+        <argument-list>
+            <variable>a</variable>
+            <variable>b</variable>
+        </argument-list>
+    </call>
+</ast>
+---
+
+
+IN
+---
+a($a == 1, $b == 2)
+---
+OUT
+---
+<ast>
+    <call>
+        <name>a</name>
+        <argument-list>
+            <binary-expression>
+                <variable>a</variable>
+                <operator>==</operator>
+                <integer>1</integer>
+            </binary-expression>
+            <binary-expression>
+                <variable>b</variable>
+                <operator>==</operator>
+                <integer>2</integer>
+            </binary-expression>
+        </argument-list>
+    </call>
+</ast>
+---
+
+
+IN
+---
+new a($a)
+---
+OUT
+---
+<ast>
+    <call>
+        <unary-expression>
+            <operator>new</operator>
+            <name>a</name>
+        </unary-expression>
+        <argument-list>
+            <variable>a</variable>
+        </argument-list>
+    </call>
+</ast>
+---
+
+
+IN
+---
+new $b($a)
+---
+OUT
+---
+<ast>
+    <call>
+        <unary-expression>
+            <operator>new</operator>
+            <variable>b</variable>
+        </unary-expression>
+        <argument-list>
+            <variable>a</variable>
+        </argument-list>
+    </call>
+</ast>
+---
+
+
+IN
+---
+($a . $b)($c)
+---
+OUT
+---
+<ast>
+    <call>
+        <binary-expression>
+            <variable>a</variable>
+            <operator>.</operator>
+            <variable>b</variable>
+        </binary-expression>
+        <argument-list>
+            <variable>c</variable>
+        </argument-list>
+    </call>
+</ast>
+---
+
+IN
+---
+x()
+---
+OUT
+---
+<ast>
+    <call>
+        <name>x</name>
+    </call>
+</ast>
+---
+
+
+IN
+---
+(new $b)($a)
+---
+OUT
+---
+<ast>
+    <call>
+        <unary-expression>
+            <operator>new</operator>
+            <variable>b</variable>
+        </unary-expression>
+        <argument-list>
+            <variable>a</variable>
+        </argument-list>
+    </call>
+</ast>
+---
+
+
+
+IN
+---
+a($a, $b) == c((new $d)(1))
+---
+OUT
+---
+<ast>
+    <binary-expression>
+        <call>
+            <name>a</name>
+            <argument-list>
+                <variable>a</variable>
+                <variable>b</variable>
+            </argument-list>
+        </call>
+        <operator>==</operator>
+        <call>
+            <name>c</name>
+            <argument-list>
+                <call>
+                    <unary-expression>
+                        <operator>new</operator>
+                        <variable>d</variable>
+                    </unary-expression>
+                    <argument-list>
+                        <integer>1</integer>
+                    </argument-list>
+                </call>
+            </argument-list>
+        </call>
+    </binary-expression>
+</ast>
+---
+
+
+IN
+---
+$this->call()
+---
+OUT
+---
+<ast>
+    <call>
+        <binary-expression>
+            <variable>this</variable>
+            <operator>-></operator>
+            <name>call</name>
+        </binary-expression>
+    </call>
+</ast>
+---
+
+IN
+---
+self::call()
+---
+OUT
+---
+<ast>
+    <call>
+        <binary-expression>
+            <name>self</name>
+            <operator>::</operator>
+            <name>call</name>
+        </binary-expression>
+    </call>
+</ast>
+---
+
+IN
+---
+self::$call()
+---
+OUT
+---
+<ast>
+    <call>
+        <binary-expression>
+            <name>self</name>
+            <operator>::</operator>
+            <variable>call</variable>
+        </binary-expression>
+    </call>
+</ast>
+---
+
+IN
+---
+\namespaced\name::$property = 10
+---
+OUT
+---
+<ast>
+    <binary-expression>
+        <binary-expression>
+            <namespaced-name>
+                <namespace>\namespaced</namespace>
+                <name>name</name>
+            </namespaced-name>
+            <operator>::</operator>
+            <variable>property</variable>
+        </binary-expression>
+        <operator>=</operator>
+        <integer>10</integer>
+    </binary-expression>
+</ast>
+---
+
+IN
+---
+\name::$property = 10
+---
+OUT
+---
+<ast>
+    <binary-expression>
+        <binary-expression>
+            <namespaced-name>
+                <namespace>\</namespace>
+                <name>name</name>
+            </namespaced-name>
+            <operator>::</operator>
+            <variable>property</variable>
+        </binary-expression>
+        <operator>=</operator>
+        <integer>10</integer>
+    </binary-expression>
+</ast>
+---
+
+IN
+---
+namespaced\name::$property = 10
+---
+OUT
+---
+<ast>
+    <binary-expression>
+        <binary-expression>
+            <namespaced-name>
+                <namespace>namespaced</namespace>
+                <name>name</name>
+            </namespaced-name>
+            <operator>::</operator>
+            <variable>property</variable>
+        </binary-expression>
+        <operator>=</operator>
+        <integer>10</integer>
+    </binary-expression>
+</ast>
+---

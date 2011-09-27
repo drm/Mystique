@@ -1,0 +1,165 @@
+IN
+---
+<?php
+---
+OUT
+---
+<ast>
+    <php />
+</ast>
+---
+
+IN
+---
+<?php ?>
+---
+OUT
+---
+<ast>
+    <php />
+</ast>
+---
+
+
+IN
+---
+<?php x() ?>
+---
+OUT
+---
+<ast>
+    <php>
+        <statement>
+            <call>
+                <name>x</name>
+            </call>
+        </statement>
+    </php>
+</ast>
+---
+
+IN
+---
+<?php x(); ?>
+---
+OUT
+---
+<ast>
+    <php>
+        <statement>
+            <call>
+                <name>x</name>
+            </call>
+        </statement>
+    </php>
+</ast>
+---
+
+
+IN
+---
+<?php x(); y(); ?>
+---
+OUT
+---
+<ast>
+    <php>
+        <statement>
+            <call>
+                <name>x</name>
+            </call>
+        </statement>
+        <statement>
+            <call>
+                <name>y</name>
+            </call>
+        </statement>
+    </php>
+</ast>
+---
+
+IN
+---
+<?php {} ?>
+---
+OUT
+---
+<ast>
+    <php>
+        <compound-statement />
+    </php>
+</ast>
+---
+
+IN
+---
+<?php
+namespace a\b\c;
+?>
+---
+OUT
+---
+<ast>
+    <php>
+        <namespace-declaration>
+            <namespaced-name>
+                <namespace>a\b</namespace>
+                <name>c</name>
+            </namespaced-name>
+        </namespace-declaration>
+    </php>
+</ast>
+---
+
+IN
+---
+<?php
+require_once 'bla.php';
+?>
+---
+OUT
+---
+<ast>
+    <php>
+        <require_once><string>bla.php</string></require_once>
+    </php>
+</ast>
+---
+
+IN
+---
+<?php
+use x\y\z;
+?>
+---
+OUT
+---
+<ast>
+    <php>
+        <use><namespaced-name><namespace>x\y</namespace><name>z</name></namespaced-name></use>
+    </php>
+</ast>
+---
+
+
+IN
+---
+<?php
+use x\y\z as x;
+?>
+---
+OUT
+---
+<ast>
+    <php>
+        <use>
+            <namespaced-name>
+                <namespace>x\y</namespace>
+                <name>z</name>
+            </namespaced-name>
+            <name>x</name>
+        </use>
+    </php>
+</ast>
+---
+

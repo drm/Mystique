@@ -1,0 +1,71 @@
+IN
+---
+if($a == $b) {
+    w00t();
+}
+---
+OUT
+---
+<ast>
+    <if>
+        <condition>
+            <binary-expression>
+                <variable>a</variable>
+                <operator>==</operator>
+                <variable>b</variable>
+            </binary-expression>
+        </condition>
+        <compound-statement>
+            <statement>
+                <call>
+                    <name>w00t</name>
+                </call>
+            </statement>
+        </compound-statement>
+    </if>
+</ast>
+---
+
+IN
+---
+if(1);else;
+---
+OUT
+---
+<ast>
+    <if>
+        <condition>
+            <integer>1</integer>
+        </condition>
+        <statement />
+        <else>
+            <statement />
+        </else>
+    </if>
+</ast>
+---
+
+
+IN
+---
+if(1);elseif(2);else;
+---
+OUT
+---
+<ast>
+    <if>
+        <condition>
+            <integer>1</integer>
+        </condition>
+        <statement />
+        <elseif>
+            <condition><integer>2</integer></condition>
+            <statement />
+        </elseif>
+        <else>
+            <statement />
+        </else>
+    </if>
+</ast>
+---
+

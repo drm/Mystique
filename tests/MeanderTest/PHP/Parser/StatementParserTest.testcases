@@ -1,0 +1,45 @@
+IN
+---
+$a;
+---
+OUT
+---
+<ast>
+    <statement>
+        <variable>a</variable>
+    </statement>
+</ast>
+---
+
+IN
+---
+;
+---
+OUT
+---
+<ast>
+    <statement />
+</ast>
+---
+
+
+IN
+---
+$a = $x * $b;
+---
+OUT
+---
+<ast>
+    <statement>
+        <binary-expression>
+            <variable>a</variable>
+            <operator>=</operator>
+            <binary-expression>
+                <variable>x</variable>
+                <operator>*</operator>
+                <variable>b</variable>
+            </binary-expression>
+        </binary-expression>
+    </statement>
+</ast>
+---

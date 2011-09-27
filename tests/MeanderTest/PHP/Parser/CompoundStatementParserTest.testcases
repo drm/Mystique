@@ -1,0 +1,48 @@
+
+IN
+---
+{$a;$b;$c;$d;}
+---
+OUT
+---
+<ast>
+    <compound-statement>
+        <statement>
+            <variable>a</variable>
+        </statement>
+        <statement>
+            <variable>b</variable>
+        </statement>
+        <statement>
+            <variable>c</variable>
+        </statement>
+        <statement>
+            <variable>d</variable>
+        </statement>
+    </compound-statement>
+</ast>
+---
+
+IN
+---
+{$a = $x * $b;}
+---
+OUT
+---
+<ast>
+    <compound-statement>
+        <statement>
+            <binary-expression>
+                <variable>a</variable>
+                <operator>=</operator>
+                <binary-expression>
+                    <variable>x</variable>
+                    <operator>*</operator>
+                    <variable>b</variable>
+                </binary-expression>
+            </binary-expression>
+        </statement>
+    </compound-statement>
+</ast>
+---
+

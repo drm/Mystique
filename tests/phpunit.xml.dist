@@ -1,0 +1,23 @@
+<phpunit
+    bootstrap="bootstrap.php"
+>
+    
+    <php>
+        <const name="MEANDER_TEST_ASSETS" value="assets/" />
+    </php>
+    <testsuite>
+        <whitelist>
+            <directory suffix="Test.php">./</directory>
+        </whitelist>
+    </testsuite>
+
+    <filter>
+        <whitelist>
+            <directory>../src/</directory>
+        </whitelist>
+    </filter>
+
+    <logging>
+        <log type="coverage-html" target="./coverage" charset="UTF-8" yui="true"/>
+    </logging>
+</phpunit>

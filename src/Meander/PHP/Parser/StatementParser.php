@@ -1,0 +1,32 @@
+<?php
+
+namespace Meander\PHP\Parser;
+
+use \Meander\PHP\Token\TokenStream;
+use \Meander\PHP\Node\Statement;
+
+class StatementParser extends ParserSub {
+    function parse(TokenStream $stream) {
+//        echo 'Parsing statement @ ' . $stream->current()->verbose();
+        if($stream->match(';')) {
+            $stream->next();
+            return new Statement(null);
+        }
+        $ret = new Statement($this->parent->parseExpression($stream));;
+        if($stream->valid()) {
+            $stream->expect(array(';', T_CLOSE_TAG));
+        }
+
+        return $ret;
+    }
+
+    function match(TokenStream $stream) {
+        return $stream->match(
+            array(
+                T_STRING,
+                T_VARIABLE,
+                ';'
+            )
+        );
+    }
+}
