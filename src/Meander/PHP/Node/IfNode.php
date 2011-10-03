@@ -10,13 +10,7 @@ class IfNode extends BranchAbstract {
         $this->children[1] = $statement;
     }
 
-
-
-    function addElseIf($condition, $statement) {
-        
-    }
-
-
+    
     function getNodeType()
     {
         return 'If';

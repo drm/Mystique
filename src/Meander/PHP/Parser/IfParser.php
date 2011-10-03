@@ -1,12 +1,10 @@
 <?php
-
 namespace Meander\PHP\Parser;
 
 use \Meander\PHP\Token\TokenStream;
 use \Meander\PHP\Node\IfNode;
 
-
-class IfParser extends StatementParser implements \Meander\PHP\Parser\Parser {
+class IfParser extends ParserSub {
     function parse(TokenStream $stream) {
         $stream->expect(T_IF);
         $stream->expect('(');

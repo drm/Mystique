@@ -7,12 +7,17 @@ use \Meander\PHP\Node\Node;
 
 class UnaryExpression extends ExpressionAbstract implements \Meander\Compiler\Compilable
 {
-    function __construct(Operator $operator, Node $rValue, $parens = false)
+    function __construct(Operator $operator, Node $right, $parens = false)
     {
         parent::__construct();
         $this->setOperator($operator);
-        $this->setRValue($rValue);
+        $this->setRight($right);
         $this->setParens($parens);
+    }
+
+
+    function setOperator($operator) {
+        $this->children[0]= $operator;
     }
 
 
@@ -21,17 +26,14 @@ class UnaryExpression extends ExpressionAbstract implements \Meander\Compiler\Co
         return $this->children[0];
     }
 
-    function getRValue()
+
+    function getRight()
     {
         return $this->children[1];
     }
 
 
-    function setRValue(Node $value) {
+    function setRight(Node $value) {
         $this->children[1] = $value;
-    }
-
-    function setOperator($operator) {
-        $this->children[0] = $operator;
     }
 }

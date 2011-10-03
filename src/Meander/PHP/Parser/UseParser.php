@@ -7,14 +7,26 @@ use \Meander\PHP\Token\TokenStream;
 
 class UseParser extends ParserSub {
     function parse(TokenStream $stream) {
+        $node = new \Meander\PHP\Node\UseDeclaration();
         $stream->expect(T_USE);
-        $name = $this->parent->parseExpression($stream);
+
+        do {
+            $item = $this->parseItem($stream);
+            $node->children->append($item);
+        } while($stream->match(',') && $stream->expect(','));
+
+        $stream->expect(';');
+        return $node;
+    }
+
+
+    function parseItem(TokenStream $stream) {
+        $name = $this->parent->getExpressionParser()->parseName($stream);
         $alias = null;
         if($stream->match(T_AS)) {
             $stream->next();
             $alias = $this->parent->parseExpression($stream);
         }
-        $stream->expect(';');
         return new UseNode($name, $alias);
     }
 

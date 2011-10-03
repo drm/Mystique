@@ -20,4 +20,9 @@ class Raw extends LeafAbstract implements Compilable {
     function compile(CompilerInterface $compiler) {
         $compiler->write($this->code);
     }
+
+
+    function getNodeValue() {
+        return $this->code;
+    }
 }

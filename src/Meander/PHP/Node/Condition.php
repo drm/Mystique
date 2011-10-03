@@ -18,4 +18,8 @@ class Condition implements Branch {
         return 'condition';
     }
 
+    function getNodeAttributes()
+    {
+        return array();
+    }
 }

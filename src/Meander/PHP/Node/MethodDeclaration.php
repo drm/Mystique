@@ -5,38 +5,36 @@ use \Meander\Compiler\CompilerInterface;
 use \Meander\Compiler\Compilable;
 use InvalidArgumentException;
 
-class MethodDefinition extends MemberDefinitionAbstract implements Compilable {
-    protected $name;
-    protected $params       = null;
-
+class MethodDeclaration extends MemberDefinitionAbstract implements Compilable {
     private $abstract       = false;
     protected $body;
 
-    function __construct($name) {
-        $this->name = $name;
-        $this->params = new ParameterDefinitionList();
+    function __construct($name = null) {
+        parent::__construct();
+        if(!is_null($name)) {
+            $this->setName(new Name($name));
+        }
     }
+
+    function setName(Name $name) {
+        return $this->children[0] = $name;
+    }
+    
 
     function setAbstract($abstract = true) {
         $this->abstract = (bool)$abstract;
         return $this;
     }
 
-
-    function setBody(Compilable $body) {
-        $this->body = $body;
-        return $this;
-    }
-
-
+    
     function addParameter(ParameterDefinition $param) {
-        $this->params->add($param);
+        $this->children[1]->add($param);
         return $this;
     }
 
 
     function compile(CompilerInterface $compiler) {
-        $this->abstract     && $compiler->write('abstract')->write(' ');
+        $this->abstract     && $compiler->write('abstract');
         $this->compileDefinition($compiler);
         
         $compiler->write('function')->write(' ');
@@ -52,5 +50,16 @@ class MethodDefinition extends MemberDefinitionAbstract implements Compilable {
             }
             $compiler->write('}');
         }
+    }
+
+
+    function setParameters(ParameterDefinitionList $params) {
+        $this->children[1] = $params;
+    }
+
+
+    function getNodeType()
+    {
+        return 'Declaration';
     }
 }

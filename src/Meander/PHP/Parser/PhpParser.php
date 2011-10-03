@@ -18,9 +18,14 @@ class PhpParser extends ParserBase {
             'namespace'     => new NamespaceParser($this),
             'compound'      => new CompoundStatementParser($this),
             'if'            => new IfParser($this),
+            'for'           => new ForParser($this),
+            'foreach'       => new ForeachParser($this),
+            'switch'        => new SwitchParser($this),
+            'while'         => new WhileParser($this),
             'constructs'    => new LanguageConstructParser($this),
             'statement'     => new StatementParser($this),
-            'use'           => new UseParser($this)
+            'use'           => new UseParser($this),
+            'comment'       => new CommentParser($this)
         );
     }
 
@@ -29,18 +34,11 @@ class PhpParser extends ParserBase {
         if($stream->match(T_STRING, 'php')) { // TODO check if this is really ok :?
             $stream->next();
         }
-        $php = $this->subparse($stream, array($this, 'decideEnd'));
+        $php = $this->subparse($stream, function($stream) { return !$stream->valid() || $stream->match(T_CLOSE_TAG); });
         if($stream->valid()) {
             $stream->expect(T_CLOSE_TAG);
         }
         return new Php($php);
-    }
-
-    function decideEnd(TokenStream $stream) {
-        if(!$stream->valid()) {
-            return true;
-        }
-        return $stream->match(T_CLOSE_TAG);
     }
 
     function match(TokenStream $stream) {

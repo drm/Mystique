@@ -4,7 +4,8 @@ namespace Meander\PHP\Node;
 
 abstract class NodeAbstract implements Node {
     protected $parens;
-    
+    protected $attributes = array();
+
     function getNodeType() {
         $className = get_class($this);
         if(preg_match('/([^\\\\]+)$/', $className, $m)) {
@@ -21,5 +22,10 @@ abstract class NodeAbstract implements Node {
 
     function hasParens() {
         return $this->parens;
+    }
+
+
+    function getNodeAttributes() {
+        return $this->attributes;
     }
 }

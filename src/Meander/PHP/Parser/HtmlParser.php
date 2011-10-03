@@ -3,11 +3,11 @@
 namespace Meander\PHP\Parser;
 
 use \Meander\PHP\Token\TokenStream;
-use \Meander\PHP\Node\HtmlNode;
+use \Meander\PHP\Node\Html;
 
 class HtmlParser implements Parser {
     function parse(TokenStream $stream) {
-        return new HtmlNode($stream->next()->value);
+        return new Html($stream->next()->value);
     }
 
     function match(TokenStream $stream)

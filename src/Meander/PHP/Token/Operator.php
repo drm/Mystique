@@ -39,6 +39,7 @@ class Operator extends Token implements \Meander\PHP\Node\Leaf, \Meander\Compile
         T_CLONE                  => array(21, 'non-associative'),
         T_NEW                    => array(21, 'non-associative'),
         '['                      => array(20, 'left'),
+        '{'                      => array(20, 'left'),
         T_INC                    => array(19, 'non-associative'),
         T_DEC                    => array(19, 'non-associative'),
         '~'                      => array(18, 'right'),
@@ -98,7 +99,7 @@ class Operator extends Token implements \Meander\PHP\Node\Leaf, \Meander\Compile
     public static $unaryOperators = array(
         T_INC, T_DEC,
         T_CLONE, T_NEW, '!',
-        '-', '+', '~', '@',
+        '-', '+', '~', '@', '&',
         T_INT_CAST,
         T_DOUBLE_CAST,
         T_STRING_CAST,
@@ -107,10 +108,18 @@ class Operator extends Token implements \Meander\PHP\Node\Leaf, \Meander\Compile
         T_BOOL_CAST,
     );
 
+
+    public static $subscriptOperators = array(
+        '{',
+        '[',
+        '(',
+        T_DEC,
+        T_INC
+    );
+
     public static $binaryOperators = array(
         T_OBJECT_OPERATOR,
         T_PAAMAYIM_NEKUDOTAYIM,
-        '[',
         '-',
         T_INT_CAST,
         T_DOUBLE_CAST,
@@ -177,5 +186,14 @@ class Operator extends Token implements \Meander\PHP\Node\Leaf, \Meander\Compile
     function compile(CompilerInterface $compiler)
     {
         $compiler->write($this->value);
+    }
+
+    function getNodeAttributes()
+    {
+    }
+
+
+    function __toString() {
+        return $this->value;
     }
 }

@@ -17,7 +17,7 @@ class BlockParser implements Parser {
         $left = $stream->key();
         PairMatcher::skipToParen($stream);
         $stream->expect(PairMatcher::parenOf($this->type));
-        $ret = new Raw($stream->substr($left, $stream->key() - $left -1));
+        $ret = new Raw($stream->substr($left, $stream->key() - $left));
         return $ret;
     }
     

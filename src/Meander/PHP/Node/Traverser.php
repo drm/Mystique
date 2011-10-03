@@ -4,19 +4,19 @@
 namespace Meander\PHP\Node;
 use UnexpectedValueException;
 
-class Walker {
+class Traverser {
     function __construct(Visitor $visitor) {
         $this->visitor = $visitor;
     }
 
-    function walk($node) {
+    function traverse($node) {
         $this->visitor->enterNode($node);
         if($node instanceof Branch) {
-            foreach($node->getNodeChildren() as $child) {
+            foreach((array)$node->getNodeChildren() as $child) {
                 if(!$child instanceof Node) {
-                    throw new UnexpectedValueException("getNodeChildren() implementation of " . get_class($node) . ' should return children');
+                    throw new UnexpectedValueException("getNodeChildren() implementation of " . get_class($node) . ' should return children of type Node, ' . gettype($child) . ' found');
                 }
-                $this->walk($child);
+                $this->traverse($child);
             }
         } 
         $this->visitor->exitNode($node);

@@ -4,11 +4,7 @@ namespace Meander\PHP\Node;
 use \Meander\Compiler\Compilable;
 use \Meander\Compiler\CompilerInterface;
 
-class ParameterDefinitionList implements Compilable {
-    function __construct() {
-        $this->params = array();
-    }
-
+class ParameterDefinitionList extends BranchAbstract implements Compilable {
     function compile(CompilerInterface $compiler) {
         $compiler->write('(');
         $first = true;
@@ -26,6 +22,11 @@ class ParameterDefinitionList implements Compilable {
 
 
     function add(ParameterDefinition $param) {
-        $this->params[]= $param;
+        $this->children[]= $param;
+    }
+
+    function getNodeType()
+    {
+        return 'Params';
     }
 }

@@ -22,7 +22,11 @@ abstract class ParserBase implements Parser {
             foreach($this->parsers as $parser) {
                 if($parser->match($stream)) {
 //                    echo get_class($parser) . ' matches ' . $stream->current()->verbose(), "\n";
-                    end($this->stack)->append($parser->parse($stream));
+                    $node = $parser->parse($stream);
+                    if(!$node instanceof \Meander\PHP\Node\Node) {
+                        throw new \UnexpectedValueException('Parser ' . get_class($parser) . ' does not return expected type Node');
+                    }
+                    end($this->stack)->append($node);
                     $haveMatch = true;
                     break;
                 }
@@ -44,10 +48,22 @@ abstract class ParserBase implements Parser {
     
 
     function parseExpression(TokenStream $stream) {
+        return $this->getExpressionParser()->parse($stream);
+    }
+
+
+    function parseName(TokenStream $stream) {
+        return $this->getExpressionParser()->parseName($stream);
+    }
+
+    /**
+     * @return \Meander\PHP\Parser\ExpressionParser
+     */
+    function getExpressionParser() {
         if (null === $this->expressionParser) {
             $this->expressionParser = new ExpressionParser();
         }
-        return $this->expressionParser->parse($stream);
+        return $this->expressionParser;
     }
     
 

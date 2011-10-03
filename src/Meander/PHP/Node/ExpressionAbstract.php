@@ -14,5 +14,5 @@ abstract class ExpressionAbstract extends BranchAbstract implements Compilable {
     }
 
     abstract function getOperator();
-    abstract function getRValue();
+    abstract function getRight();
 }

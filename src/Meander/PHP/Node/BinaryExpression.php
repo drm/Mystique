@@ -4,46 +4,43 @@ namespace Meander\PHP\Node;
 use \Meander\Compiler\CompilerInterface;
 use \Meander\PHP\Token\Operator;
 
-class BinaryExpression extends ExpressionAbstract 
+class BinaryExpression extends ExpressionAbstract
 {
-    function __construct(Node $lValue, Operator $operator, Node $rValue, $parens = false)
+
+    function __construct(Node $left, Operator $operator, Node $right, $parens = false)
     {
         parent::__construct();
-        $this->children->append($lValue);
-        $this->children->append($operator);
-        $this->children->append($rValue);
-        $this->setParens($parens);
+        $this->setLeft($left);
+        $this->setOperator($operator);
+        $this->setRight($right);
     }
 
-
-    function getLValue() {
-        return $this->children[0];
+    function setRight(Node $value)
+    {
+        $this->children[2] = $value;
     }
 
-
-    function setLValue(Node $node) {
-        $this->children[0] = $node;
-    }
-
-
-    function setRValue($node) {
-        $this->children[2] = $node;
-    }
-    
-
-    function setOperator($node) {
-        $this->children[1] = $node;
-    }
-
-    
-    function getRValue()
+    function getRight()
     {
         return $this->children[2];
     }
 
-    
-    function getOperator()
-    {
+
+    function setOperator($operator) {
+        $this->children[1]= $operator;
+    }
+
+    function getOperator(){
         return $this->children[1];
+    }
+
+
+    function setLeft($node) {
+        $this->children[0] = $node;
+    }
+    
+
+    function getLeft() {
+        return $this->children[0];
     }
 }

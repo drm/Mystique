@@ -14,83 +14,107 @@ class ExpressionParser implements Parser {
     function __construct() {
     }
 
+    function parseSubscript(TokenStream $stream, \Meander\PHP\Node\Node $expression) {
+        $ret = $expression;
 
-    function parse(TokenStream $stream) {
-        if($stream->match('(')) {
-            $stream->next();
-            $ret = $this->parse($stream);
-            $stream->expect(')');
-            $ret->setParens(true);
-
-            if($stream->valid() && $stream->match('(')) {
-                $arguments = $this->parseArgumentList($stream, true);
+        while($stream->valid() && $stream->match(Operator::$subscriptOperators)) {
+            if($stream->match('(')) {
+                $stream->next();
+                if(!$stream->match(')')) {
+                    $arguments = $this->parseList($stream, $ret instanceof Name && in_array($ret, array('list', 'array')));
+                } else {
+                    $arguments = new \Meander\PHP\Node\ExprList();
+                }
+                $stream->expect(')');
                 $ret = new Call($ret, $arguments);
-            }
-        } else {
-            if($stream->match(Operator::$unaryOperators)) {
-                $op = $stream->current();
-                $operator = new Operator($op);
+            } elseif($stream->match(array(T_DEC, T_INC))) {
+                $ret = new \Meander\PHP\Node\UnaryExpression(new Operator($stream->current()), $ret);
                 $stream->next();
-                $rValue = $this->parse($stream);
-                if($rValue instanceof \Meander\PHP\Node\ExpressionAbstract) {
-                    $precedence = $this->determinePrecedence($rValue, $operator);
-
-                    switch($precedence) {
-                        case 'right':
-                            $lValue = new \Meander\PHP\Node\UnaryExpression($operator, $rValue);
-                            break;
-                        case 'left':
-                            $lValue= $rValue;
-                            $lValue->setLValue(new \Meander\PHP\Node\UnaryExpression($operator, $lValue->getLValue()));
-                            break;
-                        default: throw new \RuntimeException("Unexpected precedence $precedence");
-                    }
-                } else {
-                    $lValue = new \Meander\PHP\Node\UnaryExpression($operator, $rValue);
-                }
             } else {
-                $lValue = $this->parseValue($stream);
-            }
-
-            if($stream->valid() && $stream->match('(')) {
-                $arguments = $this->parseArgumentList($stream, true);
-                $lValue = new Call($lValue, $arguments);
-            }
-
-            if($stream->valid() && $stream->match(Operator::$binaryOperators)) {
-                $op = $stream->current();
-                $stream->next();
-                $rValue = $this->parse($stream);
-                $operator = new Operator($op);
-
-                if($rValue instanceof \Meander\PHP\Node\ExpressionAbstract) {
-                    $precedence = $this->determinePrecedence($rValue, $operator);
-                    switch($precedence) {
-                        case 'right':
-                            $ret = new \Meander\PHP\Node\BinaryExpression($lValue, $operator, $rValue);
-                            break;
-                        case 'left':
-                            $ret = $rValue;
-                            $ret->setLValue(new \Meander\PHP\Node\BinaryExpression($lValue, $operator, $ret->getLValue()));
-                            break;
-                        default: throw new \RuntimeException("Unexpected precedence $precedence");
-                    }
+                $op = $stream->expect(Operator::$subscriptOperators);
+                $paren = \Meander\PHP\Token\PairMatcher::parenOf($op);
+                if(!$stream->match($paren)) {
+                    $expr = $this->parse($stream);
                 } else {
-                    $ret = new \Meander\PHP\Node\BinaryExpression($lValue, new Operator($op), $rValue);
+                    $expr = null;
                 }
-            } else {
-                $ret = $lValue;
+                $ret = new \Meander\PHP\Node\Subscript($ret, $expr, new Operator($op));
+                $stream->expect($paren);
             }
         }
         return $ret;
     }
 
-    public function determinePrecedence($rValue, $operator)
+
+    function parse(TokenStream $stream, $haveLvalue = false) {
+        if ($stream->match(Operator::$unaryOperators)) {
+            $op = $stream->current();
+            $operator = new Operator($op);
+            $stream->next();
+            $rValue = $this->parse($stream);
+            if ($rValue instanceof \Meander\PHP\Node\ExpressionAbstract) {
+                $precedence = $this->determinePrecedence($rValue, $operator);
+
+                switch ($precedence) {
+                    case 'right':
+                        $lValue = new \Meander\PHP\Node\UnaryExpression($operator, $rValue);
+                        break;
+                    case 'left':
+                        $lValue = $rValue;
+                        $lValue->setLeft(new \Meander\PHP\Node\UnaryExpression($operator, $lValue->getLeft()));
+                        break;
+                    default:
+                        throw new \RuntimeException("Unexpected precedence $precedence");
+                }
+            } else {
+                $lValue = new \Meander\PHP\Node\UnaryExpression($operator, $rValue);
+            }
+        } elseif($stream->match('(')) {
+            //TODO figure out how to get this more generic
+            $stream->next();
+            $lValue = $this->parse($stream);
+            $stream->expect(')');
+            $lValue->setParens(true);
+        } else {
+            $lValue = $this->parseValue($stream);
+        }
+
+        $lValue = $this->parseSubscript($stream, $lValue);
+
+        if ($stream->valid() && $stream->match(Operator::$binaryOperators)) {
+            $op = $stream->current();
+            $stream->next();
+            $rValue = $this->parse($stream);
+            $operator = new Operator($op);
+
+            if ($rValue instanceof \Meander\PHP\Node\ExpressionAbstract) {
+                $precedence = $this->determinePrecedence($rValue, $operator);
+                switch ($precedence) {
+                    case 'right':
+                        $ret = new \Meander\PHP\Node\BinaryExpression($lValue, $operator, $rValue);
+                        break;
+                    case 'left':
+                        $ret = $rValue;
+                        $ret->setLeft(new \Meander\PHP\Node\BinaryExpression($lValue, $operator, $ret->getLeft()));
+                        break;
+                    default:
+                        throw new \RuntimeException("Unexpected precedence $precedence");
+                }
+            } else {
+                $ret = new \Meander\PHP\Node\BinaryExpression($lValue, new Operator($op), $rValue);
+            }
+        } else {
+            $ret = $lValue;
+        }
+        return $ret;
+    }
+
+    public function determinePrecedence($right, $operator)
     {
-        if ($rValue->hasParens()) {
+        if ($right->hasParens()) {
             $precedence = 'right';
         } else {
-            $precedence = Operator::precedence($operator, $rValue->getOperator());
+            $precedence = Operator::precedence($operator, $right->getOperator());
 
             switch ($precedence) {
                 case -1: // lvalue has precedence over rvalue
@@ -114,90 +138,186 @@ class ExpressionParser implements Parser {
     }
 
 
-    function parseValue(TokenStream $stream) {
-        $token = $stream->expect(
-            array(
-                 T_VARIABLE,
-                 T_STRING,
-                 T_CONSTANT_ENCAPSED_STRING,
-                 T_NUM_STRING,
-                 T_LNUMBER,
-                 T_DNUMBER,
-                 T_NS_SEPARATOR
-            )
-        );
 
-        $value = null;
-        switch($token->type) {
-            case T_LNUMBER:
-                $value = new Value((int)$token->value);
-                break;
-            case T_DNUMBER:
-                $value = new Value((float)$token->value);
-                break;
-            case T_CONSTANT_ENCAPSED_STRING:
-                $value = new Value(substr($token->value, 1, -1));
-                break;
-            case T_NS_SEPARATOR:
-                $namespaceParts = array($stream->expect(T_STRING)->value);
-                while($stream->match(T_NS_SEPARATOR)) {
-                    $stream->next();
-                    $namespaceParts[] = $stream->expect(T_STRING);
-                }
-                $name = array_pop($namespaceParts);
-                $value = new NamespacedName('\\' . implode('\\', $namespaceParts), $name);
-                break;
-            case T_STRING:
-                switch($token->value) {
-                    case 'null':
-                        $value = new Value(null);
-                        break;
-                    case 'false':
-                        $value = new Value(false);
-                        break;
-                    case 'true':
-                        $value = new Value(true);
-                        break;
-                    case 'self':
-                        $value = new Name($token->value);
-                        break;
-                    default:
-                        if($stream->valid() && $stream->match(T_NS_SEPARATOR)) {
-                            $namespaceParts = array($token->value);
-                            while($stream->match(T_NS_SEPARATOR)) {
-                                $stream->next();
-                                $namespaceParts[] = $stream->expect(T_STRING);
-                            }
-                            $name = array_pop($namespaceParts);
-                            $value = new NamespacedName(implode('\\', $namespaceParts), $name);
-                        } else {
-                            $value = new Name($token->value);
-                        }
-                        break;
-                }
-                break;
-            case T_VARIABLE:
-                $value = new \Meander\PHP\Node\Variable(substr($token->value, 1));
-                break;
+    function parseNestedVariable(TokenStream $stream) {
+        $value = new \Meander\PHP\Node\NestedVariable();
+        if($stream->match('{')) {
+            $stream->next();
+            $value->setParens(true);
+            $value->children->append($this->parse($stream));
+            $stream->expect('}');
+        } else {
+            $value->children->append($this->parseValue($stream));
         }
         return $value;
     }
 
 
-    function parseArgumentList(TokenStream $stream) {
-        $argumentList = new \Meander\PHP\Node\ArgumentList();
-        $stream->next();
-        if(!$stream->match(')')) {
-            while(true) {
-                $argumentList->children->append($this->parse($stream));
-                if($stream->expect(array(',', ')'))->type == ')') {
+    static $functionLikeConstructs = array(
+        T_ARRAY,
+        T_LIST,
+        T_EMPTY,
+        T_ISSET,
+        T_DECLARE,
+        T_UNSET
+    );
+    static $constants = array(
+        T_FUNC_C, T_DIR, T_FILE, T_LINE, T_METHOD_C, T_CLASS_C
+    );
+
+    function parseValue(TokenStream $stream) {
+        $token = $stream->current();
+
+        $value = null;
+        if($token->match(self::$functionLikeConstructs) || $token->match(self::$constants)) {
+            $value = $this->parseName($stream);
+        } else {
+            switch($token->type) {
+                case '$':
+                    $stream->next();
+                    $value = $this->parseNestedVariable($stream);
                     break;
+                case '"':
+                    $value = $this->parseString($stream);
+                    break;
+                case T_LNUMBER:
+                    $value = new Value((int)$token->value);
+                    $stream->next();
+                    break;
+                case T_DNUMBER:
+                    $value = new Value((float)$token->value);
+                    $stream->next();
+                    break;
+                case T_CONSTANT_ENCAPSED_STRING:
+                    $value = new Value(substr($token->value, 1, -1));
+                    $stream->next();
+                    break;
+                case T_NS_SEPARATOR:
+                    $value = $this->parseName($stream);
+                    break;
+                case T_STRING:
+                    switch($token->value) {
+                        case 'null':
+                            $value = new Value(null);
+                            $stream->next();
+                            break;
+                        case 'false':
+                            $value = new Value(false);
+                            $stream->next();
+                            break;
+                        case 'true':
+                            $value = new Value(true);
+                            $stream->next();
+                            break;
+                        case 'self':
+                            $value = new Name($token->value);
+                            $stream->next();
+                            break;
+                        default:
+                            $value = $this->parseName($stream);
+                            break;
+                    }
+                    break;
+                case T_VARIABLE:
+                    $value = new \Meander\PHP\Node\Variable(substr($token->value, 1));
+                    $stream->next();
+                    break;
+                default:
+                    $stream->err(
+                        array_merge(
+                            self::$functionLikeConstructs,
+                            array(T_VARIABLE, T_STRING, T_CONSTANT_ENCAPSED_STRING, T_NUM_STRING, T_LNUMBER, T_DNUMBER, T_NS_SEPARATOR)
+                        )
+                    );
+            }
+        }
+        return $value;
+    }
+
+
+    function parseString(TokenStream $stream) {
+        $stream->next();
+        $ret = new \Meander\PHP\Node\StringNode();
+        while(!$stream->match('"')) {
+            if($stream->match(T_ENCAPSED_AND_WHITESPACE)) {
+                $ret->children->append(new Value($stream->current()->value));
+                $stream->next();
+            } elseif($stream->match(array(T_DOLLAR_OPEN_CURLY_BRACES, T_STRING_VARNAME, '}'))) {
+                $ret->children->append(new \Meander\PHP\Node\Noop('[TODO T_DOLLAR_OPEN_CURLY_BRACES]'));
+                $stream->next();
+            } else {
+                $ret->children->append($this->parse($stream));
+            }
+        }
+        $stream->expect('"');
+        return $ret;
+    }
+
+
+    function parseList(TokenStream $stream, $allowEmpty = false) {
+        $argumentList = new \Meander\PHP\Node\ExprList();
+
+        if($allowEmpty) {
+            while(!$stream->match(')')) {
+                if($stream->match(',')) {
+                    $argumentList->children->append(new \Meander\PHP\Node\Noop());
+                    $stream->next();
+                    if($stream->match(')')) {
+                        $argumentList->children->append(new \Meander\PHP\Node\Noop());
+                    }
+                } else {
+                    $argumentList->children->append($this->parse($stream));
+                    if(!$stream->match(')')) {
+                        $stream->expect(',');
+                        if($stream->match(')')) {
+                            $argumentList->children->append(new \Meander\PHP\Node\Noop());
+                        }
+                        continue;
+                    }
                 }
             }
         } else {
-            $stream->next();
+            $first = true;
+            do {
+                if(!$first) {
+                    $stream->next();
+                } else {
+                    $first = false;
+                }
+                $argumentList->children->append($this->parse($stream));
+            } while($stream->match(',') );
         }
         return $argumentList;
+    }
+
+
+    function parseName(TokenStream $stream) {
+        $namespace = array();
+        if($stream->match(self::$functionLikeConstructs)) {
+            $value = new Name($stream->expect(self::$functionLikeConstructs)->value);
+        } elseif($stream->match(array(T_FILE, T_DIR, T_LINE, T_CLASS_C, T_METHOD_C, T_FUNC_C))) {
+            $value = new Name($stream->current()->value);
+            $stream->next();
+        } else {
+            if($stream->match(T_NS_SEPARATOR)) {
+                $namespace[]= $stream->current()->value;
+                $stream->next();
+            }
+            $namespace[]= $stream->expect(T_STRING)->value;
+            while($stream->valid() && $stream->match(array(T_NS_SEPARATOR))) {
+                $namespace[]= $stream->current()->value;
+                $stream->next();
+                $namespace[]= $stream->expect(T_STRING)->value;
+            }
+            $name = array_pop($namespace);
+
+            if(count($namespace)) {
+                $value = new NamespacedName(join('', $namespace), $name);
+            } else {
+                $value = new Name($name);
+            }
+        }
+        return $value;
     }
 
 

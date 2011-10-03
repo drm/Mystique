@@ -5,24 +5,28 @@ namespace Meander\PHP\Node;
 use \Meander\Compiler\Compilable;
 use \Meander\Compiler\CompilerInterface;
 
-class ParameterDefinition implements Compilable {
+class ParameterDefinition extends BranchAbstract implements Compilable {
     private $typeHint;
     private $defaultValue;
 
-    function __construct($name) {
-        $this->name = $name;
+    
+    function setName(Variable $name) {
+        $this->children[1] = $name;
+    }
+
+
+    function setByRef($byRef = true) {
+        $this->setFlag('by-ref', (bool)$byRef);
     }
 
 
     function setTypeHint($type) {
-        $this->typeHint = $type;
-        return $this;
+        $this->children[0] = new TypeHint($type);
     }
 
 
-    function setDefaultValue($defaultValue) {
-        $this->defaultValue = $defaultValue;
-        return $this;
+    function setDefaultValue(Node $defaultValue) {
+        $this->children[]= $defaultValue;
     }
 
 
@@ -30,5 +34,10 @@ class ParameterDefinition implements Compilable {
         $this->typeHint     && $compiler->write($this->typeHint)->write(' ');
         $compiler->write('$' . $this->name);
         $this->defaultValue && $compiler->write(' ')->write('=')->write(' ')->write($this->defaultValue);
+    }
+
+    function getNodeType()
+    {
+        return 'Param';
     }
 }

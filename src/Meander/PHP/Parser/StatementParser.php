@@ -22,10 +22,14 @@ class StatementParser extends ParserSub {
 
     function match(TokenStream $stream) {
         return $stream->match(
-            array(
-                T_STRING,
-                T_VARIABLE,
-                ';'
+            array_merge(
+                \Meander\PHP\Token\Operator::$unaryOperators,
+                ExpressionParser::$functionLikeConstructs,
+                array(
+                    T_STRING,
+                    T_VARIABLE,
+                    ';',
+                )
             )
         );
     }

@@ -1,7 +1,7 @@
 <?php
 
 namespace Meander\PHP\Builder;
-use \Meander\PHP\Node\ClassDefinition;
+use \Meander\PHP\Node\ClassNode;
 
 class ClassBuilder extends BuilderAbstract
 {

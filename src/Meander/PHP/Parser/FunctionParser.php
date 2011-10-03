@@ -2,57 +2,66 @@
 
 namespace Meander\PHP\Parser;
 use \Meander\PHP\Token\TokenStream;
-use \Meander\PHP\Node\FunctionDefinition;
+use \Meander\PHP\Node\FunctionNode;
 use \Meander\PHP\Node\ParameterDefinition;
+use \Meander\PHP\Node\Variable;
 
-class FunctionParser extends ParserBase {
-    function __construct()
+class FunctionParser extends ParserSub {
+    function __construct(ParserBase $parent)
     {
-        parent::__construct();
-        $this->parsers[]= new BlockParser('{');
+        parent::__construct($parent);
     }
 
 
     function parse(TokenStream $stream)
     {
-        $def = new FunctionDefinition();
-
+        $def = new FunctionNode();
         $stream->expect(T_FUNCTION);
+        if($stream->match('&')) {
+            $stream->next();
+            $def->setByRef(true);
+        }
         $name = $stream->expect(T_STRING);
-        $def->setName($name->value);
+        $def->setName(new \Meander\PHP\Node\Name($name->value));
+
+        $def->setParameters($this->parseParameterList($stream));
+        $stream->expect('{');
+        $def->setDefinition($this->parent->subparse($stream, function($stream) { return $stream->match('}'); }));
+        $stream->expect('}');
+        return $def;
+    }
+
+
+    function parseParameterList(TokenStream $stream) {
         $stream->expect('(');
         $params = new \Meander\PHP\Node\ParameterDefinitionList();
-        while($stream->valid()) {
-            $token = $stream->expect(array(')', T_VARIABLE, T_STRING, T_NS_SEPARATOR));
-            if($token->type == ')') {
-                break;
-            }
-            if($token->type == T_NS_SEPARATOR) {
-                throw new \Exception("Unsupported");
-            }
 
-            if($token->type == T_STRING) {
-                $typeHint = $token->value;
-                $token = $stream->expect(T_VARIABLE);
-            } else {
-                $typeHint = null;
-            }
-            $def->addParameter($param = new ParameterDefinition(substr($token->value, 1)));
-            if($typeHint) {
-                $param->setTypeHint($typeHint);
-            }
-            if($stream->match('=')) {
-                throw new \Exception("Unsupported");
-                $stream->next();
-                $param->setDefaultValue($this->parseExpression($stream));
-            }
-            if($stream->expect(array(',', ')'))->type == ')') {
-                break;
+        if(!$stream->match(')')) {
+            while($stream->valid()) {
+                $param = new ParameterDefinition();
+                if($stream->match(array(T_STRING, T_NS_SEPARATOR, T_ARRAY))) {
+                    $name = $this->parent->getExpressionParser()->parseName($stream);
+                    $param->setTypeHint($name);
+                }
+                if($stream->match('&')) {
+                    $stream->next();
+                    $param->setByRef(true);
+                }
+                $token = $stream->expect(array(T_VARIABLE));
+                $param->setName(new Variable(substr($token->value, 1)));
+                if($stream->match('=')) {
+                    $stream->next();
+                    $param->setDefaultValue($this->parent->parseExpression($stream));
+                }
+                $params->add($param);
+                if($stream->match(')')) {
+                    break;
+                }
+                $stream->expect(',');
             }
         }
-        $this->subparse($stream, true);
-        $def->setRawBody($this->body->peek());
-        return $def;
+        $stream->expect(')');
+        return $params;
     }
 
     function match(TokenStream $stream)

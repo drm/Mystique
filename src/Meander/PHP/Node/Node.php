@@ -7,4 +7,5 @@ namespace Meander\PHP\Node;
  */
 interface Node {
     function getNodeType();
+    function getNodeAttributes();
 }

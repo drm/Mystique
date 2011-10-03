@@ -18,6 +18,7 @@ class XmlCompiler implements Visitor {
 
     function enterNode(Node $node)
     {
+        /** @var \SimpleXMLElement $parent */
         $parent = array_pop($this->_stack);
         $nodeName = $node->getNodeType();
         $nodeName = preg_replace_callback(
@@ -28,9 +29,12 @@ class XmlCompiler implements Visitor {
             $nodeName
         );
         if($node instanceof Leaf) {
-            $child = $parent->addChild($nodeName, $node->getNodeValue());
+            $child = $parent->addChild($nodeName, htmlspecialchars($node->getNodeValue()));
         } else {
             $child = $parent->addChild($nodeName);
+        }
+        foreach((array)$node->getNodeAttributes() as $name => $value) {
+            $child[$name] = (string)$value;
         }
         array_push($this->_stack, $parent);
         array_push($this->_stack, $child);

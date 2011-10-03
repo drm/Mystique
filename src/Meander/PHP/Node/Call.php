@@ -2,8 +2,8 @@
 
 namespace Meander\PHP\Node;
 
-class Call extends UnaryExpression {
-    function __construct(Node $function, ArgumentList $arguments) {
+class Call extends Subscript {
+    function __construct(Node $function, ExprList $arguments) {
         $this->children[0] = $function;
         if(count($arguments)) {
             $this->children[1] = $arguments;
@@ -12,15 +12,5 @@ class Call extends UnaryExpression {
 
     function getOperator() {
         return new \Meander\PHP\Token\Operator('[');
-    }
-
-    
-    function getLValue() {
-        return $this->children[0];
-    }
-
-    
-    function setLValue($lValue) {
-        $this->children[0] = $lValue;
     }
 }

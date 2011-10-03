@@ -4,30 +4,23 @@ use \Meander\Compiler\Compilable;
 use \Meander\Compiler\Compiler;
 use InvalidArgumentException;
 
-abstract class MemberDefinitionAbstract implements Compilable {
+abstract class MemberDefinitionAbstract extends BranchAbstract implements Compilable {
     const IS_PRIVATE    = 'private';
     const IS_PUBLIC     = 'public';
     const IS_PROTECTED  = 'protected';
-
-    private     $final          = false;
-    protected   $visibility     = '';
-    private     $static         = false;
-
 
     /**
      * @param $final bool
      */
     function setFinal($final = true) {
-        $this->final = (bool)$final;
-        return $this;
+        $this->setFlag('final', $final);
     }
 
     /**
      * @param $static bool
      */
     function setStatic($static = true) {
-        $this->static = (bool)$static;
-        return $this;
+        $this->setFlag('static', $static);
     }
 
 
@@ -48,14 +41,14 @@ abstract class MemberDefinitionAbstract implements Compilable {
         if(!in_array($visibility, $visibilities)) {
             throw new InvalidArgumentException("Expected one of " . implode(', ', $visibilities));
         }
-        $this->visibility = $visibility;
+        $this->setAttribute('visibility', $visibility);
         return $this;
     }
 
 
     final protected function compileDefinition(Compiler $compiler) {
-        $this->visibility   && $compiler->write($this->visibility)->write(' ');
-        $this->static       && $compiler->write('static')->write(' ');
-        $this->final        && $compiler->write('final')->write(' ');
+        $this->hasAttribute('visibility') && $compiler->write($this->getAttribute('visibility'));
+        $this->hasAttribute('static') && $compiler->write('static');
+        $this->hasAttribute('final') && $compiler->write('final');
     }
 }
