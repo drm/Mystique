@@ -14,6 +14,7 @@ abstract class MemberDefinitionAbstract extends BranchAbstract implements Compil
      */
     function setFinal($final = true) {
         $this->setFlag('final', $final);
+        return $this;
     }
 
     /**
@@ -21,6 +22,7 @@ abstract class MemberDefinitionAbstract extends BranchAbstract implements Compil
      */
     function setStatic($static = true) {
         $this->setFlag('static', $static);
+        return $this;
     }
 
 
@@ -29,7 +31,7 @@ abstract class MemberDefinitionAbstract extends BranchAbstract implements Compil
         if(in_array($name, array('static', 'final', 'abstract', 'visibility', 'params'))) {
             return $this->$name;
         }
-        throw new InvalidArgumentException('Undefined property');
+        throw new InvalidArgumentException('Undefined property ' . $name);
     }
 
 

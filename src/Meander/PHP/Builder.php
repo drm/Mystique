@@ -35,7 +35,7 @@ class Builder {
                 $topOfStack = $this->peek();
                 try {
                     $ret = call_user_func_array(array($topOfStack, $method), $args);
-                    if($ret !== $topOfStack) {
+                    if(is_object($ret) && $ret !== $topOfStack) {
                         $this->push($ret);
                     }
                     break;
@@ -44,7 +44,7 @@ class Builder {
                     if(!count($this->stack)) {
                         throw $e;
                     }
-                }
+                } 
             }
         }
         return $this;

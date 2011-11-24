@@ -3,22 +3,46 @@
 
 namespace Meander\PHP\Node;
 
-abstract class DefDeclNodeAbstract extends BranchAbstract {
+abstract class DefDeclNodeAbstract extends BranchAbstract implements \Meander\Compiler\Compilable {
     function __construct() {
         parent::__construct();
         $this->setDeclaration();
-        $this->children[0] = new MethodDeclaration();
+        $this->setDefinition(new NodeList());
+    }
+
+    function __call($method, $args) {
+        $ret = null;
+        
+        if(!isset($this->children[0])) {
+            throw new \BadMethodCallException("Possible error in constructor; declaration node was not defined");
+        }
+        if(method_exists($this->children[0], $method)) {
+            $ret = call_user_func_array(array($this->children[0], $method), $args);
+            if($ret === $this->children[0]) {
+                // maintain fluent interface
+                $ret = $this;
+            }
+        } elseif(isset($this->children[1]) && is_callable(array($this->children[1], $method))) {
+            $ret = call_user_func_array(array($this->children[1], $method), $args);
+            if($ret === $this->children[1]) {
+                // maintain fluent interface
+                $ret = $this;
+            }
+        } else {
+            throw new \BadMethodCallException("Undefined method $method");
+        }
+        return $ret;
+    }
+
+
+    function compile(\Meander\Compiler\CompilerInterface $compiler) {
+        $compiler->compile($this->children[0]);
+
+        if(isset($this->children[1])) {
+            $compiler->compile($this->children[1]);
+        }
     }
 
     abstract function setDeclaration();
     abstract function setDefinition(NodeList $definition);
-
-    function __call($method, $args) {
-        if(method_exists($this->children[0], $method)) {
-            return call_user_func_array(array($this->children[0], $method), $args);
-        }
-        if(isset($this->children[1])) {
-            return call_user_func_array(array($this->children[1], $method), $args);
-        }
-    }
 }

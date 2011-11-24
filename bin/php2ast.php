@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 function usage($exitCode = 0) {
     printf("Usage:\n");
@@ -16,5 +17,7 @@ $file = $_SERVER['argv'][1];
 $parser = new \Meander\PHP\Parser\PhpParser();
 $root = $parser->parse(new \Meander\PHP\Token\TokenStream(\Meander\PHP\Token\Tokenizer::tokenize(file_get_contents($file))));
 $xml = new \Meander\PHP\Compiler\XmlCompiler();
-$walker = new \Meander\PHP\Node\Walker($xml);
-$walker->walk($root);
+$walker = new \Meander\PHP\Node\Traverser($xml);
+$walker->traverse($root);
+
+echo $xml;

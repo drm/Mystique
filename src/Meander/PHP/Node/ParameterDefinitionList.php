@@ -8,7 +8,7 @@ class ParameterDefinitionList extends BranchAbstract implements Compilable {
     function compile(CompilerInterface $compiler) {
         $compiler->write('(');
         $first = true;
-        foreach($this->params as $param) {
+        foreach($this->children as $param) {
             /** @var $param ParameterDefinition */
             if(!$first) {
                 $compiler->write(',')->write(' ');
@@ -21,7 +21,10 @@ class ParameterDefinitionList extends BranchAbstract implements Compilable {
     }
 
 
-    function add(ParameterDefinition $param) {
+    function add(Node $param) {
+        if (! $param instanceof ParameterDefinition) {
+            throw new \InvalidArgumentException("Expected ParameterDefinition");
+        }
         $this->children[]= $param;
     }
 

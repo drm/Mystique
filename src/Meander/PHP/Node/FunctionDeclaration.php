@@ -24,19 +24,22 @@ class FunctionDeclaration extends BranchAbstract implements Compilable {
     }
 
 
+    function haveParams() {
+        if(!isset($this->children[1])) {
+            $this->children[1]= new ParameterDefinitionList();
+        }
+        return $this->children[1];
+    }
+
+
     function compile(CompilerInterface $compiler) {
         $compiler->write('function');
-        if($this->name) {
-            $compiler->write(' ')->write($this->name);
-        }
-        $this->params->compile($compiler);
+        $compiler->write(' ')->write($this->children[0]->getNodeValue());
+        $this->haveParams()->compile($compiler);
+    }
 
-        if($this->abstract) {
-            $compiler->write(';');
-        } else {
-            $compiler->write('{');
-            $compiler->write($this->body);
-            $compiler->write('}');
-        }
+    function getNodeType()
+    {
+        return 'Declaration';
     }
 }

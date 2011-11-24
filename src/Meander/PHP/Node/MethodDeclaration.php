@@ -28,7 +28,7 @@ class MethodDeclaration extends MemberDefinitionAbstract implements Compilable {
 
     
     function addParameter(ParameterDefinition $param) {
-        $this->children[1]->add($param);
+        $this->haveParams()->add($param);
         return $this;
     }
 
@@ -38,18 +38,20 @@ class MethodDeclaration extends MemberDefinitionAbstract implements Compilable {
         $this->compileDefinition($compiler);
         
         $compiler->write('function')->write(' ');
-        $compiler->write($this->name);
-        $this->params->compile($compiler);
+        $compiler->write($this->children[0]->getNodeValue());
+        $this->haveParams()->compile($compiler);
 
         if($this->abstract) {
             $compiler->write(';');
-        } else {
-            $compiler->write('{');
-            if($this->body) {
-                $compiler->compile($this->body);
-            }
-            $compiler->write('}');
+        } 
+    }
+
+
+    function haveParams() {
+        if(!isset($this->children[1])) {
+            $this->children[1] = new ParameterDefinitionList();
         }
+        return $this->children[1];
     }
 
 

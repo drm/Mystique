@@ -2,8 +2,9 @@
 
 namespace Meander\PHP\Node;
 
-class FunctionDefinition extends \Meander\PHP\Node\BranchAbstract {
-    function getNodeType() {
-        return 'Definition';
+class FunctionDefinition extends DefinitionAbstract {
+    function setBody($body) {
+        $this->children = new NodeList();
+        $this->children->append($body);
     }
 }

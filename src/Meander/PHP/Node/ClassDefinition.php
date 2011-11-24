@@ -2,8 +2,8 @@
 
 namespace Meander\PHP\Node;
 
-class ClassDefinition extends \Meander\PHP\Node\BranchAbstract {
-    function getNodeType() {
-        return 'Definition';
+class ClassDefinition extends DefinitionAbstract {
+    function addMember($member) {
+        $this->add($member);
     }
 }

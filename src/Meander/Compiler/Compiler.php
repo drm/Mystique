@@ -16,6 +16,9 @@ class Compiler implements CompilerInterface
                 . 'Either cast or implement Compilable and pass to compile()'
             );
         }
+        if (strlen($str) == 0) {
+            return $this;
+        }
         if($this->_collides($str)) {
             $this->result .= ' ';
         }

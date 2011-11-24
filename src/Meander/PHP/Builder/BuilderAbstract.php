@@ -39,7 +39,7 @@ class BuilderAbstract {
             } else {
                 call_user_func_array(array($this->subject, $delegate), $args);
             }
-        } elseif(method_exists($this->subject, $method)) {
+        } elseif(is_callable(array($this->subject, $method))) {
             call_user_func_array(array($this->subject, $method), $args);
         } else {
             throw new BadMethodCallException('invalid method ' . $method . ' in ' . get_class($this));

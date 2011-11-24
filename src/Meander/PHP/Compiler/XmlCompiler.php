@@ -29,6 +29,9 @@ class XmlCompiler implements Visitor {
             $nodeName
         );
         if($node instanceof Leaf) {
+            if(!is_scalar($node->getNodeValue())) {
+                throw new \UnexpectedValueException(sprintf("Node value should be scalar, but %s found in %s", gettype($node->getNodeValue()), get_class($node)));
+            }
             $child = $parent->addChild($nodeName, htmlspecialchars($node->getNodeValue()));
         } else {
             $child = $parent->addChild($nodeName);

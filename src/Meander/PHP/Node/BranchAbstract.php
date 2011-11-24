@@ -14,6 +14,9 @@ abstract class BranchAbstract extends NodeAbstract implements Branch, Countable 
 
     function __construct($list = null) {
         $this->children = $list ?: new NodeList();
+        if(! $this->children instanceof NodeList) {
+            throw new \InvalidArgumentException("Require node list as parameter in construction of " . get_class($this));
+        }
     }
 
 
@@ -63,7 +66,6 @@ abstract class BranchAbstract extends NodeAbstract implements Branch, Countable 
         } else {
             $this->removeAttribute($name);
         }
-
     }
 
 

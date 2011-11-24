@@ -300,12 +300,12 @@ class TokenStream implements Iterator, Countable
         }
         return $i;
     }
-
-
-    function getContext($index = -1) {
-        if($index === -1) {
-            $index = $this->key();
-        }
-        return (string)$this->substr(max(0, $index, min($this->count(), $index + 2)));
-    }
+//
+//
+//    function getContext($index = -1) {
+//        if($index === -1) {
+//            $index = $this->key();
+//        }
+//        return (string)$this->substr(max(0, $index, min($this->count(), $index + 2)));
+//    }
 }
