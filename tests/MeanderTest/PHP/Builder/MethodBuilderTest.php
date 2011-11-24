@@ -7,11 +7,11 @@ namespace MeanderTest\PHP\MethodDefinitionTest;
 use PHPUnit_Framework_TestCase;
 
 use \Meander\PHP\Builder\MethodBuilder;
-use \Meander\PHP\Node\MethodDefinition;
+use \Meander\PHP\Node\MethodDeclaration;
 
 class MethodBuilderTest extends PHPUnit_Framework_TestCase {
     function setUp() {
-        $this->builder = new MethodBuilder(new MethodDefinition('some_method'), '\Meander\PHP\Node\\');
+        $this->builder = new MethodBuilder(new MethodDeclaration('some_method'), '\Meander\PHP\Node\\');
     }
 
 

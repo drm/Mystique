@@ -1,0 +1,9 @@
+$builder
+    ->fn('a')->raw('echo "w00t";')
+;
+
+--
+
+function a() {
+    echo "w00t";
+}

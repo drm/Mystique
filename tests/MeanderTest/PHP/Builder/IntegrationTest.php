@@ -6,7 +6,10 @@ class IntegrationTest extends PHPUnit_Framework_TestCase {
     /**
      * @dataProvider integrationTests
      */
-    function testIntegration($builderCode, $expect) {
+    function testIntegration($builderCode, $expect, $fn) {
+        if($fn !== 'cls.method.raw.test') {
+            return;
+        }
         $builder = new Builder();
         \MeanderTest\PHP\Assert::assertSyntaxValid($builderCode);
         eval($builderCode);
@@ -20,7 +23,10 @@ class IntegrationTest extends PHPUnit_Framework_TestCase {
         $ret = array();
         foreach(new DirectoryIterator(MEANDER_TEST_ASSETS . '/Builder/Integration') as $file) {
             if(!$file->isDot()) {
-                $ret[]= array_map('trim', explode("\n--\n", file_get_contents($file->getPathName())));
+                $ret[]= array_merge(
+                    array_map('trim', explode("\n--\n", file_get_contents($file->getPathName()))),
+                    array($file->getBaseName())
+                );
             }
         }
         return $ret;

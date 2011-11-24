@@ -1,0 +1,13 @@
+$builder
+    ->cls('a')
+    ->iface('f')
+    ->cls('b')->ext('a')->impl('f')->setFinal()
+    ->cls('c')->ext('b')->setAbstract()
+;
+
+--
+
+class a {}
+interface f {}
+final class b extends a implements f {}
+abstract class c extends b {}

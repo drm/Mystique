@@ -1,0 +1,19 @@
+$builder
+    ->cls('a')
+        ->method('b')
+            ->raw(
+                'for($i = 0; $i < count(THE_STARS); $i ++) {
+                    echo "foo!";
+                }'
+            )
+;
+
+--
+
+class a {
+    function b() {
+        for($i = 0; $i < count(THE_STARS); $i ++) {
+            echo "foo!";
+        }
+    }
+}

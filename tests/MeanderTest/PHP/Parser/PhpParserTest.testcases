@@ -1,16 +1,5 @@
 IN
 ---
-<?php
----
-OUT
----
-<ast>
-    <php />
-</ast>
----
-
-IN
----
 <?php ?>
 ---
 OUT
@@ -103,7 +92,7 @@ OUT
     <php>
         <namespace-declaration>
             <namespaced-name>
-                <namespace>a\b</namespace>
+                <namespace>a\b\</namespace>
                 <name>c</name>
             </namespaced-name>
         </namespace-declaration>
@@ -126,17 +115,102 @@ OUT
 </ast>
 ---
 
+
 IN
 ---
 <?php
-use x\y\z;
-?>
+if(1) {
+
+} else {
+
+}
+
+$this->x = 'y';
+
+if(2) {
+
+} elseif(1) {
+
+} else {
+
+}
+---
+OUT
+---
+<ast>
+   <php>
+    <if>
+      <condition>
+        <integer>1</integer>
+      </condition>
+      <compound-statement/>
+      <else>
+        <compound-statement/>
+      </else>
+    </if>
+    <statement>
+      <binary-expression>
+        <binary-expression>
+          <variable>this</variable>
+          <operator>-&gt;</operator>
+          <name>x</name>
+        </binary-expression>
+        <operator>=</operator>
+        <string>y</string>
+      </binary-expression>
+    </statement>
+    <if>
+      <condition>
+        <integer>2</integer>
+      </condition>
+      <compound-statement/>
+      <elseif>
+        <condition><integer>1</integer></condition>
+        <compound-statement />
+      </elseif>
+      <else>
+        <compound-statement/>
+      </else>
+    </if>
+    </php>
+</ast>
+---
+
+IN
+---
+<?php
+
+for($a = 0; $a < 10; $a ++) {
+}
+
 ---
 OUT
 ---
 <ast>
     <php>
-        <use><namespaced-name><namespace>x\y</namespace><name>z</name></namespaced-name></use>
+        <for>
+            <expr-list>
+                <binary-expression>
+                    <variable>a</variable>
+                    <operator>=</operator>
+                    <integer>0</integer>
+                </binary-expression>
+            </expr-list>
+            <expr-list>
+                <binary-expression>
+                    <variable>a</variable>
+                    <operator>&lt;</operator>
+                    <integer>10</integer>
+                </binary-expression>
+            </expr-list>
+            <expr-list>
+                <unary-expression>
+                    <operator>++</operator>
+                    <variable>a</variable>
+                </unary-expression>
+            </expr-list>
+            <compound-statement />
+        </for>
     </php>
 </ast>
 ---
@@ -145,21 +219,58 @@ OUT
 IN
 ---
 <?php
-use x\y\z as x;
-?>
+foreach($a as $b)
+;
 ---
 OUT
 ---
 <ast>
     <php>
-        <use>
-            <namespaced-name>
-                <namespace>x\y</namespace>
-                <name>z</name>
-            </namespaced-name>
-            <name>x</name>
-        </use>
+        <foreach><variable>a</variable><variable>b</variable><statement /></foreach>
     </php>
 </ast>
 ---
+
+
+IN
+---
+<?php
+foreach($a as $b => $c)
+;
+---
+OUT
+---
+<ast>
+    <php>
+        <foreach><variable>a</variable><binary-expression><variable>b</variable><operator>=></operator><variable>c</variable></binary-expression><statement /></foreach>
+    </php>
+</ast>
+---
+
+IN
+---
+<?php
+foreach($a as $b => &$c)
+;
+---
+OUT
+---
+<ast>
+    <php>
+        <foreach>
+            <variable>a</variable>
+            <binary-expression>
+                <variable>b</variable>
+                <operator>=></operator>
+                <unary-expression>
+                    <operator>&amp;</operator>
+                    <variable>c</variable>
+                </unary-expression>
+            </binary-expression>
+            <statement />
+        </foreach>
+    </php>
+</ast>
+---
+
 

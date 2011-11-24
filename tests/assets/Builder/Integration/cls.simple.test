@@ -1,0 +1,10 @@
+$builder
+    ->cls('a')
+        ->ext('b')
+        ->impl('x')->impl('y')->impl('z')
+;
+
+--
+
+class a extends b implements x, y, z {
+}

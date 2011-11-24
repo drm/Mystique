@@ -11,7 +11,7 @@ use \Meander\PHP\Token\Tokenizer;
 /**
  * @covers \Meander\PHP\Token\TokenStream
  */
-class StreamTest extends PHPUnit_Framework_TestCase {
+class TokenStreamTest extends PHPUnit_Framework_TestCase {
     function testToString() {
         $this->assertEquals(
             '<?php function foo() {}',
@@ -259,5 +259,34 @@ class StreamTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(2, $stream->key());
         $stream->slice(0);
         $this->assertEquals(2, $stream->key());
+    }
+
+
+
+    function testNearest() {
+        $stream = new TokenStream(Tokenizer::tokenizePhp('a b c b a'));
+        $stream->move(4);
+        $matcher = function($n) {
+            return function($t) use ($n) {
+                return $t->type == T_STRING && $t->value == $n;
+            };
+        };
+        $this->assertEquals(0, $stream->nearest($matcher('a'), true));
+        $this->assertEquals(2, $stream->nearest($matcher('b'), true));
+        $this->assertEquals(6, $stream->nearest($matcher('b')));
+        $this->assertEquals(8, $stream->nearest($matcher('a')));
+    }
+
+
+    function testGetLine() {
+        $matcher = function($n) {
+            return function($t) use ($n) {
+                return $t->type == T_STRING && $t->value == $n;
+            };
+        };
+
+        $stream = new TokenStream(Tokenizer::tokenizePhp("a a a\nb b b\nc c c"));
+        $stream->move($stream->nearest($matcher('b')));
+        $this->assertEquals('b b b', $stream->getLine());
     }
 }

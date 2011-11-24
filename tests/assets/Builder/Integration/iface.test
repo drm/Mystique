@@ -1,0 +1,7 @@
+$builder
+    ->iface('f')
+;
+
+--
+
+interface f {}

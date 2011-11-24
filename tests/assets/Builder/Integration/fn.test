@@ -1,0 +1,8 @@
+$builder
+    ->fn('a')
+;
+
+--
+
+function a() {
+}

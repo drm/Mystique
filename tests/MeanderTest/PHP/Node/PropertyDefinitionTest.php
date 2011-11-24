@@ -1,6 +1,6 @@
 <?php
 namespace MeanderTest\PHP\Node;
-use \Meander\PHP\Node\MethodDefinition;
+use \Meander\PHP\Node\MethodDeclaration;
 use PHPUnit_Framework_TestCase;
 
 class PropertyDefinitionTest extends PHPUnit_Framework_TestCase {
@@ -25,7 +25,7 @@ class PropertyDefinitionTest extends PHPUnit_Framework_TestCase {
         };
 
         $ret = array();
-        $ret[]= array('public $v;', $p('v')->setVisibility(\Meander\PHP\Node\MemberDefinitionAbstract::IS_PUBLIC));
+        $ret[]= array('public$v;', $p('v')->setVisibility(\Meander\PHP\Node\MemberDefinitionAbstract::IS_PUBLIC));
         return $ret;
     }
 

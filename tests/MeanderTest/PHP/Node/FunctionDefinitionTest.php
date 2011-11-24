@@ -8,7 +8,7 @@ use \MeanderTest\PHP\Assert;
 
 class FunctionDefinitionTest {
     function testNameless() {
-        $def = new \Meander\PHP\Node\FunctionDefinition();
+        $def = new \Meander\PHP\Node\FunctionDeclaration();
         Assert::assertSyntaxEquals(
             'function () {}',
             $this->compiler->compile($def)->result
@@ -16,7 +16,7 @@ class FunctionDefinitionTest {
     }
 
     function testNamed() {
-        $def = new \Meander\PHP\Node\FunctionDefinition('a');
+        $def = new \Meander\PHP\Node\FunctionDeclaration('a');
         Assert::assertSyntaxEquals(
             'function a () {}',
             $this->compiler->compile($def)->result

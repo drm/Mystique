@@ -1,7 +1,7 @@
 <?php
 namespace MeanderTest\PHP\Node;
 
-use \Meander\PHP\Node\MethodDefinition;
+use \Meander\PHP\Node\MethodDeclaration;
 use \Meander\PHP\Node\DocBlock;
 use PHPUnit_Framework_TestCase;
 

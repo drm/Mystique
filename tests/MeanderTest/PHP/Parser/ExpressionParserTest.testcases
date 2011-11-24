@@ -1,5 +1,104 @@
 IN
 ---
+(1 * 1) - 1
+---
+OUT
+---
+<ast>
+    <binary-expression>
+        <binary-expression>
+            <integer>1</integer>
+            <operator>*</operator>
+            <integer>1</integer>
+        </binary-expression>
+        <operator>-</operator>
+        <integer>1</integer>
+    </binary-expression>
+</ast>
+---
+
+IN
+---
+(1 * 1) - -1
+---
+OUT
+---
+<ast>
+    <binary-expression>
+        <binary-expression>
+            <integer>1</integer>
+            <operator>*</operator>
+            <integer>1</integer>
+        </binary-expression>
+        <operator>-</operator>
+        <unary-expression>
+            <operator>-</operator>
+            <integer>1</integer>
+        </unary-expression>
+    </binary-expression>
+</ast>
+---
+
+IN
+---
+1 * 1 - 1
+---
+OUT
+---
+<ast>
+    <binary-expression>
+        <binary-expression>
+            <integer>1</integer>
+            <operator>*</operator>
+            <integer>1</integer>
+        </binary-expression>
+        <operator>-</operator>
+        <integer>1</integer>
+    </binary-expression>
+</ast>
+---
+
+IN
+---
+1 - 1 * 1
+---
+OUT
+---
+<ast>
+    <binary-expression>
+        <integer>1</integer>
+        <operator>-</operator>
+        <binary-expression>
+            <integer>1</integer>
+            <operator>*</operator>
+            <integer>1</integer>
+        </binary-expression>
+    </binary-expression>
+</ast>
+---
+
+IN
+---
+1 * (1 - 1)
+---
+OUT
+---
+<ast>
+    <binary-expression>
+        <integer>1</integer>
+        <operator>*</operator>
+        <binary-expression>
+            <integer>1</integer>
+            <operator>-</operator>
+            <integer>1</integer>
+        </binary-expression>
+    </binary-expression>
+</ast>
+---
+
+
+IN
+---
 $a
 ---
 OUT
@@ -8,6 +107,19 @@ OUT
     <variable>a</variable>
 </ast>
 ---
+
+IN
+---
+name
+---
+OUT
+---
+<ast>
+    <name>name</name>
+</ast>
+---
+
+
 
 IN
 ---
@@ -28,6 +140,24 @@ OUT
 </ast>
 ---
 
+
+IN
+---
+@$a->b
+---
+OUT
+---
+<ast>
+    <unary-expression>
+        <operator>@</operator>
+        <binary-expression>
+            <variable>a</variable>
+            <operator>-></operator>
+            <name>b</name>
+        </binary-expression>
+    </unary-expression>
+</ast>
+---
 
 IN
 ---
@@ -266,10 +396,10 @@ OUT
 <ast>
     <call>
         <name>a</name>
-        <argument-list>
+        <expr-list>
             <variable>a</variable>
             <variable>b</variable>
-        </argument-list>
+        </expr-list>
     </call>
 </ast>
 ---
@@ -284,7 +414,7 @@ OUT
 <ast>
     <call>
         <name>a</name>
-        <argument-list>
+        <expr-list>
             <binary-expression>
                 <variable>a</variable>
                 <operator>==</operator>
@@ -295,7 +425,7 @@ OUT
                 <operator>==</operator>
                 <integer>2</integer>
             </binary-expression>
-        </argument-list>
+        </expr-list>
     </call>
 </ast>
 ---
@@ -313,9 +443,9 @@ OUT
             <operator>new</operator>
             <name>a</name>
         </unary-expression>
-        <argument-list>
+        <expr-list>
             <variable>a</variable>
-        </argument-list>
+        </expr-list>
     </call>
 </ast>
 ---
@@ -333,9 +463,9 @@ OUT
             <operator>new</operator>
             <variable>b</variable>
         </unary-expression>
-        <argument-list>
+        <expr-list>
             <variable>a</variable>
-        </argument-list>
+        </expr-list>
     </call>
 </ast>
 ---
@@ -354,9 +484,9 @@ OUT
             <operator>.</operator>
             <variable>b</variable>
         </binary-expression>
-        <argument-list>
+        <expr-list>
             <variable>c</variable>
-        </argument-list>
+        </expr-list>
     </call>
 </ast>
 ---
@@ -387,9 +517,9 @@ OUT
             <operator>new</operator>
             <variable>b</variable>
         </unary-expression>
-        <argument-list>
+        <expr-list>
             <variable>a</variable>
-        </argument-list>
+        </expr-list>
     </call>
 </ast>
 ---
@@ -406,25 +536,25 @@ OUT
     <binary-expression>
         <call>
             <name>a</name>
-            <argument-list>
+            <expr-list>
                 <variable>a</variable>
                 <variable>b</variable>
-            </argument-list>
+            </expr-list>
         </call>
         <operator>==</operator>
         <call>
             <name>c</name>
-            <argument-list>
+            <expr-list>
                 <call>
                     <unary-expression>
                         <operator>new</operator>
                         <variable>d</variable>
                     </unary-expression>
-                    <argument-list>
+                    <expr-list>
                         <integer>1</integer>
-                    </argument-list>
+                    </expr-list>
                 </call>
-            </argument-list>
+            </expr-list>
         </call>
     </binary-expression>
 </ast>
@@ -492,7 +622,7 @@ OUT
     <binary-expression>
         <binary-expression>
             <namespaced-name>
-                <namespace>\namespaced</namespace>
+                <namespace>\namespaced\</namespace>
                 <name>name</name>
             </namespaced-name>
             <operator>::</operator>
@@ -536,7 +666,7 @@ OUT
     <binary-expression>
         <binary-expression>
             <namespaced-name>
-                <namespace>namespaced</namespace>
+                <namespace>namespaced\</namespace>
                 <name>name</name>
             </namespaced-name>
             <operator>::</operator>
@@ -546,4 +676,280 @@ OUT
         <integer>10</integer>
     </binary-expression>
 </ast>
+---
+
+IN
+---
+$var->property = 10
+---
+OUT
+---
+<ast>
+    <binary-expression>
+        <binary-expression>
+            <variable>var</variable>
+            <operator>-></operator>
+            <name>property</name>
+        </binary-expression>
+        <operator>=</operator>
+        <integer>10</integer>
+    </binary-expression>
+</ast>
+---
+
+IN
+---
+$var[1]
+---
+OUT
+---
+<ast>
+    <subscript>
+        <variable>var</variable>
+        <operator>[</operator>
+        <integer>1</integer>
+    </subscript>
+</ast>
+---
+
+
+IN
+---
+$var[1][2]
+---
+OUT
+---
+<ast>
+    <subscript>
+        <subscript>
+            <variable>var</variable>
+            <operator>[</operator>
+            <integer>1</integer>
+        </subscript>
+        <operator>[</operator>
+        <integer>2</integer>
+    </subscript>
+</ast>
+
+
+---
+IN
+---
+$var[1][2]()[1]->w00t()
+---
+OUT
+---
+<ast>
+    <call>
+        <binary-expression>
+            <subscript>
+                <call>
+                    <subscript>
+                        <subscript>
+                            <variable>var</variable>
+                            <operator>[</operator>
+                            <integer>1</integer>
+                        </subscript>
+                        <operator>[</operator>
+                        <integer>2</integer>
+                    </subscript>
+                </call>
+                <operator>[</operator>
+                <integer>1</integer>
+            </subscript>
+            <operator>-></operator>
+            <name>w00t</name>
+        </binary-expression>
+    </call>
+</ast>
+---
+
+
+
+---
+IN
+---
+$var{$var2{1}} == 1
+---
+OUT
+---
+<ast>
+    <binary-expression>
+        <subscript>
+            <variable>var</variable>
+            <operator>{</operator>
+            <subscript>
+                <variable>var2</variable>
+                <operator>{</operator>
+                <integer>1</integer>
+            </subscript>
+        </subscript>
+        <operator>==</operator>
+        <integer>1</integer>
+    </binary-expression>
+</ast>
+---
+
+---
+IN
+---
+call((1 * 1) - 1)
+---
+OUT
+---
+<ast>
+    <call>
+        <name>call</name>
+        <expr-list>
+            <binary-expression>
+                <binary-expression>
+                    <integer>1</integer>
+                    <operator>*</operator>
+                    <integer>1</integer>
+                </binary-expression>
+                <operator>-</operator>
+                <integer>1</integer>
+            </binary-expression>
+        </expr-list>
+    </call>
+</ast>
+---
+
+---
+IN
+---
+@$a
+---
+OUT
+---
+<ast>
+    <unary-expression>
+        <operator>@</operator>
+        <variable>a</variable>
+    </unary-expression>
+</ast>
+---
+
+
+---
+IN
+---
+array(1, 2, 3)
+---
+OUT
+---
+<ast>
+    <call>
+        <name>array</name>
+        <expr-list>
+            <integer>1</integer>
+            <integer>2</integer>
+            <integer>3</integer>
+        </expr-list>
+    </call>
+</ast>
+---
+
+
+
+---
+IN
+---
+array(1, 2, 3,)
+---
+OUT
+---
+<ast>
+    <call>
+        <name>array</name>
+        <expr-list>
+            <integer>1</integer>
+            <integer>2</integer>
+            <integer>3</integer>
+            <noop />
+        </expr-list>
+    </call>
+</ast>
+---
+
+
+---
+IN
+---
+list(,,$a)
+---
+OUT
+---
+<ast>
+    <call>
+        <name>list</name>
+        <expr-list>
+            <noop />
+            <noop />
+            <variable>a</variable>
+        </expr-list>
+    </call>
+</ast>
+---
+
+
+---
+IN
+---
+$$a = 10
+---
+OUT
+---
+<ast>
+    <binary-expression>
+        <nested-variable>
+            <variable>a</variable>
+        </nested-variable>
+        <operator>=</operator>
+        <integer>10</integer>
+    </binary-expression>
+</ast>
+
+---
+
+---
+IN
+---
+${$a} = 10
+---
+OUT
+---
+<ast>
+    <binary-expression>
+        <nested-variable>
+            <variable>a</variable>
+        </nested-variable>
+        <operator>=</operator>
+        <integer>10</integer>
+    </binary-expression>
+</ast>
+
+---
+
+---
+IN
+---
+${$a + 1} = 10
+---
+OUT
+---
+<ast>
+    <binary-expression>
+        <nested-variable>
+            <binary-expression>
+                <variable>a</variable>
+                <operator>+</operator>
+                <integer>1</integer>
+            </binary-expression>
+        </nested-variable>
+        <operator>=</operator>
+        <integer>10</integer>
+    </binary-expression>
+</ast>
+
 ---

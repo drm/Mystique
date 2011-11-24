@@ -1,0 +1,163 @@
+IN
+---
+function a() {
+}
+---
+
+OUT
+---
+<ast>
+    <function>
+        <declaration>
+            <name>a</name>
+            <params />
+        </declaration>
+        <definition />
+    </function>
+</ast>
+---
+
+
+IN
+---
+function a($b) {}
+---
+
+OUT
+---
+<ast>
+    <function>
+        <declaration>
+            <name>a</name>
+            <params>
+                <param>
+                    <variable>b</variable>
+                </param>
+            </params>
+        </declaration>
+        <definition />
+    </function>
+</ast>
+---
+
+
+
+IN
+---
+function a($b, $c) {}
+---
+
+OUT
+---
+<ast>
+    <function>
+        <declaration>
+            <name>a</name>
+            <params>
+                <param>
+                    <variable>b</variable>
+                </param>
+                <param>
+                    <variable>c</variable>
+                </param>
+            </params>
+        </declaration>
+        <definition />
+    </function>
+</ast>
+---
+
+
+
+
+IN
+---
+function a(array $b, $c) {}
+---
+
+OUT
+---
+<ast>
+    <function>
+        <declaration>
+            <name>a</name>
+            <params>
+                <param>
+                    <type-hint><name>array</name></type-hint>
+                    <variable>b</variable>
+                </param>
+                <param>
+                    <variable>c</variable>
+                </param>
+            </params>
+        </declaration>
+        <definition />
+    </function>
+</ast>
+---
+
+
+
+
+IN
+---
+function a(array $b = array(), $c = \A\B\C::SOME_CONST) {}
+---
+
+OUT
+---
+<ast>
+    <function>
+        <declaration>
+            <name>a</name>
+            <params>
+                <param>
+                    <type-hint><name>array</name></type-hint>
+                    <variable>b</variable>
+                    <call>
+                        <name>array</name>
+                    </call>
+                </param>
+                <param>
+                    <variable>c</variable>
+                    <binary-expression>
+                        <namespaced-name>
+                            <namespace>\A\B\</namespace>
+                            <name>C</name>
+                        </namespaced-name>
+                        <operator>::</operator>
+                        <name>SOME_CONST</name>
+                    </binary-expression>
+                </param>
+            </params>
+        </declaration>
+        <definition />
+    </function>
+</ast>
+---
+
+
+
+IN
+---
+function a(&$b) {}
+---
+
+OUT
+---
+<ast>
+    <function>
+        <declaration>
+            <name>a</name>
+            <params>
+                <param by-ref="true">
+                    <variable>b</variable>
+                </param>
+            </params>
+        </declaration>
+        <definition />
+    </function>
+</ast>
+---
+
+

@@ -1,0 +1,98 @@
+---
+IN
+---
+use Name;
+---
+OUT
+---
+<ast>
+    <use-declaration>
+        <use>
+            <name>Name</name>
+        </use>
+    </use-declaration>
+</ast>
+---
+
+---
+IN
+---
+use Name, Name2;
+---
+OUT
+---
+<ast>
+    <use-declaration>
+        <use>
+            <name>Name</name>
+        </use>
+        <use>
+            <name>Name2</name>
+        </use>
+    </use-declaration>
+</ast>
+---
+
+---
+IN
+---
+use Name as alias;
+---
+OUT
+---
+<ast>
+    <use-declaration>
+        <use>
+            <name>Name</name>
+            <name>alias</name>
+        </use>
+    </use-declaration>
+</ast>
+---
+
+---
+IN
+---
+use \Name as alias;
+---
+OUT
+---
+<ast>
+    <use-declaration>
+        <use>
+            <namespaced-name>
+                <namespace>\</namespace>
+                <name>Name</name>
+            </namespaced-name>
+            <name>alias</name>
+        </use>
+    </use-declaration>
+</ast>
+---
+
+---
+IN
+---
+use \Name as alias, \Other\Name\too as otherAlias;
+---
+OUT
+---
+<ast>
+    <use-declaration>
+        <use>
+            <namespaced-name>
+                <namespace>\</namespace>
+                <name>Name</name>
+            </namespaced-name>
+            <name>alias</name>
+        </use>
+        <use>
+            <namespaced-name>
+                <namespace>\Other\Name\</namespace>
+                <name>too</name>
+            </namespaced-name>
+            <name>otherAlias</name>
+        </use>
+    </use-declaration>
+</ast>
+---

@@ -1,0 +1,56 @@
+IN
+---
+interface A {
+}
+---
+OUT
+---
+<ast>
+    <interface>
+        <declaration>
+            <name>A</name>
+        </declaration>
+        <definition />
+    </interface>
+</ast>
+---
+
+IN
+---
+interface A extends B {
+}
+---
+OUT
+---
+<ast>
+    <interface>
+        <declaration>
+            <name>A</name>
+            <extends>
+                <name>B</name>
+            </extends>
+        </declaration>
+        <definition />
+    </interface>
+</ast>
+---
+
+IN
+---
+interface A extends B {
+}
+---
+OUT
+---
+<ast>
+    <interface>
+        <declaration>
+            <name>A</name>
+            <extends>
+                <name>B</name>
+            </extends>
+        </declaration>
+        <definition />
+    </interface>
+</ast>
+---

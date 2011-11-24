@@ -1,18 +1,16 @@
 <?php
-namespace MeanderTest\PHP\Parser;
+namespace Meander\PHP\Parser;
 
-use \Meander\PHP\Parser\IfParser;
-        
-class fIfParserTest extends \MeanderTest\TestCase {
+class UseParserTest extends \MeanderTest\TestCase {
     function expressions() {
-        return $this->getCases(__DIR__.'/IfParserTest.testcases');
+        return $this->getCases(__DIR__.'/UseParserTest.testcases');
     }
 
     /**
      * @dataProvider expressions
      */
     function testParser($code, $ast) {
-        $parser = new IfParser(new \Meander\PHP\Parser\PhpParser());
+        $parser = new UseParser(new PhpParser());
         $stream = new \Meander\PHP\Token\TokenStream(\Meander\PHP\Token\Tokenizer::tokenizePhp($code));
         $node = $parser->parse($stream);
         $this->assertASTEquals($ast, $node);

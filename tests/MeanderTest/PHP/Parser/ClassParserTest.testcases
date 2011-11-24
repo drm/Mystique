@@ -1,0 +1,344 @@
+IN
+---
+class A {
+}
+---
+OUT
+---
+<ast>
+    <class>
+        <declaration>
+            <name>A</name>
+        </declaration>
+        <definition />
+    </class>
+</ast>
+---
+
+IN
+---
+class A extends B {
+}
+---
+OUT
+---
+<ast>
+    <class>
+        <declaration>
+            <name>A</name>
+            <extends>
+                <name>B</name>
+            </extends>
+        </declaration>
+        <definition />
+    </class>
+</ast>
+---
+
+IN
+---
+class A extends B implements C {
+}
+---
+OUT
+---
+<ast>
+    <class>
+        <declaration>
+            <name>A</name>
+            <extends>
+                <name>B</name>
+            </extends>
+            <implements>
+                <name>C</name>
+            </implements>
+        </declaration>
+        <definition />
+    </class>
+</ast>
+---
+
+IN
+---
+class A extends B implements C, D {
+}
+---
+OUT
+---
+<ast>
+    <class>
+        <declaration>
+            <name>A</name>
+            <extends>
+                <name>B</name>
+            </extends>
+            <implements>
+                <name>C</name>
+                <name>D</name>
+            </implements>
+        </declaration>
+        <definition />
+    </class>
+</ast>
+---
+
+IN
+---
+abstract class A extends B implements C {
+}
+---
+OUT
+---
+<ast>
+    <class>
+        <declaration abstract="true">
+            <name>A</name>
+            <extends>
+                <name>B</name>
+            </extends>
+            <implements>
+                <name>C</name>
+            </implements>
+        </declaration>
+        <definition />
+    </class>
+</ast>
+---
+
+IN
+---
+final class A extends B implements C {
+}
+---
+OUT
+---
+<ast>
+    <class>
+        <declaration final="true">
+            <name>A</name>
+            <extends>
+                <name>B</name>
+            </extends>
+            <implements>
+                <name>C</name>
+            </implements>
+        </declaration>
+        <definition />
+    </class>
+</ast>
+---
+
+IN
+---
+class A {
+    public static final function someMethod() {
+    }
+
+    private function someMethod($x) {
+    }
+}
+---
+OUT
+---
+<ast>
+    <class>
+        <declaration>
+            <name>A</name>
+        </declaration>
+        <definition>
+            <method>
+                <declaration visibility="public" static="true" final="true">
+                    <name>someMethod</name>
+                    <params />
+                </declaration>
+                <definition />
+            </method>
+            <method>
+                <declaration visibility="private">
+                    <name>someMethod</name>
+                    <params>
+                        <param>
+                            <variable>x</variable>
+                        </param>
+                    </params>
+                </declaration>
+                <definition />
+            </method>
+        </definition>
+    </class>
+</ast>
+---
+
+IN
+---
+class A {
+    function someMethod($x, $y) {
+    }
+}
+---
+OUT
+---
+<ast>
+    <class>
+        <declaration>
+            <name>A</name>
+        </declaration>
+        <definition>
+            <method>
+                <declaration>
+                    <name>someMethod</name>
+                    <params>
+                        <param>
+                            <variable>x</variable>
+                        </param>
+                        <param>
+                            <variable>y</variable>
+                        </param>
+                    </params>
+                </declaration>
+                <definition />
+            </method>
+        </definition>
+    </class>
+</ast>
+---
+
+IN
+---
+class A {
+    function someMethod($x = 1, $y = self::CONSTANT) {
+    }
+}
+---
+OUT
+---
+<ast>
+    <class>
+        <declaration>
+            <name>A</name>
+        </declaration>
+        <definition>
+            <method>
+                <declaration>
+                    <name>someMethod</name>
+                    <params>
+                        <param>
+                            <variable>x</variable>
+                            <integer>1</integer>
+                        </param>
+                        <param>
+                            <variable>y</variable>
+                            <binary-expression>
+                                <name>self</name>
+                                <operator>::</operator>
+                                <name>CONSTANT</name>
+                            </binary-expression>
+                        </param>
+                    </params>
+                </declaration>
+                <definition />
+            </method>
+        </definition>
+    </class>
+</ast>
+---
+
+IN
+---
+class A {
+    function someMethod(SomeClass $x) {
+    }
+}
+---
+OUT
+---
+<ast>
+    <class>
+        <declaration>
+            <name>A</name>
+        </declaration>
+        <definition>
+            <method>
+                <declaration>
+                    <name>someMethod</name>
+                    <params>
+                        <param>
+                            <type-hint><name>SomeClass</name></type-hint>
+                            <variable>x</variable>
+                        </param>
+                    </params>
+                </declaration>
+                <definition />
+            </method>
+        </definition>
+    </class>
+</ast>
+---
+
+
+IN
+---
+class A {
+    function someMethod(\Some\Namespaced\ClassName $x) {
+    }
+}
+---
+OUT
+---
+<ast>
+    <class>
+        <declaration>
+            <name>A</name>
+        </declaration>
+        <definition>
+            <method>
+                <declaration>
+                    <name>someMethod</name>
+                    <params>
+                        <param>
+                            <type-hint>
+                                <namespaced-name>
+                                    <namespace>\Some\Namespaced\</namespace>
+                                    <name>ClassName</name>
+                                </namespaced-name>
+                            </type-hint>
+                            <variable>x</variable>
+                        </param>
+                    </params>
+                </declaration>
+                <definition />
+            </method>
+        </definition>
+    </class>
+</ast>
+---
+
+IN
+---
+class A {
+    function someMethod() {
+        require_once 'piet';
+    }
+}
+---
+OUT
+---
+<ast>
+    <class>
+        <declaration>
+            <name>A</name>
+        </declaration>
+        <definition>
+            <method>
+                <declaration>
+                    <name>someMethod</name>
+                    <params />
+                </declaration>
+                <definition>
+                    <require_once><string>piet</string></require_once>
+                </definition>
+            </method>
+        </definition>
+    </class>
+</ast>
+---
