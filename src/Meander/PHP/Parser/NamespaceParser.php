@@ -1,21 +1,33 @@
 <?php
-
 namespace Meander\PHP\Parser;
 use \Meander\PHP\Token\TokenStream;
-use \Meander\PHP\Node\NamespaceDeclaration;
+use \Meander\PHP\Node\NamespaceNode;
 
-class NamespaceParser extends StatementParser implements Parser {
-    
+class NamespaceParser extends ParserSub {
     function parse(TokenStream $stream) {
         $stream->expect(T_NAMESPACE);
 
-        $ns = $this->parent->parseExpression($stream);
-        if($stream->match(';')) {
+        $def = new NamespaceNode();
+
+        // global namespace
+        if($stream->match('{')) {
             $stream->next();
-            return new NamespaceDeclaration($ns);
+            $def->setDefinition($this->parent->subparse($stream, function($stream) { return $stream->match('}'); }));
+            $stream->expect('}');
         } else {
-            throw new \LogicException("Unimplemented");
+            $ns = $this->parent->parseName($stream);
+            $def->setNamespace($ns);
+            // file declaration
+            if($stream->match(';')) {
+                $stream->next();
+            } else {
+                // scoped declaration
+                $stream->expect('{');
+                $def->setDefinition($this->parent->subparse($stream, function($stream) { return $stream->match('}'); }));
+                $stream->expect('}');
+            }
         }
+        return $def;
     }
 
     function match(TokenStream $stream) {

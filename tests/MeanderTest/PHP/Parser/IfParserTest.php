@@ -3,7 +3,7 @@ namespace MeanderTest\PHP\Parser;
 
 use \Meander\PHP\Parser\IfParser;
         
-class fIfParserTest extends \MeanderTest\TestCase {
+class IfParserTest extends \MeanderTest\TestCase {
     function expressions() {
         return $this->getCases(__DIR__.'/IfParserTest.testcases');
     }

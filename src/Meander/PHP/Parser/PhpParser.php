@@ -14,14 +14,17 @@ class PhpParser extends ParserBase {
 
         $this->parsers = array(
             'class'         => new ClassParser($this),
+            'interface'     => new InterfaceParser($this),
             'function'      => new FunctionParser($this),
             'namespace'     => new NamespaceParser($this),
             'compound'      => new CompoundStatementParser($this),
+            'try'           => new TryCatchParser($this),
             'if'            => new IfParser($this),
             'for'           => new ForParser($this),
             'foreach'       => new ForeachParser($this),
             'switch'        => new SwitchParser($this),
             'while'         => new WhileParser($this),
+            'do'            => new DoWhileParser($this),
             'constructs'    => new LanguageConstructParser($this),
             'statement'     => new StatementParser($this),
             'use'           => new UseParser($this),

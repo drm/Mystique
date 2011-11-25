@@ -13,5 +13,4 @@ class CommentParser extends ParserSub {
     {
         return $stream->match(array(T_COMMENT, T_DOC_COMMENT));
     }
-
 }

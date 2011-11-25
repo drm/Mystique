@@ -7,11 +7,6 @@ use \Meander\PHP\Node\MethodNode;
 class MethodParser extends FunctionParser {
     public static $prefixes = array(T_FINAL, T_ABSTRACT, T_STATIC, T_PUBLIC, T_PRIVATE, T_PROTECTED, T_DOC_COMMENT);
 
-    function __construct(ParserBase $parent) {
-        parent::__construct($parent);
-        
-    }
-
 
     function parse(TokenStream $stream)
     {
@@ -35,7 +30,7 @@ class MethodParser extends FunctionParser {
                     $method->setVisibility(\Meander\PHP\Node\MethodDeclaration::IS_PRIVATE);
                     break;
                 case T_PROTECTED:
-                    $method->setVisibility(MethodDeclaration::IS_PROTECTED);
+                    $method->setVisibility(\Meander\PHP\Node\MethodDeclaration::IS_PROTECTED);
                     break;
                 default:
                     throw new \LogicException("Unreachable code...?");
@@ -45,9 +40,14 @@ class MethodParser extends FunctionParser {
         $stream->expect(T_FUNCTION);
         $method->setName(new \Meander\PHP\Node\Name($stream->expect(T_STRING)->value));
         $method->setParameters($this->parseParameterList($stream));
-        $stream->expect('{');
-        $method->setDefinition($this->parent->subparse($stream, function($stream) { return $stream->match('}'); }));
-        $stream->expect('}');
+
+        if($stream->match(';')) {
+            $stream->next();
+        } else {
+            $stream->expect('{');
+            $method->setDefinition($this->parent->subparse($stream, function($stream) { return $stream->match('}'); }));
+            $stream->expect('}');
+        }
         return $method;
     }
 

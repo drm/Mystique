@@ -1,6 +1,7 @@
 <?php
 
 namespace Meander\PHP\Parser;
+
 use \Meander\PHP\Node\Value;
 use \Meander\PHP\Token\TokenStream;
 use \Meander\PHP\Node\Name;
@@ -10,30 +11,39 @@ use \Meander\PHP\Token\Operator;
 use \Meander\PHP\Node\Call;
 use UnexpectedValueException;
 
-class ExpressionParser implements Parser {
-    function __construct() {
+class ExpressionParser implements Parser
+{
+    protected $parsers = array();
+
+    function __construct(ParserBase $parent = null)
+    {
+        if ($parent) {
+            $this->parsers['closure'] = new ClosureParser($parent);
+        }
     }
 
-    function parseSubscript(TokenStream $stream, \Meander\PHP\Node\Node $expression) {
+
+    function parseSubscript(TokenStream $stream, \Meander\PHP\Node\Node $expression)
+    {
         $ret = $expression;
 
-        while($stream->valid() && $stream->match(Operator::$subscriptOperators)) {
-            if($stream->match('(')) {
+        while ($stream->valid() && $stream->match(Operator::$subscriptOperators)) {
+            if ($stream->match('(')) {
                 $stream->next();
-                if(!$stream->match(')')) {
+                if (!$stream->match(')')) {
                     $arguments = $this->parseList($stream, $ret instanceof Name && in_array($ret, array('list', 'array')));
                 } else {
                     $arguments = new \Meander\PHP\Node\ExprList();
                 }
                 $stream->expect(')');
                 $ret = new Call($ret, $arguments);
-            } elseif($stream->match(array(T_DEC, T_INC))) {
+            } elseif ($stream->match(array(T_DEC, T_INC))) {
                 $ret = new \Meander\PHP\Node\UnaryExpression(new Operator($stream->current()), $ret);
                 $stream->next();
             } else {
                 $op = $stream->expect(Operator::$subscriptOperators);
                 $paren = \Meander\PHP\Token\PairMatcher::parenOf($op);
-                if(!$stream->match($paren)) {
+                if (!$stream->match($paren)) {
                     $expr = $this->parse($stream);
                 } else {
                     $expr = null;
@@ -46,7 +56,8 @@ class ExpressionParser implements Parser {
     }
 
 
-    function parse(TokenStream $stream, $haveLvalue = false) {
+    function parse(TokenStream $stream, $haveLvalue = false)
+    {
         if ($stream->match(Operator::$unaryOperators)) {
             $op = $stream->current();
             $operator = new Operator($op);
@@ -69,7 +80,7 @@ class ExpressionParser implements Parser {
             } else {
                 $lValue = new \Meander\PHP\Node\UnaryExpression($operator, $rValue);
             }
-        } elseif($stream->match('(')) {
+        } elseif ($stream->match('(')) {
             //TODO figure out how to get this more generic
             $stream->next();
             $lValue = $this->parse($stream);
@@ -138,10 +149,10 @@ class ExpressionParser implements Parser {
     }
 
 
-
-    function parseNestedVariable(TokenStream $stream) {
+    function parseNestedVariable(TokenStream $stream)
+    {
         $value = new \Meander\PHP\Node\NestedVariable();
-        if($stream->match('{')) {
+        if ($stream->match('{')) {
             $stream->next();
             $value->setParens(true);
             $value->children->append($this->parse($stream));
@@ -159,20 +170,29 @@ class ExpressionParser implements Parser {
         T_EMPTY,
         T_ISSET,
         T_DECLARE,
-        T_UNSET
+        T_UNSET,
+        T_INCLUDE
     );
+
+
     static $constants = array(
         T_FUNC_C, T_DIR, T_FILE, T_LINE, T_METHOD_C, T_CLASS_C
     );
 
-    function parseValue(TokenStream $stream) {
+    function parseValue(TokenStream $stream)
+    {
         $token = $stream->current();
 
         $value = null;
-        if($token->match(self::$functionLikeConstructs) || $token->match(self::$constants)) {
+        if ($token->match(self::$functionLikeConstructs) || $token->match(self::$constants)) {
             $value = $this->parseName($stream);
+        } elseif ($token->match(T_FUNCTION)) {
+            if (!isset($this->parsers['closure'])) {
+                throw new \LogicException('No parent parser to subparse to, so closures can not be parsed');
+            }
+            $value = $this->parsers['closure']->parse($stream);
         } else {
-            switch($token->type) {
+            switch ($token->type) {
                 case '$':
                     $stream->next();
                     $value = $this->parseNestedVariable($stream);
@@ -195,8 +215,12 @@ class ExpressionParser implements Parser {
                 case T_NS_SEPARATOR:
                     $value = $this->parseName($stream);
                     break;
+                case T_STATIC:
+                    $value = new Name($token->value);
+                    $stream->next();
+                    break;
                 case T_STRING:
-                    switch($token->value) {
+                    switch ($token->value) {
                         case 'null':
                             $value = new Value(null);
                             $stream->next();
@@ -235,14 +259,15 @@ class ExpressionParser implements Parser {
     }
 
 
-    function parseString(TokenStream $stream) {
+    function parseString(TokenStream $stream)
+    {
         $stream->next();
         $ret = new \Meander\PHP\Node\StringNode();
-        while(!$stream->match('"')) {
-            if($stream->match(T_ENCAPSED_AND_WHITESPACE)) {
+        while (!$stream->match('"')) {
+            if ($stream->match(T_ENCAPSED_AND_WHITESPACE)) {
                 $ret->children->append(new Value($stream->current()->value));
                 $stream->next();
-            } elseif($stream->match(array(T_DOLLAR_OPEN_CURLY_BRACES, T_STRING_VARNAME, '}'))) {
+            } elseif ($stream->match(array(T_DOLLAR_OPEN_CURLY_BRACES, T_STRING_VARNAME, '}'))) {
                 $ret->children->append(new \Meander\PHP\Node\Noop('[TODO T_DOLLAR_OPEN_CURLY_BRACES]'));
                 $stream->next();
             } else {
@@ -254,22 +279,23 @@ class ExpressionParser implements Parser {
     }
 
 
-    function parseList(TokenStream $stream, $allowEmpty = false) {
+    function parseList(TokenStream $stream, $allowEmpty = false)
+    {
         $argumentList = new \Meander\PHP\Node\ExprList();
 
-        if($allowEmpty) {
-            while(!$stream->match(')')) {
-                if($stream->match(',')) {
+        if ($allowEmpty) {
+            while (!$stream->match(')')) {
+                if ($stream->match(',')) {
                     $argumentList->children->append(new \Meander\PHP\Node\Noop());
                     $stream->next();
-                    if($stream->match(')')) {
+                    if ($stream->match(')')) {
                         $argumentList->children->append(new \Meander\PHP\Node\Noop());
                     }
                 } else {
                     $argumentList->children->append($this->parse($stream));
-                    if(!$stream->match(')')) {
+                    if (!$stream->match(')')) {
                         $stream->expect(',');
-                        if($stream->match(')')) {
+                        if ($stream->match(')')) {
                             $argumentList->children->append(new \Meander\PHP\Node\Noop());
                         }
                         continue;
@@ -279,39 +305,40 @@ class ExpressionParser implements Parser {
         } else {
             $first = true;
             do {
-                if(!$first) {
+                if (!$first) {
                     $stream->next();
                 } else {
                     $first = false;
                 }
                 $argumentList->children->append($this->parse($stream));
-            } while($stream->match(',') );
+            } while ($stream->match(','));
         }
         return $argumentList;
     }
 
 
-    function parseName(TokenStream $stream) {
+    function parseName(TokenStream $stream)
+    {
         $namespace = array();
-        if($stream->match(self::$functionLikeConstructs)) {
+        if ($stream->match(self::$functionLikeConstructs)) {
             $value = new Name($stream->expect(self::$functionLikeConstructs)->value);
-        } elseif($stream->match(array(T_FILE, T_DIR, T_LINE, T_CLASS_C, T_METHOD_C, T_FUNC_C))) {
+        } elseif ($stream->match(array(T_FILE, T_DIR, T_LINE, T_CLASS_C, T_METHOD_C, T_FUNC_C))) {
             $value = new Name($stream->current()->value);
             $stream->next();
         } else {
-            if($stream->match(T_NS_SEPARATOR)) {
-                $namespace[]= $stream->current()->value;
+            if ($stream->match(T_NS_SEPARATOR)) {
+                $namespace[] = $stream->current()->value;
                 $stream->next();
             }
-            $namespace[]= $stream->expect(T_STRING)->value;
-            while($stream->valid() && $stream->match(array(T_NS_SEPARATOR))) {
-                $namespace[]= $stream->current()->value;
+            $namespace[] = $stream->expect(T_STRING)->value;
+            while ($stream->valid() && $stream->match(array(T_NS_SEPARATOR))) {
+                $namespace[] = $stream->current()->value;
                 $stream->next();
-                $namespace[]= $stream->expect(T_STRING)->value;
+                $namespace[] = $stream->expect(T_STRING)->value;
             }
             $name = array_pop($namespace);
 
-            if(count($namespace)) {
+            if (count($namespace)) {
                 $value = new NamespacedName(join('', $namespace), $name);
             } else {
                 $value = new Name($name);
@@ -321,7 +348,8 @@ class ExpressionParser implements Parser {
     }
 
 
-    function match(TokenStream $stream) {
+    function match(TokenStream $stream)
+    {
         throw new \LogicException("Unimplemented");
     }
 }

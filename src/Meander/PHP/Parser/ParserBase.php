@@ -21,7 +21,6 @@ abstract class ParserBase implements Parser {
             $haveMatch = false;
             foreach($this->parsers as $parser) {
                 if($parser->match($stream)) {
-//                    echo get_class($parser) . ' matches ' . $stream->current()->verbose(), "\n";
                     $node = $parser->parse($stream);
                     if(!$node instanceof \Meander\PHP\Node\Node) {
                         throw new \UnexpectedValueException('Parser ' . get_class($parser) . ' does not return expected type Node');
@@ -35,7 +34,7 @@ abstract class ParserBase implements Parser {
                 break;
             }
             if(!$haveMatch) {
-                throw new \RuntimeException("Parser error, unexpected " . $stream->current()->verbose());
+                $stream->err($stream->current(), "Unhandled element");
             }
         }
         return array_pop($this->stack);
@@ -61,7 +60,7 @@ abstract class ParserBase implements Parser {
      */
     function getExpressionParser() {
         if (null === $this->expressionParser) {
-            $this->expressionParser = new ExpressionParser();
+            $this->expressionParser = new ExpressionParser($this);
         }
         return $this->expressionParser;
     }

@@ -6,7 +6,7 @@ function usage($exitCode = 0) {
     exit($exitCode);
 }
 
-require_once __DIR__ . '/src/autoload.php';
+require_once __DIR__ . '/../src/autoload.php';
 
 if(empty($_SERVER['argv'][1])) {
     usage(-1);
@@ -14,10 +14,15 @@ if(empty($_SERVER['argv'][1])) {
 
 $file = $_SERVER['argv'][1];
 
-$parser = new \Meander\PHP\Parser\PhpParser();
-$root = $parser->parse(new \Meander\PHP\Token\TokenStream(\Meander\PHP\Token\Tokenizer::tokenize(file_get_contents($file))));
-$xml = new \Meander\PHP\Compiler\XmlCompiler();
-$walker = new \Meander\PHP\Node\Traverser($xml);
-$walker->traverse($root);
+try {
+    $parser = new \Meander\PHP\Parser\PhpParser();
+    $root = $parser->parse(new \Meander\PHP\Token\TokenStream(\Meander\PHP\Token\Tokenizer::tokenize(file_get_contents($file))));
 
-echo $xml;
+    $xml = new \Meander\PHP\Compiler\XmlCompiler();
+    $walker = new \Meander\PHP\Node\Traverser($xml);
+    $walker->traverse($root);
+
+    echo $xml;
+} catch(Exception $e) {
+    echo $e->getMessage();
+}

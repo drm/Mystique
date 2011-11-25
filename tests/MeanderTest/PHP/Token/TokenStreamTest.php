@@ -237,11 +237,11 @@ class TokenStreamTest extends PHPUnit_Framework_TestCase {
 
 
 
-    function testMatchSignature() {
-        $stream = new TokenStream(Tokenizer::tokenizePhp('  /** DOC */ final public static function'));
-        $this->assertTrue($stream->matchSignature(T_FUNCTION, null, array(T_DOC_COMMENT, T_FINAL, T_PUBLIC, T_STATIC)));
-        $stream->expect(T_DOC_COMMENT);
-    }
+//    function testMatchSignature() {
+//        $stream = new TokenStream(Tokenizer::tokenizePhp('  /** DOC */ final public static function'));
+//        $this->assertTrue($stream->matchSignature(T_FUNCTION, null, array(T_DOC_COMMENT, T_FINAL, T_PUBLIC, T_STATIC)));
+//        $stream->expect(T_DOC_COMMENT);
+//    }
 
 
     function testToStringDoesNotAffectState() {

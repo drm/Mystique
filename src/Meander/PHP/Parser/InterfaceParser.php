@@ -9,10 +9,12 @@ use \Meander\PHP\Node\Raw;
 
 class InterfaceParser extends ParserBase
 {
-    function __construct()
+    function __construct($parent)
     {
         parent::__construct();
-        $this->parsers= array();
+        $this->parsers[]= new MethodParser($parent);
+        $this->parsers[]= new PropertyParser($parent);
+        $this->parsers[]= new ConstantParser($parent);
     }
 
 
@@ -32,11 +34,13 @@ class InterfaceParser extends ParserBase
         $stream->expect(T_INTERFACE);
         $node->setName(new \Meander\PHP\Node\Name($stream->expect(T_STRING)->value));
         if ($stream->match(T_EXTENDS)) {
-            $stream->next();
-            $node->setExtends(new \Meander\PHP\Node\Name($stream->expect(T_STRING)->value));
+            do {
+                $stream->next();
+                $node->addExtends($this->getExpressionParser()->parseName($stream));
+            } while($stream->match(','));
         }
         $stream->expect('{');
-        $node->setDefinition($this->subparse($stream, true));
+        $node->setDefinition($this->subparse($stream, function($stream) { return $stream->match('}'); }));
         $stream->expect('}');
         return $node;
     }

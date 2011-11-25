@@ -3,7 +3,7 @@
 namespace Meander\PHP\Node;
 use \Meander\Compiler\CompilerInterface;
 
-class ExprList extends BranchAbstract {
+class ExprList extends BranchAbstract implements \Meander\Compiler\Compilable {
     function compile(CompilerInterface $compiler) {
         $first = true;
         foreach($this->children as $node) {

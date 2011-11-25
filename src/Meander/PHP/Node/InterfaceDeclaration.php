@@ -19,13 +19,24 @@ class InterfaceDeclaration extends BranchAbstract implements \Meander\Compiler\C
     }
 
 
-    function setExtends($name) {
-        $this->children[1]= new ExtendsDeclaration($name);
-        return $this;
+    function getExtends() {
+        if(isset($this->children[1])) {
+            return $this->children[1];
+        }
+        return null;
     }
 
-    function getExtends() {
+
+    function haveExtends() {
+        if(!isset($this->children[1])) {
+            $this->children[1]= new ExtendsDeclaration();
+        }
         return $this->children[1];
+    }
+
+
+    function addExtends($name) {
+        return $this->haveExtends()->add($name);
     }
     
 

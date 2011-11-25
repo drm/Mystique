@@ -953,3 +953,28 @@ OUT
 </ast>
 
 ---
+
+
+
+---
+IN
+---
+$a = function () {}
+---
+OUT
+---
+<ast>
+    <binary-expression>
+        <variable>a</variable>
+        <operator>=</operator>
+        <closure>
+            <declaration>
+                <params />
+                <use />
+            </declaration>
+            <definition />
+        </closure>
+    </binary-expression>
+</ast>
+
+---

@@ -90,12 +90,89 @@ OUT
 ---
 <ast>
     <php>
-        <namespace-declaration>
-            <namespaced-name>
-                <namespace>a\b\</namespace>
-                <name>c</name>
-            </namespaced-name>
-        </namespace-declaration>
+        <namespace>
+            <declaration>
+                <namespaced-name>
+                    <namespace>a\b\</namespace>
+                    <name>c</name>
+                </namespaced-name>
+            </declaration>
+            <definition/>
+        </namespace>
+    </php>
+</ast>
+---
+
+IN
+---
+<?php
+namespace a\b\c {
+}
+?>
+---
+OUT
+---
+<ast>
+    <php>
+        <namespace>
+            <declaration>
+                <namespaced-name>
+                    <namespace>a\b\</namespace>
+                    <name>c</name>
+                </namespaced-name>
+            </declaration>
+            <definition/>
+        </namespace>
+    </php>
+</ast>
+---
+
+IN
+---
+<?php
+namespace a {
+    function x() {
+    }
+}
+
+namespace b {
+    function y() {
+    }
+}
+?>
+---
+OUT
+---
+<ast>
+    <php>
+        <namespace>
+            <declaration>
+                <name>a</name>
+            </declaration>
+            <definition>
+                <function>
+                    <declaration>
+                        <name>x</name>
+                        <params />
+                    </declaration>
+                    <definition />
+                </function>
+            </definition>
+        </namespace>
+        <namespace>
+            <declaration>
+                <name>b</name>
+            </declaration>
+            <definition>
+                <function>
+                    <declaration>
+                        <name>y</name>
+                        <params />
+                    </declaration>
+                    <definition />
+                </function>
+            </definition>
+        </namespace>
     </php>
 </ast>
 ---
@@ -269,6 +346,50 @@ OUT
             </binary-expression>
             <statement />
         </foreach>
+    </php>
+</ast>
+---
+
+
+IN
+---
+<?php
+try {
+    a();
+} catch(SomeException $e) {
+} catch(\Some\Other\Exception $e2) {
+}
+---
+OUT
+---
+<ast>
+    <php>
+        <try-catch>
+            <try>
+                <statement>
+                    <call>
+                        <name>a</name>
+                    </call>
+                </statement>
+            </try>
+            <catch>
+                <type>
+                    <name>SomeException</name>
+                    <variable>e</variable>
+                </type>
+                <definition />
+            </catch>
+            <catch>
+                <type>
+                    <namespaced-name>
+                        <namespace>\Some\Other\</namespace>
+                        <name>Exception</name>
+                    </namespaced-name>
+                    <variable>e2</variable>
+                </type>
+                <definition />
+            </catch>
+        </try-catch>
     </php>
 </ast>
 ---

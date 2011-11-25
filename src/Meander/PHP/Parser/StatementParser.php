@@ -7,7 +7,6 @@ use \Meander\PHP\Node\Statement;
 
 class StatementParser extends ParserSub {
     function parse(TokenStream $stream) {
-//        echo 'Parsing statement @ ' . $stream->current()->verbose();
         if($stream->match(';')) {
             $stream->next();
             return new Statement(null);

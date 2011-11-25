@@ -23,12 +23,12 @@ class ClassParserTest extends \MeanderTest\TestCase {
     }
 
 
-    function testDocComment() {
-        $parser = new ClassParser(new \Meander\PHP\Parser\PhpParser());
-        /** @var \ClassNode\PHP\Node\ClassDefinition $classDef */
-        $classDef = $parser->parse(new TokenStream(Tokenizer::tokenizePhp('/** Awesomeness! */ class a {}')));
-        $this->assertEquals(new \Meander\PHP\Node\DocBlock('/** Awesomeness! */'), $classDef->getDoc());
-    }
+//    function testDocComment() {
+//        $parser = new ClassParser(new \Meander\PHP\Parser\PhpParser());
+//        /** @var \ClassNode\PHP\Node\ClassDefinition $classDef */
+//        $classDef = $parser->parse(new TokenStream(Tokenizer::tokenizePhp('/** Awesomeness! */ class a {}')));
+//        $this->assertEquals(new \Meander\PHP\Node\DocBlock('/** Awesomeness! */'), $classDef->getDoc());
+//    }
 
     function testFinal() {
         $parser = new ClassParser(new \Meander\PHP\Parser\PhpParser());

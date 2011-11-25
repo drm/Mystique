@@ -1,0 +1,64 @@
+IN
+---
+function () {
+}
+---
+OUT
+---
+<ast>
+    <closure>
+        <declaration>
+            <params />
+            <use />
+        </declaration>
+        <definition />
+    </closure>
+</ast>
+---
+
+IN
+---
+function () use ($x) {
+}
+---
+OUT
+---
+<ast>
+    <closure>
+        <declaration>
+            <params />
+            <use>
+                <variable>x</variable>
+            </use>
+        </declaration>
+        <definition />
+    </closure>
+</ast>
+---
+
+
+IN
+---
+function ($a) use ($x, $y) {
+}
+---
+OUT
+---
+<ast>
+    <closure>
+        <declaration>
+            <params>
+                <param>
+                    <variable>a</variable>
+                </param>
+            </params>
+            <use>
+                <variable>x</variable>
+                <variable>y</variable>
+            </use>
+        </declaration>
+        <definition />
+    </closure>
+</ast>
+---
+

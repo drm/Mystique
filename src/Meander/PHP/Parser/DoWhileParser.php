@@ -17,6 +17,6 @@ class DoWhileParser extends ParserSub {
 
     function match(TokenStream $stream)
     {
-        return $stream->match(array(T_WHILE));
+        return $stream->match(array(T_DO));
     }
 }

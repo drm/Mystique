@@ -54,3 +54,24 @@ OUT
     </interface>
 </ast>
 ---
+
+IN
+---
+interface A {
+    function x();
+}
+---
+OUT
+---
+<ast>
+    <interface>
+        <declaration>
+            <name>A</name>
+            <extends>
+                <name>B</name>
+            </extends>
+        </declaration>
+        <definition />
+    </interface>
+</ast>
+---
