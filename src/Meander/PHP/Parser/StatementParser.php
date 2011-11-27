@@ -27,6 +27,7 @@ class StatementParser extends ParserSub {
                 array(
                     T_STRING,
                     T_VARIABLE,
+                    T_NS_SEPARATOR,
                     ';',
                 )
             )

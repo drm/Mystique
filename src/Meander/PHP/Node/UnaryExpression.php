@@ -36,4 +36,13 @@ class UnaryExpression extends ExpressionAbstract implements \Meander\Compiler\Co
     function setRight(Node $value) {
         $this->children[1] = $value;
     }
+
+
+    function setLeft($value) {
+        $this->setRight($value);
+    }
+
+    function getLeft() {
+        return $this->getRight();
+    }
 }

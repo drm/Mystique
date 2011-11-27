@@ -49,7 +49,7 @@ class Simple implements FormatterInterface {
             }
         }
     }
-    
+
 
     function _after($token) {
         if ($token->type == T_OPEN_TAG) {
@@ -63,7 +63,7 @@ class Simple implements FormatterInterface {
             $this->_write("\n");
         } elseif(in_array($token->value, array(',', '=', '+', '&&', '-'))) {
             $this->_write(' ');
-        } 
+        }
 
     }
 

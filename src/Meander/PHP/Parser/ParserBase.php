@@ -16,6 +16,9 @@ abstract class ParserBase implements Parser {
 
 
     function subparse(TokenStream $stream, $callback) {
+        if($callback !== true && !is_callable($callback)) {
+            throw new \InvalidArgumentException("Callback is not callable");
+        }
         array_push($this->stack, new NodeList());
         while($stream->valid()) {
             $haveMatch = false;

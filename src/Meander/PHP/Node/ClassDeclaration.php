@@ -16,7 +16,11 @@ class ClassDeclaration extends InterfaceDeclaration {
         $this->setFlag('final', $final);
         return $this;
     }
-    
+
+    function setExtends($name) {
+        $this->children[1] = new ExtendsDeclaration();
+        return $this->addExtends($name);
+    }
 
     function setAbstract($abstract= true) {
         $this->setFlag('abstract', $abstract);
@@ -41,7 +45,7 @@ class ClassDeclaration extends InterfaceDeclaration {
     
 
     function addImplements($name) {
-        return $this->haveImplements()->add(new Name($name));
+        return $this->haveImplements()->add($name);
     }
 
     function compile(\Meander\Compiler\CompilerInterface $compiler)
@@ -66,6 +70,4 @@ class ClassDeclaration extends InterfaceDeclaration {
             }
         }
     }
-
-
 }

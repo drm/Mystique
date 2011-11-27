@@ -12,7 +12,7 @@ class FileParser extends \Meander\PHP\Parser\ParserBase {
 
 
     function parse(TokenStream $stream) {
-        $this->subparse($stream, false);
+        $this->subparse($stream, function(){ return false; });
     }
 
 

@@ -7,7 +7,8 @@ use \Meander\PHP\Node\Html;
 
 class HtmlParser implements Parser {
     function parse(TokenStream $stream) {
-        return new Html($stream->next()->value);
+        $stream->expect(T_INLINE_HTML);
+        return new Html($stream->current()->value);
     }
 
     function match(TokenStream $stream)

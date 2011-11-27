@@ -16,7 +16,7 @@ class InterfaceParserTest extends \MeanderTest\TestCase {
      * @dataProvider parserCases
      */
     function testParserCases($code, $ast) {
-        $parser = new InterfaceParser();
+        $parser = new InterfaceParser(new \Meander\PHP\Parser\PhpParser());
         $stream = new \Meander\PHP\Token\TokenStream(\Meander\PHP\Token\Tokenizer::tokenizePhp($code));
         $node = $parser->parse($stream);
         $this->assertASTEquals($ast, $node);

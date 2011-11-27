@@ -50,7 +50,7 @@ class ClassParser extends ParserBase
         if ($stream->match(T_IMPLEMENTS)) {
             do {
                 $stream->next();
-                $definition->addImplements(new \Meander\PHP\Node\Name($stream->expect(T_STRING)->value));
+                $definition->addImplements($this->getExpressionParser()->parseName($stream));
             } while ($stream->match(','));
         }
         $stream->expect('{');

@@ -31,6 +31,9 @@ class Token
 
 
     function verbose() {
+        if(!is_scalar($this->type)) {
+            return $this->value;
+        }
         if(isset(Type::$types[$this->type])) {
             return sprintf('[%s "%s"]', Type::$types[$this->type], str_replace(array("\n", "\r", "\t"), array('\n', '\r', '\t'), $this->value));
         }

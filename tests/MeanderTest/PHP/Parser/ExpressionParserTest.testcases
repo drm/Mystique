@@ -976,5 +976,181 @@ OUT
         </closure>
     </binary-expression>
 </ast>
+---
 
+---
+IN
+---
+(string)$object->property->deepproperty
+---
+OUT
+---
+<ast>
+    <unary-expression>
+        <operator>(string)</operator>
+        <binary-expression>
+            <variable>object</variable>
+            <operator>-&gt;</operator>
+            <binary-expression>
+                <name>property</name>
+                <operator>-&gt;</operator>
+                <name>deepproperty</name>
+            </binary-expression>
+        </binary-expression>
+    </unary-expression>
+</ast>
+---
+
+
+---
+IN
+---
+$a = (string)$object->property->deepproperty
+---
+OUT
+---
+<ast>
+    <binary-expression>
+        <variable>a</variable>
+        <operator>=</operator>
+        <unary-expression>
+            <operator>(string)</operator>
+            <binary-expression>
+                <variable>object</variable>
+                <operator>-&gt;</operator>
+                <binary-expression>
+                    <name>property</name>
+                    <operator>-&gt;</operator>
+                    <name>deepproperty</name>
+                </binary-expression>
+            </binary-expression>
+        </unary-expression>
+    </binary-expression>
+</ast>
+---
+
+---
+IN
+---
+$a->property ++
+---
+OUT
+---
+<ast>
+    <unary-expression>
+        <operator>++</operator>
+        <binary-expression>
+            <variable>a</variable>
+            <operator>-&gt;</operator>
+            <name>property</name>
+        </binary-expression>
+    </unary-expression>
+</ast>
+---
+
+---
+IN
+---
+1 ? 2 : 3
+---
+OUT
+---
+<ast>
+    <ternary-expression>
+        <integer>1</integer>
+        <operator>?</operator>
+        <integer>2</integer>
+        <integer>3</integer>
+    </ternary-expression>
+</ast>
+---
+
+---
+IN
+---
+$a == 1 ? 2 + 3 : 3 * 10
+---
+OUT
+---
+<ast>
+    <ternary-expression>
+        <binary-expression>
+            <variable>a</variable>
+            <operator>==</operator>
+            <integer>1</integer>
+        </binary-expression>
+        <operator>?</operator>
+        <binary-expression>
+            <integer>2</integer>
+            <operator>+</operator>
+            <integer>3</integer>
+        </binary-expression>
+        <binary-expression>
+            <integer>3</integer>
+            <operator>*</operator>
+            <integer>10</integer>
+        </binary-expression>
+    </ternary-expression>
+</ast>
+---
+
+---
+IN
+---
+$a == 1 ? $b == 2 ? 1 : 2 : 3
+---
+OUT
+---
+<ast>
+    <ternary-expression>
+        <binary-expression>
+            <variable>a</variable>
+            <operator>==</operator>
+            <integer>1</integer>
+        </binary-expression>
+        <operator>?</operator>
+        <ternary-expression>
+            <binary-expression>
+                <variable>b</variable>
+                <operator>==</operator>
+                <integer>2</integer>
+            </binary-expression>
+            <operator>?</operator>
+            <integer>1</integer>
+            <integer>2</integer>
+        </ternary-expression>
+        <integer>3</integer>
+    </ternary-expression>
+</ast>
+---
+
+
+---
+IN
+---
+$a == 1 ? 1 : $b == 2 ? 2 : 3
+---
+OUT
+---
+<ast>
+    <ternary-expression>
+        <binary-expression>
+            <variable>a</variable>
+            <operator>==</operator>
+            <integer>1</integer>
+        </binary-expression>
+        <operator>?</operator>
+        <integer>1</integer>
+        <ternary-expression>
+            <binary-expression>
+                <variable>b</variable>
+                <operator>==</operator>
+                <integer>2</integer>
+            </binary-expression>
+            <operator>?</operator>
+            <integer>2</integer>
+            <integer>3</integer>
+        </ternary-expression>
+    </ternary-expression>
+</ast>
 ---

@@ -57,8 +57,7 @@ OUT
 
 IN
 ---
-interface A {
-    function x();
+interface A extends B, C {
 }
 ---
 OUT
@@ -69,9 +68,36 @@ OUT
             <name>A</name>
             <extends>
                 <name>B</name>
+                <name>C</name>
             </extends>
         </declaration>
         <definition />
+    </interface>
+</ast>
+---
+
+IN
+---
+interface A {
+    function x();
+}
+---
+OUT
+---
+<ast>
+    <interface>
+        <declaration>
+            <name>A</name>
+        </declaration>
+        <definition>
+            <method>
+                <declaration>
+                    <name>x</name>
+                    <params />
+                </declaration>
+                <definition />
+            </method>
+        </definition>
     </interface>
 </ast>
 ---

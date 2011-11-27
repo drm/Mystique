@@ -38,11 +38,11 @@ class LanguageConstructParser extends ParserSub {
     function parse(TokenStream $stream) {
         $token = $stream->expect(self::$types);
         if(in_array($token->type, self::$mul)) {
-            $expr = array();
-            $expr[] = $this->parent->parseExpression($stream);
+            $expr = new \Meander\PHP\Node\NodeList();
+            $expr->append($this->parent->parseExpression($stream));
             while($stream->match(',')) {
                 $stream->next();
-                $expr[]= $this->parent->parseExpression($stream);
+                $expr->append($this->parent->parseExpression($stream));
             }
             $expr = new \Meander\PHP\Node\ExprList($expr);
         } else {

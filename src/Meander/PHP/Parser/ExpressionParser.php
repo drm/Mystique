@@ -2,14 +2,17 @@
 
 namespace Meander\PHP\Parser;
 
-use \Meander\PHP\Node\Value;
+use UnexpectedValueException;
+
 use \Meander\PHP\Token\TokenStream;
-use \Meander\PHP\Node\Name;
-use \Meander\PHP\Node\NamespacedName;
 use \Meander\PHP\Token\Type;
 use \Meander\PHP\Token\Operator;
+
+use \Meander\PHP\Node\Value;
+use \Meander\PHP\Node\Name;
+use \Meander\PHP\Node\NamespacedName;
 use \Meander\PHP\Node\Call;
-use UnexpectedValueException;
+
 
 class ExpressionParser implements Parser
 {
@@ -92,7 +95,21 @@ class ExpressionParser implements Parser
 
         $lValue = $this->parseSubscript($stream, $lValue);
 
-        if ($stream->valid() && $stream->match(Operator::$binaryOperators)) {
+        // special case ? ... :
+        if($stream->valid() && $stream->match(':')) {
+            return $lValue;
+        } elseif($stream->valid() && $stream->match('?')) {
+            $operator = new Operator($stream->current());
+            $stream->next();
+            if($stream->match(':')) {
+                $lCase = null;
+            } else {
+                $lCase = $this->parse($stream);
+            }
+            $stream->expect(':');
+            $rCase = $this->parse($stream);
+            return new \Meander\PHP\Node\TernaryExpression($lValue, $operator, $lCase, $rCase);
+        } elseif ($stream->valid() && $stream->match(Operator::$binaryOperators)) {
             $op = $stream->current();
             $stream->next();
             $rValue = $this->parse($stream);
@@ -171,7 +188,8 @@ class ExpressionParser implements Parser
         T_ISSET,
         T_DECLARE,
         T_UNSET,
-        T_INCLUDE
+        T_INCLUDE,
+        T_EVAL
     );
 
 
@@ -267,7 +285,7 @@ class ExpressionParser implements Parser
             if ($stream->match(T_ENCAPSED_AND_WHITESPACE)) {
                 $ret->children->append(new Value($stream->current()->value));
                 $stream->next();
-            } elseif ($stream->match(array(T_DOLLAR_OPEN_CURLY_BRACES, T_STRING_VARNAME, '}'))) {
+            } elseif ($stream->match(array(T_DOLLAR_OPEN_CURLY_BRACES, T_STRING_VARNAME, '}', T_CURLY_OPEN))) {
                 $ret->children->append(new \Meander\PHP\Node\Noop('[TODO T_DOLLAR_OPEN_CURLY_BRACES]'));
                 $stream->next();
             } else {
