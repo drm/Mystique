@@ -19,18 +19,6 @@ class ClassBuilderTest extends PHPUnit_Framework_TestCase
     }
 
 
-    function testSetExtends()
-    {
-        $this->builder->setExtends('x');
-        $this->assertEquals('x', (string)$this->node->getExtends());
-    }
-
-    function testExt()
-    {
-        $this->builder->ext('x');
-        $this->assertEquals('x', (string)$this->node->getExtends());
-    }
-
     function testMethodCreationYieldsMethodBuilder()
     {
         $this->assertInstanceOf('\Meander\PHP\Builder\MethodBuilder', $this->builder->method('b'));

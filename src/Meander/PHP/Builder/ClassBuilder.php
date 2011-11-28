@@ -5,12 +5,13 @@ use \Meander\PHP\Node\ClassNode;
 
 class ClassBuilder extends BuilderAbstract
 {
-    protected $methodMap = array(
-        'method' => array('addMember', 'MethodNode', 'MethodBuilder'),
-        'property' => array('addMember', 'PropertyDefinition', 'PropertyBuilder'),
-        'ext' => array('setExtends'),
-        'impl' => array('addImplements'),
-        'setAbstract' => array('setAbstract'),
-        'setFinal' => array('setFinal')
-    );
+    protected function initBuilder()
+    {
+        $this->methodMap = array(
+            'method'        => new MethodMapper('addMember', 'MethodNode', 'MethodBuilder'),
+            'property'      => new MethodMapper('addMember', 'PropertyDefinition', 'PropertyBuilder'),
+            'ext'           => new MethodMapper('setExtends', null, null, new ParameterMapper(array(array($this->inputParser, 'parseName')))),
+            'impl'          => new MethodMapper('addImplements', null, null, new ParameterMapper(array(array($this->inputParser, 'parseName')))),
+        );
+    }
 }

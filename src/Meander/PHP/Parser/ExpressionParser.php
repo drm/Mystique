@@ -20,6 +20,7 @@ class ExpressionParser implements Parser
 
     function __construct(ParserBase $parent = null)
     {
+        $this->parsers['name'] = new NameParser($parent);
         if ($parent) {
             $this->parsers['closure'] = new ClosureParser($parent);
         }
@@ -177,29 +178,32 @@ class ExpressionParser implements Parser
         return $value;
     }
 
-
-    static $functionLikeConstructs = array(
-        T_ARRAY,
-        T_LIST,
-        T_EMPTY,
-        T_ISSET,
-        T_DECLARE,
-        T_UNSET,
-        T_INCLUDE,
-        T_EVAL
-    );
-
-
-    static $constants = array(
-        T_FUNC_C, T_DIR, T_FILE, T_LINE, T_METHOD_C, T_CLASS_C
-    );
-
+    
     function parseValue(TokenStream $stream)
     {
         $token = $stream->current();
 
         $value = null;
-        if ($token->match(self::$functionLikeConstructs) || $token->match(self::$constants)) {
+
+        if($stream->match(T_STRING, array('null', 'false', 'true', 'self'))) {
+            switch ($stream->current()->value) {
+                case 'null':
+                    $value = new Value(null, Value::T_NULL);
+                    $stream->next();
+                    break;
+                case 'false':
+                case 'true':
+                    $value = new Value($token->value == 'true', Value::T_BOOL);
+                    $stream->next();
+                    break;
+                case 'self':
+                    $value = new Name($token->value);
+                    $stream->next();
+                    break;
+                default:
+                    throw new UnexpectedValueException("?");
+            }
+        } elseif ($this->parsers['name']->match($stream)) {
             $value = $this->parseName($stream);
         } elseif ($token->match(T_FUNCTION)) {
             if (!isset($this->parsers['closure'])) {
@@ -234,26 +238,6 @@ class ExpressionParser implements Parser
                     $value = new Name($token->value);
                     $stream->next();
                     break;
-                case T_STRING:
-                    switch ($token->value) {
-                        case 'null':
-                            $value = new Value(null, Value::T_NULL);
-                            $stream->next();
-                            break;
-                        case 'false':
-                        case 'true':
-                            $value = new Value($token->value == 'true', Value::T_BOOL);
-                            $stream->next();
-                            break;
-                        case 'self':
-                            $value = new Name($token->value);
-                            $stream->next();
-                            break;
-                        default:
-                            $value = $this->parseName($stream);
-                            break;
-                    }
-                    break;
                 case T_VARIABLE:
                     $value = new \Meander\PHP\Node\Variable(substr($token->value, 1));
                     $stream->next();
@@ -261,7 +245,7 @@ class ExpressionParser implements Parser
                 default:
                     $stream->err(
                         array_merge(
-                            self::$functionLikeConstructs,
+                            NameParser::$functionLikeConstructs,
                             array(T_VARIABLE, T_STRING, T_CONSTANT_ENCAPSED_STRING, T_NUM_STRING, T_LNUMBER, T_DNUMBER, T_NS_SEPARATOR)
                         )
                     );
@@ -337,32 +321,7 @@ class ExpressionParser implements Parser
 
     function parseName(TokenStream $stream)
     {
-        $namespace = array();
-        if ($stream->match(self::$functionLikeConstructs)) {
-            $value = new Name($stream->expect(self::$functionLikeConstructs)->value);
-        } elseif ($stream->match(array(T_FILE, T_DIR, T_LINE, T_CLASS_C, T_METHOD_C, T_FUNC_C))) {
-            $value = new Name($stream->current()->value);
-            $stream->next();
-        } else {
-            if ($stream->match(T_NS_SEPARATOR)) {
-                $namespace[] = $stream->current()->value;
-                $stream->next();
-            }
-            $namespace[] = $stream->expect(T_STRING)->value;
-            while ($stream->valid() && $stream->match(array(T_NS_SEPARATOR))) {
-                $namespace[] = $stream->current()->value;
-                $stream->next();
-                $namespace[] = $stream->expect(T_STRING)->value;
-            }
-            $name = array_pop($namespace);
-
-            if (count($namespace)) {
-                $value = new NamespacedName(join('', $namespace), $name);
-            } else {
-                $value = new Name($name);
-            }
-        }
-        return $value;
+        return $this->parsers['name']->parse($stream);
     }
 
 

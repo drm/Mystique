@@ -5,9 +5,12 @@ use \Meander\PHP\Node\ClassNode;
 
 class InterfaceBuilder extends BuilderAbstract
 {
-    protected $methodMap = array(
-        'method' => array('addMember', 'MethodDefinition', 'MethodBuilder'),
-        'property' => array('addMember', 'PropertyDefinition', 'PropertyBuilder'),
-        'ext' => array('setExtends'),
-    );
+    protected function initBuilder()
+    {
+        $this->methodMap = array(
+            'method' => new MethodMapper('addMember', 'MethodDefinition', 'MethodBuilder'),
+            'property' => new MethodMapper('addMember', 'PropertyDefinition', 'PropertyBuilder'),
+            'ext' => new MethodMapper('addExtends', null, null, new ParameterMapper(array(array($this->inputParser, 'parseName')))),
+        );
+    }
 }

@@ -1,0 +1,12 @@
+$builder
+    ->cls('a')
+        ->ext('\b\a')
+        ->impl('x')->impl('\y')->impl('\b\z')
+    ->iface('iface')->ext('\b\iface')->ext('\z\iface')
+;
+
+--
+
+class a extends \b\a implements x, \y, \b\z {
+}
+interface iface extends \b\iface, \z\iface {}

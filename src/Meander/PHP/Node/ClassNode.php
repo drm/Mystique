@@ -4,7 +4,7 @@ namespace Meander\PHP\Node;
 use \Meander\Compiler\Compilable;
 use \Meander\Compiler\CompilerInterface;
 
-class ClassNode extends InterfaceNode implements Compilable {
+class ClassNode extends InterfaceNode {
     function __construct($name = null) {
         parent::__construct();
         if(!is_null($name)) {

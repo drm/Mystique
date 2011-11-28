@@ -27,6 +27,9 @@ class PropertyDefinition extends MemberDefinitionAbstract {
 
 
     function compile(CompilerInterface $compiler) {
+        if(!$this->hasAttribute('visibility')) {
+            $this->setVisibility(self::IS_PUBLIC);
+        }
         $this->compileDefinition($compiler);
         $compiler->write('$' . $this->name);
         if($this->defaultValue) {

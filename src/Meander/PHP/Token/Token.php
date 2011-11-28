@@ -47,7 +47,11 @@ class Token
         if (is_scalar($token)) {
             $ret = $this->type == $token;
             if ($ret && !is_null($value)) {
-                $ret = $this->value == $value;
+                if(is_array($value)) {
+                    $ret = in_array($this->value, $value);
+                } else {
+                    $ret = $this->value == $value;
+                }
             }
         } elseif ($token instanceof Token) {
             $ret = ($this->type == $token->type && $this->value == $token->value);

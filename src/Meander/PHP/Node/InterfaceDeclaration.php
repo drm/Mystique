@@ -48,7 +48,14 @@ class InterfaceDeclaration extends BranchAbstract implements \Meander\Compiler\C
 
         if(!empty($this->children[1])) {
             /** @var $extends \Meander\PHP\Node\ExtendsDeclaration */
-            $compiler->write('extends')->compile($this->getExtends());
+            if($extends = $this->getExtends()) {
+                $compiler->write('extends');
+                $first = true;
+                foreach($extends->children as $impl) {
+                    !$first and $compiler->write(',') or $first = false;
+                    $compiler->compile($impl);
+                }
+            }
         }
     }
 }

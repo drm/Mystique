@@ -9,7 +9,7 @@ $builder
                 }'
             )
             ->param('c')
-    ->property('x')->value('y')
+    ->property('x')->value('self::DEFAULT_VALUE')
     ->iface('f')
     ->cls('b')->ext('a')->impl('f')->setFinal()
     ->cls('c')->ext('b')->setAbstract()
@@ -24,9 +24,8 @@ class a extends b implements x, y, z {
         }
     }
 
-    public $x = 'y';
+    public $x = self::DEFAULT_VALUE;
 }
-
 
 interface f {}
 final class b extends a implements f {}

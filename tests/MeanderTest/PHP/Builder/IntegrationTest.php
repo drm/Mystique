@@ -7,9 +7,6 @@ class IntegrationTest extends PHPUnit_Framework_TestCase {
      * @dataProvider integrationTests
      */
     function testIntegration($builderCode, $expect, $fn) {
-        if($fn !== 'cls.method.raw.test') {
-            return;
-        }
         $builder = new Builder();
         \MeanderTest\PHP\Assert::assertSyntaxValid($builderCode);
         eval($builderCode);

@@ -23,7 +23,7 @@ class StatementParser extends ParserSub {
         return $stream->match(
             array_merge(
                 \Meander\PHP\Token\Operator::$unaryOperators,
-                ExpressionParser::$functionLikeConstructs,
+                NameParser::$functionLikeConstructs,
                 array(
                     T_STRING,
                     T_VARIABLE,
