@@ -2,7 +2,7 @@
 
 namespace Meander\PHP\Node;
 
-class Html extends LeafAbstract {
+class Html extends LeafAbstract implements \Meander\Compiler\Compilable {
     function __construct($data) {
         $this->html = $data;
     }
@@ -12,5 +12,8 @@ class Html extends LeafAbstract {
         return $this->html;
     }
 
-
+    function compile(\Meander\Compiler\CompilerInterface $compiler)
+    {
+        $compiler->write($this->html);
+    }
 }

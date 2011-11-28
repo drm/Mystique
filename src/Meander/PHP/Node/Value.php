@@ -20,7 +20,7 @@ class Value extends LeafAbstract implements Compilable
 
 
     function getNodeType() {
-        return gettype($this->value);
+        return ucfirst(strtolower(gettype($this->value)));
     }
 
 
@@ -32,6 +32,12 @@ class Value extends LeafAbstract implements Compilable
 
     function compile(CompilerInterface $compiler)
     {
-        $compiler->write(var_export($this->value, true));
+        if(is_string($this->value)) {
+            $compiler->write($this->value);
+        } elseif(is_numeric($this->value)) {
+            $compiler->write((string) $this->value);
+        } else {
+            $compiler->write(strtolower(var_export($this->value, true)));
+        }
     }
 }

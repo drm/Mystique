@@ -15,4 +15,10 @@ class WhileNode extends BranchAbstract {
     {
         return 'While';
     }
+
+    function compile(\Meander\Compiler\CompilerInterface $compiler)
+    {
+        $compiler->write('while');
+        parent::compile($compiler);
+    }
 }

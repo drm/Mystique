@@ -12,6 +12,6 @@ class UseList extends \Meander\PHP\Node\ExprList {
 
     function getNodeType()
     {
-        return 'use';
+        return 'Use';
     }
 }

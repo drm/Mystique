@@ -12,4 +12,18 @@ class TernaryExpression extends BinaryExpression {
             $this->children->append($rCase);
         }
     }
+
+    function compile(\Meander\Compiler\CompilerInterface $compiler)
+    {
+        $compiler->compile($this->children[0]);
+        $compiler->write('?');
+        if(count($this->children) > 3) {
+            $compiler->compile($this->children[2]);
+            $compiler->write(':');
+            $compiler->compile($this->children[3]);
+        } else {
+            $compiler->write(':');
+            $compiler->compile($this->children[2]);
+        }
+    }
 }

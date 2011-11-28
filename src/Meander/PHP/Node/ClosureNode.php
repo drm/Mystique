@@ -10,7 +10,7 @@ class ClosureNode extends DefDeclNodeAbstract {
 
     function setDefinition(NodeList $definition)
     {
-        $this->children[1] = new ClosureDefinition();
+        $this->children[1] = new ClosureDefinition($definition);
     }
 
     function getNodeType()

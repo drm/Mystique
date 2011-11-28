@@ -43,6 +43,9 @@ class MethodParser extends FunctionParser {
 
         if($stream->match(';')) {
             $stream->next();
+            if(isset($method->children[1])) {
+                unset($method->children[1]);
+            }
         } else {
             $stream->expect('{');
             $method->setDefinition($this->parent->subparse($stream, function($stream) { return $stream->match('}'); }));

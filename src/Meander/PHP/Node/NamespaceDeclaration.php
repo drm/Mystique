@@ -10,4 +10,12 @@ class NamespaceDeclaration extends Statement {
     function getNodeType() {
         return 'Declaration';
     }
+
+    function compile(\Meander\Compiler\CompilerInterface $compiler)
+    {
+        $compiler->write('namespace');
+        parent::compile($compiler);
+    }
+
+
 }

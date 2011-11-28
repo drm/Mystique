@@ -8,9 +8,10 @@ use \Meander\PHP\Token\Operator;
 
 abstract class ExpressionAbstract extends BranchAbstract implements Compilable {
     function compile(CompilerInterface $compiler) {
-        $this->parens && $compiler->write('(');
+        if(!$this->children instanceof Compilable) {
+            throw new \UnexpectedValueException("Unexpected children of type " . gettype($this->children) . ' in ' . get_class($this));
+        }
         $this->children->compile($compiler);
-        $this->parens && $compiler->write(')');
     }
 
     abstract function getOperator();

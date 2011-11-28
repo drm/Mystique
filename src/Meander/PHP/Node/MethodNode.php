@@ -23,4 +23,14 @@ class MethodNode extends FunctionNode {
         }
         return $this;
     }
+
+    function compile(\Meander\Compiler\CompilerInterface $compiler)
+    {
+        parent::compile($compiler);
+        if(!isset($this->children[1])) {
+            $compiler->write(';');
+        }
+    }
+
+
 }

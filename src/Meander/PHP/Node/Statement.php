@@ -9,4 +9,10 @@ class Statement extends BranchAbstract {
             $this->children[0] = $e;
         }
     }
+
+    function compile(\Meander\Compiler\CompilerInterface $compiler)
+    {
+        parent::compile($compiler);
+        $compiler->write(';');
+    }
 }

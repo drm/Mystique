@@ -25,9 +25,13 @@ class FunctionParser extends ParserSub {
         $def->setName(new \Meander\PHP\Node\Name($name->value));
 
         $def->setParameters($this->parseParameterList($stream));
-        $stream->expect('{');
-        $def->setDefinition($this->parent->subparse($stream, function($stream) { return $stream->match('}'); }));
-        $stream->expect('}');
+        if($stream->match(';')) {
+            $stream->next();
+        } else {
+            $stream->expect('{');
+            $def->setDefinition($this->parent->subparse($stream, function($stream) { return $stream->match('}'); }));
+            $stream->expect('}');
+        }
         return $def;
     }
 

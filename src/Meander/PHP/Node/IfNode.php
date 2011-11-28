@@ -3,6 +3,7 @@
 namespace Meander\PHP\Node;
 
 use \Meander\PHP\Node\Condition;
+
 class IfNode extends BranchAbstract {
     function __construct($condition, $statement) {
         parent::__construct();
@@ -14,5 +15,11 @@ class IfNode extends BranchAbstract {
     function getNodeType()
     {
         return 'If';
+    }
+
+    function compile(\Meander\Compiler\CompilerInterface $compiler)
+    {
+        $compiler->write(strtolower($this->getNodeType()));
+        parent::compile($compiler);
     }
 }

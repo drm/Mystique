@@ -7,4 +7,7 @@ class NamespacedName extends BranchAbstract {
         $this->children[0] = new NamespaceName($namespace);
         $this->children[1] = new Name($name);
     }
+
+
+    
 }

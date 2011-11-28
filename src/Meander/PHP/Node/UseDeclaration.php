@@ -2,5 +2,5 @@
 
 namespace Meander\PHP\Node;
 
-class UseDeclaration extends BranchAbstract {
+class UseDeclaration extends LanguageConstruct {
 }

@@ -8,7 +8,15 @@ class PropertyDefinition extends MemberDefinitionAbstract {
     private $name;
     private $defaultValue;
 
-    function __construct($name) {
+    function __construct($name = null) {
+        parent::__construct();
+        if(!is_null($name)) {
+            $this->name = $name;
+        }
+    }
+
+
+    function setName($name) {
         $this->name = $name;
     }
 

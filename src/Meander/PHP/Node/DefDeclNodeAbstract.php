@@ -29,7 +29,7 @@ abstract class DefDeclNodeAbstract extends BranchAbstract implements \Meander\Co
                 $ret = $this;
             }
         } else {
-            throw new \BadMethodCallException("Undefined method $method");
+            throw new \BadMethodCallException("Undefined method $method in " . get_class($this));
         }
         return $ret;
     }

@@ -20,6 +20,4 @@ class Variable extends VariableAbstract implements \Meander\Compiler\Compilable
     {
         return $this->name;
     }
-
-
 }

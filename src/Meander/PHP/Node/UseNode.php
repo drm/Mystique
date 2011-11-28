@@ -14,4 +14,13 @@ class UseNode extends BranchAbstract {
     {
         return 'use';
     }
+
+    function compile(\Meander\Compiler\CompilerInterface $compiler)
+    {
+        $compiler->compile($this->children[0]);
+        if(!empty($this->children[1])) {
+            $compiler->write('as');
+            $compiler->compile($this->children[1]);
+        }
+    }
 }

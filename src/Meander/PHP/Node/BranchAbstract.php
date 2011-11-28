@@ -9,7 +9,7 @@ use Countable;
  * 
  */
 
-abstract class BranchAbstract extends NodeAbstract implements Branch, Countable {
+abstract class BranchAbstract extends NodeAbstract implements Branch, Countable, \Meander\Compiler\Compilable {
     public $children;
 
     function __construct($list = null) {

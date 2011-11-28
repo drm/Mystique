@@ -40,6 +40,7 @@ class Operator extends Token implements \Meander\PHP\Node\Leaf, \Meander\Compile
         T_NEW                    => array(21, 'non-associative'),
         '['                      => array(20, 'left'),
         '{'                      => array(20, 'left'),
+        '('                      => array(20, 'left'),
         T_INC                    => array(19, 'non-associative'),
         T_DEC                    => array(19, 'non-associative'),
         '~'                      => array(18, 'right'),

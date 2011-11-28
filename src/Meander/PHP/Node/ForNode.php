@@ -16,4 +16,13 @@ class ForNode extends \Meander\PHP\Node\BranchAbstract {
     {
         return 'For';
     }
+
+    function compile(\Meander\Compiler\CompilerInterface $compiler)
+    {
+        $compiler->write('for')->write('(');
+        $compiler->compile($this->children[0])->write(';');
+        $compiler->compile($this->children[1])->write(';');
+        $compiler->compile($this->children[2])->write(')');
+        $compiler->compile($this->children[3]);
+    }
 }

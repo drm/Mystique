@@ -3,7 +3,6 @@
 namespace Meander\PHP\Node;
 
 abstract class NodeAbstract implements Node {
-    protected $parens;
     protected $attributes = array();
 
     function getNodeType() {
@@ -14,15 +13,6 @@ abstract class NodeAbstract implements Node {
         return $className;
     }
 
-
-    function setParens($parens = true) {
-        $this->parens = (bool)$parens;
-    }
-
-
-    function hasParens() {
-        return $this->parens;
-    }
 
 
     function getNodeAttributes() {

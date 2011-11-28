@@ -12,7 +12,7 @@ class InterfaceParser extends ParserBase
     function __construct($parent)
     {
         parent::__construct();
-        $this->parsers[]= new MethodParser($parent);
+        $this->parsers[]= new InterfaceMethodParser($parent);
         $this->parsers[]= new PropertyParser($parent);
         $this->parsers[]= new ConstantParser($parent);
     }

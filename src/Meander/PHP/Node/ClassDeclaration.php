@@ -54,11 +54,11 @@ class ClassDeclaration extends InterfaceDeclaration {
         $this->isAbstract() && $compiler->write('abstract');
         $compiler
                 ->write('class')
-                ->write($this->getName())
+                ->compile($this->getName())
         ;
         if(!empty($this->children[1])) {
              /** @var $extends \Meander\PHP\Node\ExtendsDeclaration */
-             $compiler->write('extends')->write((string)$this->getExtends());
+             $compiler->write('extends')->compile($this->getExtends());
          }
          
         if($implements = $this->getImplements()) {
@@ -66,7 +66,7 @@ class ClassDeclaration extends InterfaceDeclaration {
             $first = true;
             foreach($implements->children as $impl) {
                 !$first and $compiler->write(',') or $first = false;
-                $compiler->write($impl->getNodeValue());
+                $compiler->compile($impl);
             }
         }
     }

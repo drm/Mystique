@@ -14,4 +14,9 @@ class CatchNode extends DefDeclNodeAbstract {
     {
         return 'Catch';
     }
+
+    function compile(\Meander\Compiler\CompilerInterface $compiler)
+    {
+        $compiler->write('catch')->write('(')->compile($this->children[0])->write(')')->compile($this->children[1]);
+    }
 }

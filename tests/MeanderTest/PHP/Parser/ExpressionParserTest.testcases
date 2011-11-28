@@ -6,11 +6,13 @@ OUT
 ---
 <ast>
     <binary-expression>
-        <binary-expression>
-            <integer>1</integer>
-            <operator>*</operator>
-            <integer>1</integer>
-        </binary-expression>
+        <paren>
+            <binary-expression>
+                <integer>1</integer>
+                <operator>*</operator>
+                <integer>1</integer>
+            </binary-expression>
+        </paren>
         <operator>-</operator>
         <integer>1</integer>
     </binary-expression>
@@ -25,11 +27,13 @@ OUT
 ---
 <ast>
     <binary-expression>
-        <binary-expression>
-            <integer>1</integer>
-            <operator>*</operator>
-            <integer>1</integer>
-        </binary-expression>
+        <paren>
+            <binary-expression>
+                <integer>1</integer>
+                <operator>*</operator>
+                <integer>1</integer>
+            </binary-expression>
+        </paren>
         <operator>-</operator>
         <unary-expression>
             <operator>-</operator>
@@ -87,11 +91,13 @@ OUT
     <binary-expression>
         <integer>1</integer>
         <operator>*</operator>
-        <binary-expression>
-            <integer>1</integer>
-            <operator>-</operator>
-            <integer>1</integer>
-        </binary-expression>
+        <paren>
+            <binary-expression>
+                <integer>1</integer>
+                <operator>-</operator>
+                <integer>1</integer>
+            </binary-expression>
+        </paren>
     </binary-expression>
 </ast>
 ---
@@ -355,11 +361,13 @@ OUT
 <ast>
     <unary-expression>
         <operator>!</operator>
-        <binary-expression>
-            <variable>a</variable>
-            <operator>||</operator>
-            <variable>b</variable>
-        </binary-expression>
+        <paren>
+            <binary-expression>
+                <variable>a</variable>
+                <operator>||</operator>
+                <variable>b</variable>
+            </binary-expression>
+        </paren>
     </unary-expression>
 </ast>
 ---
@@ -374,14 +382,18 @@ OUT
 <ast>
     <unary-expression>
         <operator>!</operator>
-        <binary-expression>
-            <variable>a</variable>
-            <operator>||</operator>
-            <unary-expression>
-                <operator>!</operator>
-                <variable>b</variable>
-            </unary-expression>
-        </binary-expression>
+        <paren>
+            <binary-expression>
+                <variable>a</variable>
+                <operator>||</operator>
+                <unary-expression>
+                    <operator>!</operator>
+                    <paren>
+                        <variable>b</variable>
+                    </paren>
+                </unary-expression>
+            </binary-expression>
+        </paren>
     </unary-expression>
 </ast>
 ---
@@ -479,11 +491,13 @@ OUT
 ---
 <ast>
     <call>
-        <binary-expression>
-            <variable>a</variable>
-            <operator>.</operator>
-            <variable>b</variable>
-        </binary-expression>
+        <paren>
+            <binary-expression>
+                <variable>a</variable>
+                <operator>.</operator>
+                <variable>b</variable>
+            </binary-expression>
+        </paren>
         <expr-list>
             <variable>c</variable>
         </expr-list>
@@ -513,10 +527,12 @@ OUT
 ---
 <ast>
     <call>
-        <unary-expression>
-            <operator>new</operator>
-            <variable>b</variable>
-        </unary-expression>
+        <paren>
+            <unary-expression>
+                <operator>new</operator>
+                <variable>b</variable>
+            </unary-expression>
+        </paren>
         <expr-list>
             <variable>a</variable>
         </expr-list>
@@ -546,10 +562,12 @@ OUT
             <name>c</name>
             <expr-list>
                 <call>
-                    <unary-expression>
-                        <operator>new</operator>
-                        <variable>d</variable>
-                    </unary-expression>
+                    <paren>
+                        <unary-expression>
+                            <operator>new</operator>
+                            <variable>d</variable>
+                        </unary-expression>
+                    </paren>
                     <expr-list>
                         <integer>1</integer>
                     </expr-list>
@@ -764,7 +782,45 @@ OUT
 </ast>
 ---
 
+---
+IN
+---
+$var[0] == 1
+---
+OUT
+---
+<ast>
+    <binary-expression>
+        <subscript>
+            <variable>var</variable>
+            <operator>[</operator>
+            <integer>0</integer>
+        </subscript>
+        <operator>==</operator>
+        <integer>1</integer>
+    </binary-expression>
+</ast>
+---
 
+---
+IN
+---
+$var{0} == 1
+---
+OUT
+---
+<ast>
+    <binary-expression>
+        <subscript>
+            <variable>var</variable>
+            <operator>{</operator>
+            <integer>0</integer>
+        </subscript>
+        <operator>==</operator>
+        <integer>1</integer>
+    </binary-expression>
+</ast>
+---
 
 ---
 IN
@@ -802,11 +858,13 @@ OUT
         <name>call</name>
         <expr-list>
             <binary-expression>
-                <binary-expression>
-                    <integer>1</integer>
-                    <operator>*</operator>
-                    <integer>1</integer>
-                </binary-expression>
+                <paren>
+                    <binary-expression>
+                        <integer>1</integer>
+                        <operator>*</operator>
+                        <integer>1</integer>
+                    </binary-expression>
+                </paren>
                 <operator>-</operator>
                 <integer>1</integer>
             </binary-expression>
@@ -1154,3 +1212,111 @@ OUT
     </ternary-expression>
 </ast>
 ---
+
+
+---
+IN
+---
+"a"
+---
+OUT
+---
+<ast>
+    <string>a</string>
+</ast>
+---
+
+---
+IN
+---
+"$a"
+---
+OUT
+---
+<ast>
+    <string>
+        <variable>a</variable>
+    </string>
+</ast>
+---
+
+---
+IN
+---
+"a [$a] a"
+---
+OUT
+---
+<ast>
+    <string>
+        <string>a [</string>
+        <variable>a</variable>
+        <string>] a</string>
+    </string>
+</ast>
+---
+
+---
+IN
+---
+"a [${a}] a"
+---
+OUT
+---
+<ast>
+    <string>
+        <string>a [</string>
+        <variable>a</variable>
+        <string>] a</string>
+    </string>
+</ast>
+---
+
+---
+IN
+---
+"a [{$a}] a"
+---
+OUT
+---
+<ast>
+    <string>
+        <string>a [</string>
+        <variable>a</variable>
+        <string>] a</string>
+    </string>
+</ast>
+---
+
+---
+IN
+---
+"a [{$a->property}] a"
+---
+OUT
+---
+<ast>
+    <string>
+        <string>a [</string>
+        <binary-expression>
+            <variable>a</variable>
+            <operator>-&gt;</operator>
+            <name>property</name>
+        </binary-expression>
+        <string>] a</string>
+    </string>
+</ast>
+---
+
+---
+IN
+---
+'\\'
+---
+OUT
+---
+<ast>
+    <string>\\</string>
+</ast>
+---
+

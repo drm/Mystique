@@ -6,7 +6,7 @@ use \Meander\PHP\Token\Operator;
 
 class BinaryExpression extends ExpressionAbstract
 {
-    function __construct(Node $left, Operator $operator, Node $right, $parens = false)
+    function __construct(Node $left, Operator $operator, Node $right)
     {
         parent::__construct();
         $this->setLeft($left);

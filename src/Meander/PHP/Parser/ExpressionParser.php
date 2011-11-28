@@ -84,11 +84,9 @@ class ExpressionParser implements Parser
                 $lValue = new \Meander\PHP\Node\UnaryExpression($operator, $rValue);
             }
         } elseif ($stream->match('(')) {
-            //TODO figure out how to get this more generic
             $stream->next();
-            $lValue = $this->parse($stream);
+            $lValue = new \Meander\PHP\Node\ParenthesizedExpression($this->parse($stream));
             $stream->expect(')');
-            $lValue->setParens(true);
         } else {
             $lValue = $this->parseValue($stream);
         }
@@ -139,7 +137,7 @@ class ExpressionParser implements Parser
 
     public function determinePrecedence($right, $operator)
     {
-        if ($right->hasParens()) {
+        if ($right instanceof \Meander\PHP\Node\ParenthesizedExpression) {
             $precedence = 'right';
         } else {
             $precedence = Operator::precedence($operator, $right->getOperator());
@@ -171,7 +169,6 @@ class ExpressionParser implements Parser
         $value = new \Meander\PHP\Node\NestedVariable();
         if ($stream->match('{')) {
             $stream->next();
-            $value->setParens(true);
             $value->children->append($this->parse($stream));
             $stream->expect('}');
         } else {
@@ -227,7 +224,7 @@ class ExpressionParser implements Parser
                     $stream->next();
                     break;
                 case T_CONSTANT_ENCAPSED_STRING:
-                    $value = new Value(substr($token->value, 1, -1));
+                    $value = new \Meander\PHP\Node\ConstantString(substr($token->value, 1, -1), $token->value[0]);
                     $stream->next();
                     break;
                 case T_NS_SEPARATOR:
@@ -285,9 +282,15 @@ class ExpressionParser implements Parser
             if ($stream->match(T_ENCAPSED_AND_WHITESPACE)) {
                 $ret->children->append(new Value($stream->current()->value));
                 $stream->next();
-            } elseif ($stream->match(array(T_DOLLAR_OPEN_CURLY_BRACES, T_STRING_VARNAME, '}', T_CURLY_OPEN))) {
-                $ret->children->append(new \Meander\PHP\Node\Noop('[TODO T_DOLLAR_OPEN_CURLY_BRACES]'));
+            } elseif ($stream->match(T_DOLLAR_OPEN_CURLY_BRACES)) {
                 $stream->next();
+                $var = $stream->expect(T_STRING_VARNAME);
+                $ret->children->append(new \Meander\PHP\Node\Variable($var->value));
+                $stream->expect('}');
+            } elseif ($stream->match(T_CURLY_OPEN)) {
+                $stream->expect(T_CURLY_OPEN);
+                $ret->children->append($this->parse($stream));
+                $stream->expect('}');
             } else {
                 $ret->children->append($this->parse($stream));
             }

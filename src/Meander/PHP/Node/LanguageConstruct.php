@@ -11,4 +11,10 @@ class LanguageConstruct extends Statement {
     function getNodeType() {
         return $this->type;
     }
+
+    function compile(\Meander\Compiler\CompilerInterface $compiler)
+    {
+        $compiler->write($this->type);
+        parent::compile($compiler);
+    }
 }

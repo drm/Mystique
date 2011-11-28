@@ -8,4 +8,11 @@ class SwitchNode extends BranchAbstract {
         $this->children->append($expr);
         $this->children->append($body);
     }
+
+    function compile(\Meander\Compiler\CompilerInterface $compiler) {
+        $compiler->write('switch')->write('(');
+        $compiler->compile($this->children[0]);
+        $compiler->write(')');
+        $compiler->compile($this->children[1]);
+    }
 }

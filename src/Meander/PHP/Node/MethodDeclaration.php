@@ -6,7 +6,6 @@ use \Meander\Compiler\Compilable;
 use InvalidArgumentException;
 
 class MethodDeclaration extends MemberDefinitionAbstract implements Compilable {
-    private $abstract       = false;
     protected $body;
 
     function __construct($name = null) {
@@ -22,7 +21,7 @@ class MethodDeclaration extends MemberDefinitionAbstract implements Compilable {
     
 
     function setAbstract($abstract = true) {
-        $this->abstract = (bool)$abstract;
+        $this->setFlag('abstract', $abstract);
         return $this;
     }
 
@@ -34,16 +33,11 @@ class MethodDeclaration extends MemberDefinitionAbstract implements Compilable {
 
 
     function compile(CompilerInterface $compiler) {
-        $this->abstract     && $compiler->write('abstract');
+        $this->hasAttribute('abstract') && $compiler->write('abstract');
         $this->compileDefinition($compiler);
-        
         $compiler->write('function')->write(' ');
         $compiler->write($this->children[0]->getNodeValue());
         $this->haveParams()->compile($compiler);
-
-        if($this->abstract) {
-            $compiler->write(';');
-        } 
     }
 
 

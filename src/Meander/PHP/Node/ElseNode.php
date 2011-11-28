@@ -7,4 +7,12 @@ class ElseNode extends BranchAbstract {
     {
         return 'Else';
     }
+
+    function compile(\Meander\Compiler\CompilerInterface $compiler)
+    {
+        $compiler->write('else');
+        parent::compile($compiler);
+    }
+
+
 }

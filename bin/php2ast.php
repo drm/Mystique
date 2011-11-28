@@ -1,4 +1,3 @@
-#!/usr/bin/env php
 <?php
 function usage($exitCode = 0) {
     printf("Usage:\n");

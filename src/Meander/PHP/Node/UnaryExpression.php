@@ -7,12 +7,11 @@ use \Meander\PHP\Node\Node;
 
 class UnaryExpression extends ExpressionAbstract implements \Meander\Compiler\Compilable
 {
-    function __construct(Operator $operator, Node $right, $parens = false)
+    function __construct(Operator $operator, Node $right)
     {
         parent::__construct();
         $this->setOperator($operator);
         $this->setRight($right);
-        $this->setParens($parens);
     }
 
 
