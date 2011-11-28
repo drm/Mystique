@@ -7,9 +7,11 @@ OUT
 ---
 <ast>
     <use-declaration>
-        <use>
-            <name>Name</name>
-        </use>
+        <expr-list>
+            <use>
+                <name>Name</name>
+            </use>
+        </expr-list>
     </use-declaration>
 </ast>
 ---
@@ -23,12 +25,14 @@ OUT
 ---
 <ast>
     <use-declaration>
-        <use>
-            <name>Name</name>
-        </use>
-        <use>
-            <name>Name2</name>
-        </use>
+        <expr-list>
+            <use>
+                <name>Name</name>
+            </use>
+            <use>
+                <name>Name2</name>
+            </use>
+        </expr-list>
     </use-declaration>
 </ast>
 ---
@@ -42,10 +46,12 @@ OUT
 ---
 <ast>
     <use-declaration>
-        <use>
-            <name>Name</name>
-            <name>alias</name>
-        </use>
+        <expr-list>
+            <use>
+                <name>Name</name>
+                <name>alias</name>
+            </use>
+        </expr-list>
     </use-declaration>
 </ast>
 ---
@@ -59,6 +65,7 @@ OUT
 ---
 <ast>
     <use-declaration>
+        <expr-list>
         <use>
             <namespaced-name>
                 <namespace>\</namespace>
@@ -66,6 +73,7 @@ OUT
             </namespaced-name>
             <name>alias</name>
         </use>
+        </expr-list>
     </use-declaration>
 </ast>
 ---
@@ -79,6 +87,7 @@ OUT
 ---
 <ast>
     <use-declaration>
+        <expr-list>
         <use>
             <namespaced-name>
                 <namespace>\</namespace>
@@ -93,6 +102,7 @@ OUT
             </namespaced-name>
             <name>otherAlias</name>
         </use>
+        </expr-list>
     </use-declaration>
 </ast>
 ---

@@ -48,7 +48,7 @@ abstract class MemberDefinitionAbstract extends BranchAbstract implements Compil
     }
 
 
-    final protected function compileDefinition(Compiler $compiler) {
+    protected function compileDefinition(Compiler $compiler) {
         $this->hasAttribute('visibility') && $compiler->write($this->getAttribute('visibility'));
         $this->hasAttribute('static') && $compiler->write('static');
         $this->hasAttribute('final') && $compiler->write('final');

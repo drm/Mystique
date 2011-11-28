@@ -41,7 +41,7 @@ class ExpressionParser implements Parser
                 $stream->expect(')');
                 $ret = new Call($ret, $arguments);
             } elseif ($stream->match(array(T_DEC, T_INC))) {
-                $ret = new \Meander\PHP\Node\UnaryExpression(new Operator($stream->current()), $ret);
+                $ret = new \Meander\PHP\Node\PostUnaryExpression(new Operator($stream->current()), $ret);
                 $stream->next();
             } else {
                 $op = $stream->expect(Operator::$subscriptOperators);
@@ -216,11 +216,11 @@ class ExpressionParser implements Parser
                     $value = $this->parseString($stream);
                     break;
                 case T_LNUMBER:
-                    $value = new Value((int)$token->value);
+                    $value = new Value($token->value, Value::T_INTEGER);
                     $stream->next();
                     break;
                 case T_DNUMBER:
-                    $value = new Value((float)$token->value);
+                    $value = new Value($token->value, Value::T_FLOAT);
                     $stream->next();
                     break;
                 case T_CONSTANT_ENCAPSED_STRING:
@@ -237,15 +237,12 @@ class ExpressionParser implements Parser
                 case T_STRING:
                     switch ($token->value) {
                         case 'null':
-                            $value = new Value(null);
+                            $value = new Value(null, Value::T_NULL);
                             $stream->next();
                             break;
                         case 'false':
-                            $value = new Value(false);
-                            $stream->next();
-                            break;
                         case 'true':
-                            $value = new Value(true);
+                            $value = new Value($token->value == 'true', Value::T_BOOL);
                             $stream->next();
                             break;
                         case 'self':
@@ -280,7 +277,7 @@ class ExpressionParser implements Parser
         $ret = new \Meander\PHP\Node\StringNode();
         while (!$stream->match('"')) {
             if ($stream->match(T_ENCAPSED_AND_WHITESPACE)) {
-                $ret->children->append(new Value($stream->current()->value));
+                $ret->children->append(new Value($stream->current()->value, Value::T_STRING));
                 $stream->next();
             } elseif ($stream->match(T_DOLLAR_OPEN_CURLY_BRACES)) {
                 $stream->next();
@@ -289,7 +286,7 @@ class ExpressionParser implements Parser
                 $stream->expect('}');
             } elseif ($stream->match(T_CURLY_OPEN)) {
                 $stream->expect(T_CURLY_OPEN);
-                $ret->children->append($this->parse($stream));
+                $ret->children->append(new \Meander\PHP\Node\Placeholder($this->parse($stream)));
                 $stream->expect('}');
             } else {
                 $ret->children->append($this->parse($stream));

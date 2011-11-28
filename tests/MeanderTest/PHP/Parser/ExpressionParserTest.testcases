@@ -1096,12 +1096,12 @@ OUT
 ---
 <ast>
     <unary-expression>
-        <operator>++</operator>
         <binary-expression>
             <variable>a</variable>
             <operator>-&gt;</operator>
             <name>property</name>
         </binary-expression>
+        <operator>++</operator>
     </unary-expression>
 </ast>
 ---
@@ -1282,7 +1282,9 @@ OUT
 <ast>
     <string>
         <string>a [</string>
-        <variable>a</variable>
+        <placeholder>
+            <variable>a</variable>
+        </placeholder>
         <string>] a</string>
     </string>
 </ast>
@@ -1298,11 +1300,13 @@ OUT
 <ast>
     <string>
         <string>a [</string>
-        <binary-expression>
-            <variable>a</variable>
-            <operator>-&gt;</operator>
-            <name>property</name>
-        </binary-expression>
+        <placeholder>
+            <binary-expression>
+                <variable>a</variable>
+                <operator>-&gt;</operator>
+                <name>property</name>
+            </binary-expression>
+        </placeholder>
         <string>] a</string>
     </string>
 </ast>
@@ -1320,3 +1324,32 @@ OUT
 </ast>
 ---
 
+---
+IN
+---
+++$a
+---
+OUT
+---
+<ast>
+    <unary-expression>
+        <operator>++</operator>
+        <variable>a</variable>
+    </unary-expression>
+</ast>
+---
+
+---
+IN
+---
+$a++
+---
+OUT
+---
+<ast>
+    <unary-expression>
+        <variable>a</variable>
+        <operator>++</operator>
+    </unary-expression>
+</ast>
+---

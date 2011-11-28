@@ -282,8 +282,8 @@ OUT
             </expr-list>
             <expr-list>
                 <unary-expression>
-                    <operator>++</operator>
                     <variable>a</variable>
+                    <operator>++</operator>
                 </unary-expression>
             </expr-list>
             <compound-statement />

@@ -95,7 +95,6 @@ OUT
                     <name>x</name>
                     <params />
                 </declaration>
-                <definition />
             </method>
         </definition>
     </interface>

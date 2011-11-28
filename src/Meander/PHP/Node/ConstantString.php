@@ -3,7 +3,7 @@ namespace Meander\PHP\Node;
 
 class ConstantString extends \Meander\PHP\Node\Value {
     function __construct($value, $quote) {
-        parent::__construct($value);
+        parent::__construct($value, self::T_STRING);
         $this->quote = $quote;
     }
 

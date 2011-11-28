@@ -17,12 +17,13 @@ class Simple implements FormatterInterface {
 
     function format($code) {
         $this->compiler = new Compiler();
-        foreach(new TokenStream(Tokenizer::tokenize($code)) as $token) {
-            $this->_before($token);
+        $stream = new TokenStream(Tokenizer::tokenize($code));
+        foreach($stream as $token) {
+            $this->_before($stream);
             if($token->type != T_WHITESPACE) {
                 $this->_write($token->value);
             }
-            $this->_after($token);
+            $this->_after($stream);
         }
         return $this->compiler->result;
     }
@@ -38,11 +39,11 @@ class Simple implements FormatterInterface {
     }
 
 
-    function _before(Token $token) {
-        if(in_array($token->value, array('=', '+', '&&', '-', '{'))) {
+    function _before(TokenStream $stream) {
+        if(in_array($stream->current()->value, array('=', '+', '&&', '-', '{', '?', ':'))) {
             $this->_write(' ');
         }
-        if($token->value == "}") {
+        if($stream->current()->value == "}") {
             $this->unindent();
             if(substr($this->compiler->result, -1) != "\n") {
                 $this->_write("\n");
@@ -51,20 +52,19 @@ class Simple implements FormatterInterface {
     }
 
 
-    function _after($token) {
-        if ($token->type == T_OPEN_TAG) {
+    function _after(TokenStream $stream) {
+        if ($stream->current()->type == T_OPEN_TAG) {
             $this->_write("\n");
-        } elseif ($token->value == '{') {
+        } elseif ($stream->current()->value == '{') {
             $this->indent();
             $this->_write("\n");
-        } elseif(in_array($token->value, array('if', 'foreach', 'while'))) {
+        } elseif(in_array($stream->current()->value, array('if', 'foreach', 'while'))) {
             $this->_write(" ");
-        } elseif($token->value == ";" && substr($this->compiler->result, -1) != "\n") {
+        } elseif(($stream->current()->value == ";" || $stream->current()->value == "}") && substr($this->compiler->result, -1) != "\n") {
             $this->_write("\n");
-        } elseif(in_array($token->value, array(',', '=', '+', '&&', '-'))) {
+        } elseif(in_array($stream->current()->value, array(',', '=', '+', '&&', '-'))) {
             $this->_write(' ');
         }
-
     }
 
 

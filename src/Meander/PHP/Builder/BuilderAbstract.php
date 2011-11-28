@@ -44,7 +44,6 @@ class BuilderAbstract {
         } else {
             throw new BadMethodCallException('invalid method ' . $method . ' in ' . get_class($this));
         }
-        
 
         return $this;
     }

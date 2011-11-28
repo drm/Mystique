@@ -43,7 +43,7 @@ class ClosureDeclaration extends BranchAbstract implements \Meander\Compiler\Com
     function compile(CompilerInterface $compiler) {
         $compiler->write('function');
         $this->haveParams()->compile($compiler);
-        if(count($this->children[1])) {
+        if(isset($this->children[1]) && count($this->children[1])) {
             $compiler->write('use')->compile($this->haveUse());
         }
     }

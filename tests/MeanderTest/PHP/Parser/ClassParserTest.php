@@ -46,14 +46,6 @@ class ClassParserTest extends \MeanderTest\TestCase {
     }
 
 
-    function testExtends() {
-        $parser = new ClassParser(new \Meander\PHP\Parser\PhpParser());
-        /** @var \ClassNode\PHP\Node\ClassDefinition $classDef */
-        $classDef = $parser->parse(new TokenStream(Tokenizer::tokenizePhp('class a extends b {}')));
-        $this->assertEquals('b', (string)$classDef->getExtends());
-    }
-
-
     /**
      * @dataProvider parserCases
      */

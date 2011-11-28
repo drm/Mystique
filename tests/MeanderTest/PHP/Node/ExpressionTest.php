@@ -23,12 +23,11 @@ class ExpressionTest extends PHPUnit_Framework_TestCase {
     
 
     function testCompilationOfBinaryExpressionWithParentheses() {
-        $expr = new BinaryExpression(
+        $expr = new \Meander\PHP\Node\ParenthesizedExpression(new BinaryExpression(
             new Variable('a'),
             new Operator('&&'),
             new Variable('b')
-        );
-        $expr->setParens();
+        ));
         $this->assertEquals(
             '($a&&$b)',
             $this->compiler->compile($expr)->result
@@ -43,7 +42,7 @@ class ExpressionTest extends PHPUnit_Framework_TestCase {
                 new BinaryExpression(
                     new Variable('a'),
                     new Operator('&&'),
-                    new BinaryExpression(new Variable('a'), new Operator('/'), new Value(2))
+                    new BinaryExpression(new Variable('a'), new Operator('/'), new Value(2, Value::T_INTEGER))
                 )
             )->result
         );
@@ -56,11 +55,10 @@ class ExpressionTest extends PHPUnit_Framework_TestCase {
 
 
     function testCompilationOfUnaryExpressionWithParentheses() {
-        $expr = new UnaryExpression(
+        $expr = new \Meander\PHP\Node\ParenthesizedExpression(new UnaryExpression(
             new Operator('new'),
             new Name('\a\b\c')
-        );
-        $expr->setParens();
+        ));
         \MeanderTest\PHP\Assert::assertSyntaxEquals(
             '(new \a\b\c)',
             $this->compiler->compile($expr)->result

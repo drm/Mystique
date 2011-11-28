@@ -5,5 +5,8 @@ class A extends B implements C {
         while (true) {
             $this->w00t();
         }
+        if ($a == $b && $x + $y + $z == 3) {
+        } elseif (true) {
+        }
     }
 }
