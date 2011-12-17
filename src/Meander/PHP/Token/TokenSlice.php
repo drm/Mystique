@@ -2,8 +2,6 @@
 namespace Meander\PHP\Token;
 
 class TokenSlice {
-    protected $stream = null;
-
     function __construct(TokenStream $stream, $left, $length) {
         $this->stream = $stream;
         $this->left = $left;

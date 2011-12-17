@@ -26,16 +26,6 @@ class InterfaceNode extends DefDeclNodeAbstract {
     }
     
 
-    function setDoc($doc) {
-        $this->doc = new DocBlock($doc);
-    }
-
-
-    function getDoc() {
-        return $this->doc;
-    }
-
-
     function getNodeType()
     {
         return 'Interface';

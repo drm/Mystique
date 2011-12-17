@@ -3,7 +3,7 @@
 
 namespace Meander\PHP\Node;
 
-abstract class DefDeclNodeAbstract extends BranchAbstract implements \Meander\Compiler\Compilable {
+abstract class DefDeclNodeAbstract extends BranchAbstract implements \Meander\Compiler\Compilable, DocumentedNode {
     function __construct() {
         parent::__construct();
         $this->setDeclaration();
@@ -45,4 +45,17 @@ abstract class DefDeclNodeAbstract extends BranchAbstract implements \Meander\Co
 
     abstract function setDeclaration();
     abstract function setDefinition(NodeList $definition);
+
+    function getDocBlock() {
+        if($slice = $this->getTokenSlice()) {
+            $i = $slice->left;
+            do {
+                $i --;
+            } while($i >= 0 && $slice->stream->tokenAt($i)->match(T_WHITESPACE));
+            if($i >= 0 && $slice->stream->tokenAt($i)->match(T_DOC_COMMENT)) {
+                return $slice->stream->tokenAt($i)->value;
+            }
+        }
+        return null;
+    }
 }

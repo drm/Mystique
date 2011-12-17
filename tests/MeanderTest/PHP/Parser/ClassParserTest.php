@@ -18,8 +18,16 @@ class ClassParserTest extends \MeanderTest\TestCase {
         $classDef = $parser->parse(new TokenStream(Tokenizer::tokenizePhp('class a {}')));
         $this->assertFalse($classDef->isFinal());
         $this->assertFalse($classDef->isAbstract());
-        $this->assertNull($classDef->getDoc());
+        $this->assertNull($classDef->getDocBlock());
         $this->assertEquals('a', (string)$classDef->getName());
+    }
+
+
+    function testGetDocBlock() {
+        $parser = new ClassParser(new \Meander\PHP\Parser\PhpParser());
+        /** @var \ClassNode\PHP\Node\ClassDefinition $classDef */
+        $classDef = $parser->parse(new TokenStream(Tokenizer::tokenizePhp('/** documentation */ class a {}')));
+        $this->assertEquals('/** documentation */', $classDef->getDocBlock());
     }
 
 

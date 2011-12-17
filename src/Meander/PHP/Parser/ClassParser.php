@@ -24,9 +24,15 @@ class ClassParser extends ParserBase
     }
 
 
+    /**
+     * @param \Meander\PHP\Token\TokenStream $stream
+     * @return \Meander\PHP\Node\ClassNode
+     */
     function parse(TokenStream $stream)
     {
         $definition = new ClassNode();
+        $definition->startTokenContext($stream);
+        
         while ($stream->match(array(T_ABSTRACT, T_FINAL, T_DOC_COMMENT))) {
             switch ($stream->current()->type) {
                 case T_FINAL:
@@ -56,6 +62,8 @@ class ClassParser extends ParserBase
         $stream->expect('{');
         $definition->setDefinition($this->subparse($stream, function($stream) { return $stream->match('}'); }));
         $stream->expect('}');
+
+        $definition->endTokenContext($stream);
         return $definition;
     }
 }

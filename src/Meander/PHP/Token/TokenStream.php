@@ -3,6 +3,7 @@
 namespace Meander\PHP\Token;
 
 use Iterator;
+use ArrayAccess;
 use Countable;
 use OutOfBoundsException;
 use UnexpectedValueException;
@@ -117,6 +118,10 @@ class TokenStream implements Iterator, Countable
     }
 
 
+    /**
+     *
+     * @return Token
+     */
     function tokenAt($index)
     {
         if (!$this->tokens[$index] instanceof Token) {
@@ -239,14 +244,14 @@ class TokenStream implements Iterator, Countable
 
 
     function slice($left, $length = null) {
-        $self = $this;
-        return array_map(
-            function ($element) use($self)
-            {
-                return $self->tokenAt($element);
-            },
-            array_slice(array_keys($this->tokens), $left, $length)
-        );
+        return new TokenSlice($this, $left, $length);
+//        return array_map(
+//            function ($element) use($self)
+//            {
+//                return $self->tokenAt($element);
+//            },
+//            array_slice(array_keys($this->tokens), $left, $length)
+//        );
     }
 
 
@@ -300,6 +305,9 @@ class TokenStream implements Iterator, Countable
         }
         return $i;
     }
+
+
+
 //
 //
 //    function getContext($index = -1) {

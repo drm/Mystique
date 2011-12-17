@@ -27,12 +27,13 @@ class PhpParser extends ParserBase {
             'do'            => new DoWhileParser($this),
             'constructs'    => new LanguageConstructParser($this),
             'statement'     => new StatementParser($this),
-            'use'           => new UseParser($this),
-            'comment'       => new CommentParser($this)
+            'use'           => new UseParser($this)
         );
     }
 
     function parse(TokenStream $stream) {
+        $ret = new Php();
+        $ret->startTokenContext($stream);
         $stream->expect(T_OPEN_TAG);
         if($stream->match(T_STRING, 'php')) { // TODO check if this is really ok :?
             $stream->next();
@@ -41,7 +42,9 @@ class PhpParser extends ParserBase {
         if($stream->valid()) {
             $stream->expect(T_CLOSE_TAG);
         }
-        return new Php($php);
+        $ret->children = $php;
+        $ret->endTokenContext($stream);
+        return $ret;
     }
 
     function match(TokenStream $stream) {

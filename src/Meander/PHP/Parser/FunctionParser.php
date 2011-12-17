@@ -16,6 +16,7 @@ class FunctionParser extends ParserSub {
     function parse(TokenStream $stream)
     {
         $def = new FunctionNode();
+        $def->startTokenContext($stream);
         $stream->expect(T_FUNCTION);
         if($stream->match('&')) {
             $stream->next();
@@ -32,6 +33,7 @@ class FunctionParser extends ParserSub {
             $def->setDefinition($this->parent->subparse($stream, function($stream) { return $stream->match('}'); }));
             $stream->expect('}');
         }
+        $def->endTokenContext($stream);
         return $def;
     }
 
@@ -68,9 +70,9 @@ class FunctionParser extends ParserSub {
         return $params;
     }
 
+
     function match(TokenStream $stream)
     {
         return $stream->match(T_FUNCTION);
     }
-
 }
