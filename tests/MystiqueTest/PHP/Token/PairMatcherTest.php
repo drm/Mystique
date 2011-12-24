@@ -9,7 +9,7 @@ use PHPUnit_Framework_TestCase;
 
 
 /**
- * @covers \Mystique\PHP\Token\PairMatcher
+ * @covers \Mystique\Common\Util\PairMatcher
  */
 class PairMatcherTest extends PHPUnit_Framework_TestCase {
     function testPairMatcher() {
