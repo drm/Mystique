@@ -1,19 +1,19 @@
 <phpunit
-    bootstrap="bootstrap.php"
+    bootstrap="tests/bootstrap.php"
 >
     
     <php>
-        <const name="MEANDER_TEST_ASSETS" value="assets/" />
+        <const name="MEANDER_TEST_ASSETS" value="tests/assets/" />
     </php>
     <testsuite>
         <whitelist>
-            <directory suffix="Test.php">./</directory>
+            <directory suffix="Test.php">./tests/</directory>
         </whitelist>
     </testsuite>
 
     <filter>
         <whitelist>
-            <directory>../src/</directory>
+            <directory>./src/</directory>
         </whitelist>
     </filter>
 
