@@ -8,7 +8,7 @@ class ClosureNodeTest extends TestCase {
     protected function setUp()
     {
         parent::setUp();
-        $this->compiler = new \Mystique\Compiler\Compiler();
+        $this->compiler = new \Mystique\Common\Compiler\Compiler();
     }
 
 

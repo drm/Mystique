@@ -2,8 +2,10 @@
 
 namespace Mystique\PHP\Node;
 
-class CompoundStatement extends \Mystique\PHP\Node\BranchAbstract {
-    function compile(\Mystique\Compiler\CompilerInterface $compiler)
+use Mystique\Common\Ast\Node\BranchAbstract;
+
+class CompoundStatement extends BranchAbstract {
+    function compile(\Mystique\Common\Compiler\CompilerInterface $compiler)
     {
         $compiler->write('{');
         parent::compile($compiler);

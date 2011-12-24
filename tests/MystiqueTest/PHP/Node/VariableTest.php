@@ -11,7 +11,7 @@ class VariableTest extends PHPUnit_Framework_TestCase
      * @dataProvider variables
      */
     function testCompile($expect, $name) {
-        $compiler = new \Mystique\Compiler\Compiler();
+        $compiler = new \Mystique\Common\Compiler\Compiler();
         $compiler->compile(new Variable($name));
         $this->assertEquals($expect, $compiler->result);
     }

@@ -1,9 +1,10 @@
 <?php
 namespace Mystique\PHP\Node;
 
-use \Mystique\Compiler\CompilerInterface;
-use \Mystique\Compiler\Compilable;
+use \Mystique\Common\Compiler\CompilerInterface;
+use \Mystique\Common\Compiler\Compilable;
 use InvalidArgumentException;
+use Mystique\Common\Ast\Node\BranchAbstract;
 
 class FunctionDeclaration extends BranchAbstract implements Compilable {
     function __construct($name = null) {

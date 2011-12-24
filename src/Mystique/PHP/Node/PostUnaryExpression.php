@@ -1,11 +1,13 @@
 <?php
 namespace Mystique\PHP\Node;
 
-use \Mystique\Compiler\CompilerInterface;
+use \Mystique\Common\Compiler\CompilerInterface;
 use \Mystique\PHP\Token\Operator;
-use \Mystique\PHP\Node\Node;
+use Mystique\Common\Ast\Node\Expr\ExpressionAbstract;
+use Mystique\Common\Ast\Node\Node;
+use Mystique\Common\Compiler\Compilable;
 
-class PostUnaryExpression extends ExpressionAbstract implements \Mystique\Compiler\Compilable
+class PostUnaryExpression extends ExpressionAbstract implements Compilable
 {
     function __construct(Operator $operator, Node $right)
     {

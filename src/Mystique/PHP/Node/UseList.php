@@ -1,6 +1,6 @@
 <?php
 namespace Mystique\PHP\Node;
-use \Mystique\Compiler\CompilerInterface;
+use \Mystique\Common\Compiler\CompilerInterface;
 
 class UseList extends \Mystique\PHP\Node\ExprList {
     function compile(CompilerInterface $compiler)

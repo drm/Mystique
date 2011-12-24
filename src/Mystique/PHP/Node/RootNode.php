@@ -2,8 +2,11 @@
 
 namespace Mystique\PHP\Node;
 
-use \Mystique\Compiler\Compilable,
-    \Mystique\Compiler\CompilerInterface;
+use \Mystique\Common\Compiler\Compilable,
+    \Mystique\Common\Compiler\CompilerInterface;
+
+use Mystique\Common\Ast\Node\BranchAbstract;
+use Mystique\Common\Ast\Node\Node;
 
 class RootNode extends BranchAbstract implements Compilable {
     function add(Node $node) {

@@ -3,12 +3,15 @@
 namespace MystiqueTest;
 use PHPUnit_Framework_TestCase;
 
+use Mystique\Common\Ast\AstToXml;
+use Mystique\Common\Ast\Traverser;
+
 class TestCase extends PHPUnit_Framework_TestCase
 {
     function assertASTEquals($ast, $node)
     {
-        $compiler = new \Mystique\PHP\Compiler\XmlCompiler();
-        $walker = new \Mystique\PHP\Node\Traverser($compiler);
+        $compiler = new AstToXml();
+        $walker = new Traverser($compiler);
         $walker->traverse($node);
         $this->assertXmlStringEqualsXmlString(
             $ast,

@@ -2,6 +2,8 @@
 namespace Mystique\PHP\Node;
 
 use \Mystique\PHP\Token\Operator;
+use Mystique\Common\Ast\Node\Expr\BinaryExpression;
+use Mystique\Common\Ast\Node\Node;
 
 class TernaryExpression extends BinaryExpression {
     function __construct(Node $test, Operator $operator, $lCase, Node $rCase) {
@@ -13,7 +15,7 @@ class TernaryExpression extends BinaryExpression {
         }
     }
 
-    function compile(\Mystique\Compiler\CompilerInterface $compiler)
+    function compile(\Mystique\Common\Compiler\CompilerInterface $compiler)
     {
         $compiler->compile($this->children[0]);
         $compiler->write('?');

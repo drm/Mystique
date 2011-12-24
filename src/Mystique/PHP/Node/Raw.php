@@ -2,9 +2,10 @@
 
 namespace Mystique\PHP\Node;
 
-use \Mystique\Compiler\CompilerInterface;
-use \Mystique\Compiler\Compilable;
+use \Mystique\Common\Compiler\CompilerInterface;
+use \Mystique\Common\Compiler\Compilable;
 use \Mystique\PHP\Token\Token;
+use Mystique\Common\Ast\Node\LeafAbstract;
 
 class Raw extends LeafAbstract implements Compilable {
     function __construct($code = '') {

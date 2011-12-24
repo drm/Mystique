@@ -2,9 +2,10 @@
 
 namespace Mystique\PHP\Node;
 
-use \Mystique\Compiler\Compilable,
-    \Mystique\Compiler\CompilerInterface,
+use \Mystique\Common\Compiler\Compilable,
+    \Mystique\Common\Compiler\CompilerInterface,
     InvalidArgumentException;
+use Mystique\Common\Ast\Node\LeafAbstract;
 
 class Value extends LeafAbstract implements Compilable
 {

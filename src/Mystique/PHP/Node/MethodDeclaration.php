@@ -1,8 +1,8 @@
 <?php
 namespace Mystique\PHP\Node;
 
-use \Mystique\Compiler\CompilerInterface;
-use \Mystique\Compiler\Compilable;
+use \Mystique\Common\Compiler\CompilerInterface;
+use \Mystique\Common\Compiler\Compilable;
 use InvalidArgumentException;
 
 class MethodDeclaration extends MemberDeclarationAbstract implements Compilable {

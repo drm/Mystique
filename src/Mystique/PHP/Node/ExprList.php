@@ -1,9 +1,11 @@
 <?php
 
 namespace Mystique\PHP\Node;
-use \Mystique\Compiler\CompilerInterface;
+use \Mystique\Common\Compiler\CompilerInterface;
 
-class ExprList extends BranchAbstract implements \Mystique\Compiler\Compilable {
+use Mystique\Common\Ast\Node\BranchAbstract;
+
+class ExprList extends BranchAbstract implements \Mystique\Common\Compiler\Compilable {
     function compile(CompilerInterface $compiler) {
         $first = true;
         foreach($this->children as $node) {

@@ -1,8 +1,8 @@
 <?php
 namespace Mystique\PHP\Node;
 
-use \Mystique\Compiler\Compilable;
-use \Mystique\Compiler\CompilerInterface;
+use \Mystique\Common\Compiler\Compilable;
+use \Mystique\Common\Compiler\CompilerInterface;
 
 class PropertyDeclaration extends MemberDeclarationAbstract
 {

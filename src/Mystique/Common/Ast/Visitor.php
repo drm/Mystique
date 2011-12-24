@@ -1,6 +1,7 @@
 <?php
-// TODO class is generic, not PHP specific
-namespace Mystique\PHP\Node;
+namespace Mystique\Common\Ast;
+
+use Mystique\Common\Ast\Node\Node;
 
 interface Visitor {
     function enterNode(Node $node);

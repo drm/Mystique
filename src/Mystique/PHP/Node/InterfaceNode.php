@@ -2,8 +2,9 @@
 
 namespace Mystique\PHP\Node;
 
-use \Mystique\Compiler\Compilable;
-use \Mystique\Compiler\CompilerInterface;
+use \Mystique\Common\Compiler\Compilable;
+use \Mystique\Common\Compiler\CompilerInterface;
+use Mystique\Common\Ast\Node\NodeList;
 
 class InterfaceNode extends DefDeclNodeAbstract {
     protected $doc = null;

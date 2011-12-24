@@ -1,10 +1,11 @@
 <?php
 
-namespace Mystique\PHP\Node;
+namespace Mystique\Common\Ast\Node\Expr;
 
-use \Mystique\Compiler\Compilable;
-use \Mystique\Compiler\CompilerInterface;
+use \Mystique\Common\Compiler\Compilable;
+use \Mystique\Common\Compiler\CompilerInterface;
 use \Mystique\PHP\Token\Operator;
+use Mystique\Common\Ast\Node\BranchAbstract;
 
 abstract class ExpressionAbstract extends BranchAbstract implements Compilable {
     function compile(CompilerInterface $compiler) {

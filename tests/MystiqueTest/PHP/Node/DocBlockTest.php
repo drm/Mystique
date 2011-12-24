@@ -7,7 +7,7 @@ use PHPUnit_Framework_TestCase;
 
 class DocBlockTest extends PHPUnit_Framework_TestCase {
     function setUp () {
-        $this->compiler = new \Mystique\Compiler\Compiler();
+        $this->compiler = new \Mystique\Common\Compiler\Compiler();
     }
 
 

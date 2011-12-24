@@ -1,8 +1,10 @@
 <?php
 namespace Mystique\PHP\Node;
-use \Mystique\Compiler\CompilerInterface;
+use \Mystique\Common\Compiler\CompilerInterface;
 
-class ClosureDeclaration extends BranchAbstract implements \Mystique\Compiler\Compilable {
+use Mystique\Common\Ast\Node\BranchAbstract;
+
+class ClosureDeclaration extends BranchAbstract implements \Mystique\Common\Compiler\Compilable {
     function setParameters(ParameterDefinitionList $params) {
         $this->children[0] = $params;
     }

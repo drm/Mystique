@@ -1,6 +1,6 @@
 <?php
 
-namespace Mystique\PHP\Node;
+namespace Mystique\Common\Ast\Node;
 
 /**
  * 

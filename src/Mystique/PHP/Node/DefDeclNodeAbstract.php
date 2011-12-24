@@ -1,9 +1,10 @@
 <?php
-
-
 namespace Mystique\PHP\Node;
 
-abstract class DefDeclNodeAbstract extends BranchAbstract implements \Mystique\Compiler\Compilable, DocumentedNode {
+use Mystique\Common\Ast\Node\BranchAbstract;
+use Mystique\Common\Ast\Node\NodeList;
+
+abstract class DefDeclNodeAbstract extends BranchAbstract implements \Mystique\Common\Compiler\Compilable, DocumentedNode {
     function __construct() {
         parent::__construct();
         $this->setDeclaration();
@@ -35,7 +36,7 @@ abstract class DefDeclNodeAbstract extends BranchAbstract implements \Mystique\C
     }
 
 
-    function compile(\Mystique\Compiler\CompilerInterface $compiler) {
+    function compile(\Mystique\Common\Compiler\CompilerInterface $compiler) {
         $compiler->compile($this->children[0]);
 
         if(isset($this->children[1])) {

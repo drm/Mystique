@@ -12,7 +12,7 @@ class LanguageConstruct extends Statement {
         return $this->type;
     }
 
-    function compile(\Mystique\Compiler\CompilerInterface $compiler)
+    function compile(\Mystique\Common\Compiler\CompilerInterface $compiler)
     {
         $compiler->write($this->type);
         parent::compile($compiler);

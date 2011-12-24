@@ -1,6 +1,8 @@
 <?php
 namespace Mystique\PHP\Node;
 
+use Mystique\Common\Ast\Node\NodeList;
+
 class FunctionNode extends DefDeclNodeAbstract {
     function __construct($name = null)
     {

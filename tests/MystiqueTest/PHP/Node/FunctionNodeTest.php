@@ -19,7 +19,7 @@ class FunctionNodeTest extends \MystiqueTest\TestCase {
         $node->children[0]->expects($this->once())->method('compile');
         $node->children[1]->expects($this->once())->method('compile');
 
-        $compiler = new \Mystique\Compiler\Compiler();
+        $compiler = new \Mystique\Common\Compiler\Compiler();
         $node->compile($compiler);
     }
 }

@@ -1,8 +1,9 @@
 <?php
 
-namespace Mystique\PHP\Node;
+namespace Mystique\Common\Ast\Node;
 
 use \Mystique\PHP\Token\TokenAware;
+use Mystique\PHP\Token\TokenStream;
 
 abstract class NodeAbstract implements Node, TokenAware {
     protected $attributes = array(), $tokenContext = array();
@@ -21,7 +22,7 @@ abstract class NodeAbstract implements Node, TokenAware {
         return $this->attributes;
     }
 
-    function startTokenContext(\Mystique\PHP\Token\TokenStream $stream)
+    function startTokenContext(TokenStream $stream)
     {
         $this->tokenContext = array(
             'stream'    => $stream,
@@ -30,7 +31,7 @@ abstract class NodeAbstract implements Node, TokenAware {
         );
     }
 
-    function endTokenContext(\Mystique\PHP\Token\TokenStream $stream) {
+    function endTokenContext(TokenStream $stream) {
         $this->tokenContext['end']= $stream->key();
     }
 

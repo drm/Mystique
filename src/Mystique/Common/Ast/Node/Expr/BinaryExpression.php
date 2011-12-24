@@ -1,8 +1,9 @@
 <?php
-namespace Mystique\PHP\Node;
+namespace Mystique\Common\Ast\Node\Expr;
 
-use \Mystique\Compiler\CompilerInterface;
+use \Mystique\Common\Compiler\CompilerInterface;
 use \Mystique\PHP\Token\Operator;
+use Mystique\Common\Ast\Node\Node;
 
 class BinaryExpression extends ExpressionAbstract
 {

@@ -4,7 +4,7 @@ namespace MystiqueTest\PHP;
 class ParserCompilerTest extends \MystiqueTest\TestCase {
     function setUp() {
         $this->parser = new \Mystique\PHP\Parser\FileParser();
-        $this->compiler = new \Mystique\Compiler\Compiler();
+        $this->compiler = new \Mystique\Common\Compiler\Compiler();
     }
 
     /**

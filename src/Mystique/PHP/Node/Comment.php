@@ -1,6 +1,7 @@
 <?php
 
 namespace Mystique\PHP\Node;
+use Mystique\Common\Ast\Node\LeafAbstract;
 
 class Comment extends LeafAbstract {
     function __construct($comment) {

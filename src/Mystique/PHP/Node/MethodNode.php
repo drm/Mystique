@@ -24,7 +24,7 @@ class MethodNode extends FunctionNode {
         return $this;
     }
 
-    function compile(\Mystique\Compiler\CompilerInterface $compiler)
+    function compile(\Mystique\Common\Compiler\CompilerInterface $compiler)
     {
         parent::compile($compiler);
         if(!isset($this->children[1])) {

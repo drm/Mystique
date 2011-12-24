@@ -2,6 +2,13 @@
 
 namespace Mystique\PHP\Node;
 
+use Mystique\Common\Ast\Node\Expr\BinaryExpression;
+use Mystique\Common\Ast\Node\Node;
+use Mystique\Common\Ast\Node\BranchAbstract;
+use Mystique\PHP\Token\PairMatcher;
+use Mystique\Common\Compiler\CompilerInterface;
+use Mystique\Common\Compiler\Compilable;
+
 class Subscript extends BinaryExpression {
     function __construct(Node $var, $subscript, \Mystique\PHP\Token\Operator $type = null) {
         BranchAbstract::__construct();
@@ -28,8 +35,8 @@ class Subscript extends BinaryExpression {
         $this->children[0] = $lValue;
     }
 
-    function compile(\Mystique\Compiler\CompilerInterface $compiler) {
-        if(!$this->children instanceof \Mystique\Compiler\Compilable) {
+    function compile(CompilerInterface $compiler) {
+        if(!$this->children instanceof Compilable) {
             throw new \UnexpectedValueException("Unexpected children of type " . gettype($this->children) . ' in ' . get_class($this));
         }
         $this->children[0]->compile($compiler);
@@ -37,6 +44,6 @@ class Subscript extends BinaryExpression {
         if(isset($this->children[2])) {
             $this->children[2]->compile($compiler);
         }
-        $compiler->write(\Mystique\PHP\Token\PairMatcher::parenOf($this->getOperator()->type));
+        $compiler->write(PairMatcher::parenOf($this->getOperator()->type));
     }
 }

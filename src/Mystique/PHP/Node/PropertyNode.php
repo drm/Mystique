@@ -2,6 +2,8 @@
 
 namespace Mystique\PHP\Node;
 
+use Mystique\Common\Ast\Node\NodeList;
+
 class PropertyNode extends \Mystique\PHP\Node\DefDeclNodeAbstract {
     function setDeclaration()
     {
@@ -25,7 +27,7 @@ class PropertyNode extends \Mystique\PHP\Node\DefDeclNodeAbstract {
         }
     }
 
-    function compile(\Mystique\Compiler\CompilerInterface $compiler)
+    function compile(\Mystique\Common\Compiler\CompilerInterface $compiler)
     {
         $compiler->compile($this->children[0]);
 

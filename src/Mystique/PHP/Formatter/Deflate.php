@@ -12,7 +12,7 @@ class Deflate implements FormatterInterface {
 
 
     function format($code) {
-        $compiler = new \Mystique\Compiler\Compiler();
+        $compiler = new \Mystique\Common\Compiler\Compiler();
         foreach(new TokenStream(Tokenizer::tokenize($code)) as $token) {
             if($this->stripComments && in_array($token->type, array(T_COMMENT, T_DOC_COMMENT))) {
                 continue;

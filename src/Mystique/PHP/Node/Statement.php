@@ -1,6 +1,7 @@
 <?php
 
 namespace Mystique\PHP\Node;
+use Mystique\Common\Ast\Node\BranchAbstract;
 
 class Statement extends BranchAbstract {
     function __construct($e) {
@@ -10,7 +11,7 @@ class Statement extends BranchAbstract {
         }
     }
 
-    function compile(\Mystique\Compiler\CompilerInterface $compiler)
+    function compile(\Mystique\Common\Compiler\CompilerInterface $compiler)
     {
         parent::compile($compiler);
         $compiler->write(';');

@@ -1,7 +1,9 @@
 <?php
 namespace Mystique\PHP\Node;
-        
-class TypeHint extends BranchAbstract implements \Mystique\Compiler\Compilable {
+use Mystique\Common\Ast\Node\BranchAbstract;
+use Mystique\Common\Ast\Node\Node;
+
+class TypeHint extends BranchAbstract implements \Mystique\Common\Compiler\Compilable {
     function __construct($type) {
         parent::__construct();
         $this->setType($type);
@@ -12,7 +14,7 @@ class TypeHint extends BranchAbstract implements \Mystique\Compiler\Compilable {
     }
 
 
-    function compile(\Mystique\Compiler\CompilerInterface $compiler) {
+    function compile(\Mystique\Common\Compiler\CompilerInterface $compiler) {
         $compiler->compile($this->children[0]);
     }
 }

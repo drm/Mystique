@@ -1,14 +1,13 @@
 <?php
 
-namespace Mystique\PHP\Compiler;
+namespace Mystique\Common\Ast;
 
-use \Mystique\PHP\Node\Visitor;
-use \Mystique\PHP\Node\Node;
-use \Mystique\PHP\Node\Leaf;
+use Mystique\Common\Ast\Node\Node;
+use Mystique\Common\Ast\Node\Leaf;
 use SimpleXMLElement;
 use RuntimeException;
 
-class XmlCompiler implements Visitor {
+class AstToXml implements Visitor {
     protected $_stack = array();
 
     function __construct() {

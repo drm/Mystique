@@ -2,6 +2,8 @@
 
 namespace Mystique\PHP\Node;
 
+use Mystique\Common\Ast\Node\NodeList;
+
 class NamespaceNode extends \Mystique\PHP\Node\DefDeclNodeAbstract
 {
     function setDeclaration()

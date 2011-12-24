@@ -7,7 +7,7 @@ class TryNode extends DefinitionAbstract {
         return 'Try';
     }
 
-    function compile(\Mystique\Compiler\CompilerInterface $compiler) {
+    function compile(\Mystique\Common\Compiler\CompilerInterface $compiler) {
         $compiler->write('try');
         parent::compile($compiler);
     }

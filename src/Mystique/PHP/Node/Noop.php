@@ -1,7 +1,8 @@
 <?php
 namespace Mystique\PHP\Node;
+use Mystique\Common\Ast\Node\LeafAbstract;
 
-class Noop extends LeafAbstract implements \Mystique\Compiler\Compilable {
+class Noop extends LeafAbstract implements \Mystique\Common\Compiler\Compilable {
     function __construct($remark = '') {
 //        parent::__construct();
         $this->remark = $remark;
@@ -12,7 +13,7 @@ class Noop extends LeafAbstract implements \Mystique\Compiler\Compilable {
         return $this->remark;
     }
 
-    function compile(\Mystique\Compiler\CompilerInterface $compiler)
+    function compile(\Mystique\Common\Compiler\CompilerInterface $compiler)
     {
     }
 }

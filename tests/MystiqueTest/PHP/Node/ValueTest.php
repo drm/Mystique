@@ -45,7 +45,7 @@ class ValueTest extends PHPUnit_Framework_TestCase
      */
     function testExportableValuesCompile($expect, $value, $type)
     {
-        $compiler = new \Mystique\Compiler\Compiler();
+        $compiler = new \Mystique\Common\Compiler\Compiler();
         $compiler->compile(new Value($value, $type));
         $this->assertEquals($expect, $compiler->result);
     }

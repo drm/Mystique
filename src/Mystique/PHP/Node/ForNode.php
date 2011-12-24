@@ -1,9 +1,10 @@
 <?php
 
 namespace Mystique\PHP\Node;
-
+use Mystique\Common\Ast\Node\BranchAbstract;
+use Mystique\Common\Ast\Node\Node;
 use \Mystique\PHP\Node\Condition;
-class ForNode extends \Mystique\PHP\Node\BranchAbstract {
+class ForNode extends BranchAbstract {
     function __construct($expr, Node $statement) {
         parent::__construct();
         foreach($expr as $e) {
@@ -17,7 +18,7 @@ class ForNode extends \Mystique\PHP\Node\BranchAbstract {
         return 'For';
     }
 
-    function compile(\Mystique\Compiler\CompilerInterface $compiler)
+    function compile(\Mystique\Common\Compiler\CompilerInterface $compiler)
     {
         $compiler->write('for')->write('(');
         $compiler->compile($this->children[0])->write(';');

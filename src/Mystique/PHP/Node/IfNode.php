@@ -3,6 +3,7 @@
 namespace Mystique\PHP\Node;
 
 use \Mystique\PHP\Node\Condition;
+use Mystique\Common\Ast\Node\BranchAbstract;
 
 class IfNode extends BranchAbstract {
     function __construct($condition, $statement) {
@@ -17,7 +18,7 @@ class IfNode extends BranchAbstract {
         return 'If';
     }
 
-    function compile(\Mystique\Compiler\CompilerInterface $compiler)
+    function compile(\Mystique\Common\Compiler\CompilerInterface $compiler)
     {
         $compiler->write(strtolower($this->getNodeType()));
         parent::compile($compiler);

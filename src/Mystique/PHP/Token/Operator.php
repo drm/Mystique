@@ -1,9 +1,12 @@
 <?php
 namespace Mystique\PHP\Token;
 
-use \Mystique\Compiler\CompilerInterface;
+use \Mystique\Common\Compiler\CompilerInterface;
 
-class Operator extends Token implements \Mystique\PHP\Node\Leaf, \Mystique\Compiler\Compilable {
+use Mystique\Common\Ast\Node\Leaf;
+use Mystique\Common\Compiler\Compilable;
+
+class Operator extends Token implements Leaf, Compilable {
     function __construct($token) {
         if($token instanceof Token) {
             parent::__construct(array($token->type, $token->value));

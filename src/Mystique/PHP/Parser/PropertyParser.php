@@ -2,6 +2,7 @@
 namespace Mystique\PHP\Parser;
 
 use \Mystique\PHP\Token\TokenStream;
+use Mystique\Common\Ast\Node\NodeList;
 
 class PropertyParser extends ParserSub
 {
@@ -27,7 +28,7 @@ class PropertyParser extends ParserSub
         }
         
 
-        $definitions = new \Mystique\PHP\Node\NodeList();
+        $definitions = new NodeList();
         do {
             $name = substr($stream->expect(T_VARIABLE)->value, 1);
             $def = new \Mystique\PHP\Node\PropertyDefinition();

@@ -1,15 +1,15 @@
 <?php
 
-namespace Mystique\PHP\Node;
+namespace Mystique\Common\Ast\Node;
 
-use \Mystique\Compiler\CompilerInterface;
+use \Mystique\Common\Compiler\CompilerInterface;
 use Countable;
 
 /**
  * 
  */
 
-abstract class BranchAbstract extends NodeAbstract implements Branch, Countable, \Mystique\Compiler\Compilable {
+abstract class BranchAbstract extends NodeAbstract implements Branch, Countable, \Mystique\Common\Compiler\Compilable {
     public $children;
 
     function __construct($list = null) {

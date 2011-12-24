@@ -7,7 +7,7 @@ class ConstantString extends \Mystique\PHP\Node\Value {
         $this->quote = $quote;
     }
 
-    function compile(\Mystique\Compiler\CompilerInterface $compiler)
+    function compile(\Mystique\Common\Compiler\CompilerInterface $compiler)
     {
         $compiler->write($this->quote);
         $compiler->write($this->value);

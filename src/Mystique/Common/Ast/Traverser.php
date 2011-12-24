@@ -1,8 +1,10 @@
 <?php
 
-//TODO this can be made generic
-namespace Mystique\PHP\Node;
+namespace Mystique\Common\Ast;
 use UnexpectedValueException;
+use Mystique\Common\Ast\Node\Node;
+use Mystique\Common\Ast\Node\Branch;
+
 
 class Traverser {
     function __construct(Visitor $visitor) {

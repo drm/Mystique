@@ -4,7 +4,7 @@ namespace Mystique\PHP\Formatter;
 
 use \Mystique\PHP\Token\Tokenizer;
 use \Mystique\PHP\Token\TokenStream;
-use \Mystique\Compiler\Compiler;
+use \Mystique\Common\Compiler\Compiler;
 use \Mystique\PHP\Token\Token;
 
 class Simple implements FormatterInterface {

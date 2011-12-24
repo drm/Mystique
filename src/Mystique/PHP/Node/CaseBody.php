@@ -2,7 +2,9 @@
 
 namespace Mystique\PHP\Node;
 
-class CaseBody extends \Mystique\PHP\Node\BranchAbstract {
+use Mystique\Common\Ast\Node\BranchAbstract;
+
+class CaseBody extends BranchAbstract {
     function getNodeType() {
         return 'Body';
     }

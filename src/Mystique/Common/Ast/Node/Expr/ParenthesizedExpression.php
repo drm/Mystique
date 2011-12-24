@@ -1,7 +1,10 @@
 <?php
-namespace Mystique\PHP\Node;
+namespace Mystique\Common\Ast\Node\Expr;
 
-class ParenthesizedExpression extends \Mystique\PHP\Node\BranchAbstract {
+use Mystique\Common\Ast\Node\BranchAbstract;
+use Mystique\Common\Compiler\CompilerInterface;
+
+class ParenthesizedExpression extends BranchAbstract {
     function __construct($expression = null)
     {
         parent::__construct();
@@ -16,7 +19,7 @@ class ParenthesizedExpression extends \Mystique\PHP\Node\BranchAbstract {
     }
 
 
-    function compile(\Mystique\Compiler\CompilerInterface $compiler) {
+    function compile(\Mystique\Common\Compiler\CompilerInterface $compiler) {
         $compiler->write('(');
         parent::compile($compiler);
         $compiler->write(')');

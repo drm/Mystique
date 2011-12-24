@@ -1,8 +1,10 @@
 <?php
 
 namespace Mystique\PHP\Node;
+use Mystique\Common\Ast\Node\Branch;
+use \Mystique\Common\Compiler\Compilable;
 
-class Condition implements Branch, \Mystique\Compiler\Compilable {
+class Condition implements Branch, Compilable {
     function __construct($expr) {
         $this->expr = $expr;
     }
@@ -23,7 +25,7 @@ class Condition implements Branch, \Mystique\Compiler\Compilable {
         return array();
     }
 
-    function compile(\Mystique\Compiler\CompilerInterface $compiler) {
+    function compile(\Mystique\Common\Compiler\CompilerInterface $compiler) {
         $compiler->write('(');
         $compiler->compile($this->expr);
         $compiler->write(')');

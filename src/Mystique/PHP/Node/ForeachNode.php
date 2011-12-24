@@ -9,7 +9,7 @@ class ForeachNode extends ForNode {
         return 'Foreach';
     }
 
-    function compile(\Mystique\Compiler\CompilerInterface $compiler)
+    function compile(\Mystique\Common\Compiler\CompilerInterface $compiler)
     {
         $compiler->write('foreach')->write('(');
         $compiler->compile($this->children[0]);

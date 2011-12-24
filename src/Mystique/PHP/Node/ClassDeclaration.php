@@ -48,7 +48,7 @@ class ClassDeclaration extends InterfaceDeclaration {
         return $this->haveImplements()->add($name);
     }
 
-    function compile(\Mystique\Compiler\CompilerInterface $compiler)
+    function compile(\Mystique\Common\Compiler\CompilerInterface $compiler)
     {
         $this->isFinal() && $compiler->write('final');
         $this->isAbstract() && $compiler->write('abstract');

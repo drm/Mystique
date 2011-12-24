@@ -1,5 +1,5 @@
 <?php
-namespace Mystique\Compiler;
+namespace Mystique\Common\Compiler;
 
 interface CompilerInterface
 {

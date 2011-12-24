@@ -2,9 +2,11 @@
 
 namespace Mystique\PHP\Node;
 
-use Mystique\Compiler\CompilerInterface;
+use Mystique\Common\Compiler\CompilerInterface;
+use Mystique\Common\Ast\Node\BranchAbstract;
 
-class CaseNode extends \Mystique\PHP\Node\BranchAbstract {
+
+class CaseNode extends BranchAbstract {
     function __construct($expr, $body) {
         parent::__construct();
         $this->children[0] = $expr;

@@ -12,6 +12,13 @@ use \Mystique\PHP\Node\Value;
 use \Mystique\PHP\Node\Name;
 use \Mystique\PHP\Node\NamespacedName;
 use \Mystique\PHP\Node\Call;
+use Mystique\Common\Ast\Node\Expr\ExpressionAbstract;
+use Mystique\Common\Ast\Node\Expr\BinaryExpression;
+use Mystique\Common\Ast\Node\Expr\UnaryExpression;
+use Mystique\Common\Ast\Node\Expr\ParenthesizedExpression;
+use Mystique\Common\Ast\Node\Node;
+use Mystique\PHP\Node\TernaryExpression;
+use Mystique\PHP\Node\NestedVariable;
 
 
 class ExpressionParser implements Parser
@@ -27,7 +34,7 @@ class ExpressionParser implements Parser
     }
 
 
-    function parseSubscript(TokenStream $stream, \Mystique\PHP\Node\Node $expression)
+    function parseSubscript(TokenStream $stream, Node $expression)
     {
         $ret = $expression;
 
@@ -67,26 +74,26 @@ class ExpressionParser implements Parser
             $operator = new Operator($op);
             $stream->next();
             $rValue = $this->parse($stream);
-            if ($rValue instanceof \Mystique\PHP\Node\ExpressionAbstract) {
+            if ($rValue instanceof ExpressionAbstract) {
                 $precedence = $this->determinePrecedence($rValue, $operator);
 
                 switch ($precedence) {
                     case 'right':
-                        $lValue = new \Mystique\PHP\Node\UnaryExpression($operator, $rValue);
+                        $lValue = new UnaryExpression($operator, $rValue);
                         break;
                     case 'left':
                         $lValue = $rValue;
-                        $lValue->setLeft(new \Mystique\PHP\Node\UnaryExpression($operator, $lValue->getLeft()));
+                        $lValue->setLeft(new UnaryExpression($operator, $lValue->getLeft()));
                         break;
                     default:
                         throw new \RuntimeException("Unexpected precedence $precedence");
                 }
             } else {
-                $lValue = new \Mystique\PHP\Node\UnaryExpression($operator, $rValue);
+                $lValue = new UnaryExpression($operator, $rValue);
             }
         } elseif ($stream->match('(')) {
             $stream->next();
-            $lValue = new \Mystique\PHP\Node\ParenthesizedExpression($this->parse($stream));
+            $lValue = new ParenthesizedExpression($this->parse($stream));
             $stream->expect(')');
         } else {
             $lValue = $this->parseValue($stream);
@@ -107,28 +114,28 @@ class ExpressionParser implements Parser
             }
             $stream->expect(':');
             $rCase = $this->parse($stream);
-            return new \Mystique\PHP\Node\TernaryExpression($lValue, $operator, $lCase, $rCase);
+            return new TernaryExpression($lValue, $operator, $lCase, $rCase);
         } elseif ($stream->valid() && $stream->match(Operator::$binaryOperators)) {
             $op = $stream->current();
             $stream->next();
             $rValue = $this->parse($stream);
             $operator = new Operator($op);
 
-            if ($rValue instanceof \Mystique\PHP\Node\ExpressionAbstract) {
+            if ($rValue instanceof ExpressionAbstract) {
                 $precedence = $this->determinePrecedence($rValue, $operator);
                 switch ($precedence) {
                     case 'right':
-                        $ret = new \Mystique\PHP\Node\BinaryExpression($lValue, $operator, $rValue);
+                        $ret = new BinaryExpression($lValue, $operator, $rValue);
                         break;
                     case 'left':
                         $ret = $rValue;
-                        $ret->setLeft(new \Mystique\PHP\Node\BinaryExpression($lValue, $operator, $ret->getLeft()));
+                        $ret->setLeft(new BinaryExpression($lValue, $operator, $ret->getLeft()));
                         break;
                     default:
                         throw new \RuntimeException("Unexpected precedence $precedence");
                 }
             } else {
-                $ret = new \Mystique\PHP\Node\BinaryExpression($lValue, new Operator($op), $rValue);
+                $ret = new BinaryExpression($lValue, new Operator($op), $rValue);
             }
         } else {
             $ret = $lValue;
@@ -138,7 +145,7 @@ class ExpressionParser implements Parser
 
     public function determinePrecedence($right, $operator)
     {
-        if ($right instanceof \Mystique\PHP\Node\ParenthesizedExpression) {
+        if ($right instanceof ParenthesizedExpression) {
             $precedence = 'right';
         } else {
             $precedence = Operator::precedence($operator, $right->getOperator());
@@ -167,7 +174,7 @@ class ExpressionParser implements Parser
 
     function parseNestedVariable(TokenStream $stream)
     {
-        $value = new \Mystique\PHP\Node\NestedVariable();
+        $value = new NestedVariable();
         if ($stream->match('{')) {
             $stream->next();
             $value->children->append($this->parse($stream));

@@ -1,8 +1,9 @@
 <?php
 namespace Mystique\PHP\Node;
-use \Mystique\Compiler\Compilable;
-use \Mystique\Compiler\Compiler;
+use \Mystique\Common\Compiler\Compilable;
+use \Mystique\Common\Compiler\Compiler;
 use InvalidArgumentException;
+use Mystique\Common\Ast\Node\BranchAbstract;
 
 abstract class MemberDeclarationAbstract extends BranchAbstract implements Compilable {
     const IS_PRIVATE    = 'private';

@@ -1,6 +1,6 @@
 <?php
 
-namespace Mystique\Compiler;
+namespace Mystique\Common\Compiler;
 
 use InvalidArgumentException;
 

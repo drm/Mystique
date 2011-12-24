@@ -11,7 +11,7 @@ class NamespaceDeclaration extends Statement {
         return 'Declaration';
     }
 
-    function compile(\Mystique\Compiler\CompilerInterface $compiler)
+    function compile(\Mystique\Common\Compiler\CompilerInterface $compiler)
     {
         $compiler->write('namespace');
         parent::compile($compiler);

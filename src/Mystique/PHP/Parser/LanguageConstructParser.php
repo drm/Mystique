@@ -3,6 +3,8 @@
 namespace Mystique\PHP\Parser;
 use \Mystique\PHP\Token\TokenStream;
 use \Mystique\PHP\Node\LanguageConstruct;
+use Mystique\Common\Ast\Node\NodeList;
+use Mystique\PHP\Node\ExprList;
 
 class LanguageConstructParser extends ParserSub {
     public static $types = array(
@@ -38,13 +40,13 @@ class LanguageConstructParser extends ParserSub {
     function parse(TokenStream $stream) {
         $token = $stream->expect(self::$types);
         if(in_array($token->type, self::$mul)) {
-            $expr = new \Mystique\PHP\Node\NodeList();
+            $expr = new NodeList();
             $expr->append($this->parent->parseExpression($stream));
             while($stream->match(',')) {
                 $stream->next();
                 $expr->append($this->parent->parseExpression($stream));
             }
-            $expr = new \Mystique\PHP\Node\ExprList($expr);
+            $expr = new ExprList($expr);
         } else {
             if(in_array($token->type, self::$optionalArgs) && $stream->match(';')) {
                 $expr = null;

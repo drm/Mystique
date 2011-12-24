@@ -1,7 +1,8 @@
 <?php
 namespace Mystique\PHP\Node;
+use Mystique\Common\Ast\Node\BranchAbstract;
 
-class InterfaceDeclaration extends BranchAbstract implements \Mystique\Compiler\Compilable {
+class InterfaceDeclaration extends BranchAbstract implements \Mystique\Common\Compiler\Compilable {
     static $type = 'interface';
 
     function getNodeType() {
@@ -40,7 +41,7 @@ class InterfaceDeclaration extends BranchAbstract implements \Mystique\Compiler\
     }
     
 
-    function compile(\Mystique\Compiler\CompilerInterface $compiler) {
+    function compile(\Mystique\Common\Compiler\CompilerInterface $compiler) {
         $compiler
                 ->write('interface')
                 ->compile($this->getName())

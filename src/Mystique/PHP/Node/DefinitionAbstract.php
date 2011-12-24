@@ -1,11 +1,13 @@
 <?php
 namespace Mystique\PHP\Node;
 
-use \Mystique\Compiler\Compilable;
-use \Mystique\Compiler\CompilerInterface;
+use Mystique\Common\Ast\Node\BranchAbstract;
 
-class DefinitionAbstract extends \Mystique\PHP\Node\BranchAbstract implements \Mystique\Compiler\Compilable {
-    function compile(\Mystique\Compiler\CompilerInterface $compiler) {
+use \Mystique\Common\Compiler\Compilable;
+use \Mystique\Common\Compiler\CompilerInterface;
+
+class DefinitionAbstract extends BranchAbstract implements \Mystique\Common\Compiler\Compilable {
+    function compile(\Mystique\Common\Compiler\CompilerInterface $compiler) {
         $compiler->write('{');
         foreach($this->getNodeChildren() as $member) {
             $compiler->compile($member);

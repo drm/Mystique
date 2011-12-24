@@ -1,6 +1,7 @@
 <?php
 
 namespace Mystique\PHP\Node;
+use Mystique\Common\Ast\Node\BranchAbstract;
 
 class CatchType extends BranchAbstract {
     function setType($type) {

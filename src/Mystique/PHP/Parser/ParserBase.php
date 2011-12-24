@@ -2,9 +2,10 @@
 
 namespace Mystique\PHP\Parser;
 
-use \Mystique\PHP\Node\NodeList;
+use Mystique\Common\Ast\Node\NodeList;
 use \Mystique\PHP\Token\TokenStream;
 use \Mystique\PHP\Node\Raw;
+use Mystique\Common\Ast\Node\Node;
 
 abstract class ParserBase implements Parser
 {
@@ -28,7 +29,7 @@ abstract class ParserBase implements Parser
             foreach ($this->parsers as $parser) {
                 if ($parser->match($stream)) {
                     $node = $parser->parse($stream);
-                    if (!$node instanceof \Mystique\PHP\Node\Node) {
+                    if (!$node instanceof Node) {
                         throw new \UnexpectedValueException('Parser ' . get_class($parser) . ' does not return expected type Node');
                     }
                     end($this->stack)->append($node);

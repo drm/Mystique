@@ -1,9 +1,9 @@
 <?php
 namespace Mystique\PHP\Node;
 
-use \Mystique\Compiler\CompilerInterface;
+use \Mystique\Common\Compiler\CompilerInterface;
 
-class Variable extends VariableAbstract implements \Mystique\Compiler\Compilable
+class Variable extends VariableAbstract implements \Mystique\Common\Compiler\Compilable
 {
     function __construct($name)
     {

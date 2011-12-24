@@ -8,7 +8,7 @@ class DoWhileNode extends WhileNode {
         return 'DoWhile';
     }
 
-    function compile(\Mystique\Compiler\CompilerInterface $compiler)
+    function compile(\Mystique\Common\Compiler\CompilerInterface $compiler)
     {
         $compiler->write('do');
         $compiler->compile($this->children[1]);

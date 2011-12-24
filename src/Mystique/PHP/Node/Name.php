@@ -1,8 +1,9 @@
 <?php
 namespace Mystique\PHP\Node;
-use \Mystique\Compiler\CompilerInterface;
+use \Mystique\Common\Compiler\CompilerInterface;
+use Mystique\Common\Ast\Node\LeafAbstract;
 
-class Name extends \Mystique\PHP\Node\LeafAbstract implements \Mystique\Compiler\Compilable
+class Name extends LeafAbstract implements \Mystique\Common\Compiler\Compilable
 {
     function __construct($name) {
         $this->name = (string)$name;

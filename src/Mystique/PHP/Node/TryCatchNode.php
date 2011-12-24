@@ -1,7 +1,9 @@
 <?php
 namespace Mystique\PHP\Node;
+use Mystique\Common\Ast\Node\BranchAbstract;
+use Mystique\Common\Ast\Node\NodeList;
 
-class TryCatchNode extends \Mystique\PHP\Node\BranchAbstract {
+class TryCatchNode extends BranchAbstract {
     function setTry(NodeList $try) {
         $this->children[0] = new TryNode($try);
     }

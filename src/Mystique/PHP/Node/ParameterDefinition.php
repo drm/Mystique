@@ -2,8 +2,10 @@
 
 namespace Mystique\PHP\Node;
 
-use \Mystique\Compiler\Compilable;
-use \Mystique\Compiler\CompilerInterface;
+use \Mystique\Common\Compiler\Compilable;
+use \Mystique\Common\Compiler\CompilerInterface;
+use Mystique\Common\Ast\Node\BranchAbstract;
+use Mystique\Common\Ast\Node\Node;
 
 class ParameterDefinition extends BranchAbstract implements Compilable {
     private $typeHint;

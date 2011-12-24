@@ -3,9 +3,10 @@ namespace MystiqueTest\PHP\Node;
 use \Mystique\PHP\Node\Variable;
 use \Mystique\PHP\Node\Value;
 use \Mystique\PHP\Token\Operator;
-use \Mystique\PHP\Node\ExpressionAbstract;
-use \Mystique\PHP\Node\BinaryExpression;
-use \Mystique\PHP\Node\UnaryExpression;
+use Mystique\Common\Ast\Node\Expr\ExpressionAbstract;
+use Mystique\Common\Ast\Node\Expr\BinaryExpression;
+use Mystique\Common\Ast\Node\Expr\UnaryExpression;
+use Mystique\Common\Ast\Node\Expr\ParenthesizedExpression;
 use \Mystique\PHP\Node\Name;
 
 use PHPUnit_Framework_TestCase;
@@ -13,7 +14,7 @@ use PHPUnit_Framework_TestCase;
 
 class ExpressionTest extends PHPUnit_Framework_TestCase {
     function setUp() {
-        $this->compiler = new \Mystique\Compiler\Compiler();
+        $this->compiler = new \Mystique\Common\Compiler\Compiler();
     }
 
 
@@ -23,7 +24,7 @@ class ExpressionTest extends PHPUnit_Framework_TestCase {
     
 
     function testCompilationOfBinaryExpressionWithParentheses() {
-        $expr = new \Mystique\PHP\Node\ParenthesizedExpression(new BinaryExpression(
+        $expr = new ParenthesizedExpression(new BinaryExpression(
             new Variable('a'),
             new Operator('&&'),
             new Variable('b')
@@ -55,7 +56,7 @@ class ExpressionTest extends PHPUnit_Framework_TestCase {
 
 
     function testCompilationOfUnaryExpressionWithParentheses() {
-        $expr = new \Mystique\PHP\Node\ParenthesizedExpression(new UnaryExpression(
+        $expr = new ParenthesizedExpression(new UnaryExpression(
             new Operator('new'),
             new Name('\a\b\c')
         ));

@@ -10,7 +10,7 @@ class FunctionBuilderTest extends \MystiqueTest\TestCase {
     {
         $this->node = new FunctionNode('some_function');
         $this->builder = new FunctionBuilder($this->node, '\Mystique\PHP\Node\\');
-        $this->compiler = new \Mystique\Compiler\Compiler();
+        $this->compiler = new \Mystique\Common\Compiler\Compiler();
     }
 
     function testEmptyBuildWillYieldEmptyFunction() {
