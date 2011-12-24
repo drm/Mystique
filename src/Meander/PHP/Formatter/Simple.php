@@ -10,6 +10,7 @@ use \Meander\PHP\Token\Token;
 class Simple implements FormatterInterface {
     protected $indent = '    ';
     protected $indentSize = 0;
+
     /**
      * @var \Meander\PHP\Compiler
      */
@@ -40,7 +41,9 @@ class Simple implements FormatterInterface {
 
 
     function _before(TokenStream $stream) {
-        if(in_array($stream->current()->value, array('=', '+', '&&', '-', '{', '?', ':'))) {
+        if(in_array($stream->current()->value, array(
+            '=', '+', '&&', '-', '{', '?', ':', '.', '==', '+=', '-=', '/=', '*='
+        ))) {
             $this->_write(' ');
         }
         if($stream->current()->value == "}") {
@@ -53,16 +56,19 @@ class Simple implements FormatterInterface {
 
 
     function _after(TokenStream $stream) {
-        if ($stream->current()->type == T_OPEN_TAG) {
+        $current = $stream->current();
+        if ($current->type == T_OPEN_TAG) {
             $this->_write("\n");
-        } elseif ($stream->current()->value == '{') {
+        } elseif ($current->value == '{') {
             $this->indent();
             $this->_write("\n");
-        } elseif(in_array($stream->current()->value, array('if', 'foreach', 'while'))) {
+        } elseif(in_array($current->value, array('if', 'foreach', 'while', 'elseif'))) {
             $this->_write(" ");
-        } elseif(($stream->current()->value == ";" || $stream->current()->value == "}") && substr($this->compiler->result, -1) != "\n") {
+        } elseif(($current->value == ";" || $current->value == "}") && substr($this->compiler->result, -1) != "\n") {
             $this->_write("\n");
-        } elseif(in_array($stream->current()->value, array(',', '=', '+', '&&', '-'))) {
+        } elseif(in_array($current->value, array(
+            ',', '=', '+', '=', '+', '&&', '||', '-', '{', '?', ':', '.', '==', '+=', '-=', '/=', '*='
+        ))) {
             $this->_write(' ');
         }
     }
