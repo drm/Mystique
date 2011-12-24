@@ -4,6 +4,7 @@ namespace Mystique\PHP\Parser;
 
 use \Mystique\Common\Token\TokenStream;
 use \Mystique\PHP\Node\Html;
+use Mystique\Common\Parser\Parser;
 
 class HtmlParser implements Parser {
     function parse(TokenStream $stream) {

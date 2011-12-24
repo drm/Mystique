@@ -5,6 +5,7 @@ use \Mystique\Common\Token\TokenStream;
 use \Mystique\PHP\Node\LanguageConstruct;
 use Mystique\Common\Ast\Node\NodeList;
 use Mystique\PHP\Node\ExprList;
+use Mystique\Common\Parser\ParserSub;
 
 class LanguageConstructParser extends ParserSub {
     public static $types = array(

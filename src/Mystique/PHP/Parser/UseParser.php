@@ -3,7 +3,7 @@ namespace Mystique\PHP\Parser;
 
 use \Mystique\PHP\Node\UseNode;
 use \Mystique\Common\Token\TokenStream;
-
+use Mystique\Common\Parser\ParserSub;
 
 class UseParser extends ParserSub {
     function parse(TokenStream $stream) {

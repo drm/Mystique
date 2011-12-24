@@ -11,6 +11,8 @@ use \Mystique\Common\Ast\Node\Expr\BinaryExpression;
 use \Mystique\Common\Ast\Node\Expr\UnaryExpression;
 use \Mystique\Common\Ast\Node\Expr\ParenthesizedExpression;
 use \Mystique\Common\Ast\Node\Node;
+use Mystique\Common\Parser\ExpressionParser as ExpressionParserInterface;
+use Mystique\Common\Parser\ParserBase;
 use \Mystique\PHP\Node\TernaryExpression;
 use \Mystique\PHP\Node\NestedVariable;
 use \Mystique\PHP\Token\Type;
@@ -21,7 +23,7 @@ use \Mystique\PHP\Node\NamespacedName;
 use \Mystique\PHP\Node\Call;
 
 
-class ExpressionParser implements Parser
+class ExpressionParser implements ExpressionParserInterface
 {
     protected $parsers = array();
 

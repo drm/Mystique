@@ -1,6 +1,6 @@
 <?php
 
-namespace Mystique\PHP\Parser;
+namespace Mystique\Common\Parser;
 
 use Mystique\Common\Ast\Node\NodeList;
 use \Mystique\Common\Token\TokenStream;
@@ -12,12 +12,22 @@ abstract class ParserBase implements Parser
     protected $parsers = array();
     protected $expressionParser = null;
 
-    function __construct()
+    function __construct(ExpressionParser $expressionParser = null)
     {
+        $this->expressionParser = $expressionParser;
         $this->stack = array();
     }
 
 
+    /**
+     * Does a recursive descent on the registered child parsers.
+     *
+     * @param \Mystique\Common\Token\TokenStream $stream
+     * @param callable $callback
+     * @return NodeList
+     *
+     * @throws \InvalidArgumentException|\UnexpectedValueException
+     */
     function subparse(TokenStream $stream, $callback)
     {
         if ($callback !== true && !is_callable($callback)) {
@@ -27,6 +37,7 @@ abstract class ParserBase implements Parser
         while ($stream->valid()) {
             $haveMatch = false;
             foreach ($this->parsers as $parser) {
+                /** @var \Mystique\Common\Parser\Parser $parser */
                 if ($parser->match($stream)) {
                     $node = $parser->parse($stream);
                     if (!$node instanceof Node) {
@@ -65,13 +76,10 @@ abstract class ParserBase implements Parser
         return $this->getExpressionParser()->parseName($stream);
     }
 
-    /**
-     * @return \Mystique\PHP\Parser\ExpressionParser
-     */
     function getExpressionParser()
     {
-        if (null === $this->expressionParser) {
-            $this->expressionParser = new ExpressionParser($this);
+        if(is_null($this->expressionParser)) {
+            throw new \LogicException("Expression parser requested, but not available");
         }
         return $this->expressionParser;
     }

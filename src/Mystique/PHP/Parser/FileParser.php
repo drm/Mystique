@@ -2,8 +2,9 @@
 
 namespace Mystique\PHP\Parser;
 use \Mystique\Common\Token\TokenStream;
+use Mystique\Common\Parser\ParserBase;
 
-class FileParser extends \Mystique\PHP\Parser\ParserBase {
+class FileParser extends ParserBase {
     function __construct() {
         parent::__construct();
         $this->parsers[] = new PhpParser();

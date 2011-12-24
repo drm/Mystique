@@ -6,12 +6,13 @@ use Mystique\Common\Token\TokenStream;
 use Mystique\Common\Util\PairMatcher;
 use \Mystique\PHP\Node\ClassNode;
 use \Mystique\PHP\Node\Raw;
+use Mystique\Common\Parser\ParserBase;
 
 class ClassParser extends ParserBase
 {
     function __construct(ParserBase $parent)
     {
-        parent::__construct();
+        parent::__construct($parent->getExpressionParser());
         $this->parsers[]= new MethodParser($parent);
         $this->parsers[]= new PropertyParser($parent);
         $this->parsers[]= new ConstantParser($parent);

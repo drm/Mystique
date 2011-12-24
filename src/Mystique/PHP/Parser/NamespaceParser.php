@@ -2,6 +2,7 @@
 namespace Mystique\PHP\Parser;
 use \Mystique\Common\Token\TokenStream;
 use \Mystique\PHP\Node\NamespaceNode;
+use Mystique\Common\Parser\ParserSub;
 
 class NamespaceParser extends ParserSub {
     function parse(TokenStream $stream) {

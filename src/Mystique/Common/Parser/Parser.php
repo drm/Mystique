@@ -1,6 +1,6 @@
 <?php
 
-namespace Mystique\PHP\Parser;
+namespace Mystique\Common\Parser;
 
 use Mystique\Common\Token\TokenStream;
 

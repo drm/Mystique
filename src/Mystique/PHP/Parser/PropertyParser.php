@@ -3,12 +3,14 @@ namespace Mystique\PHP\Parser;
 
 use \Mystique\Common\Token\TokenStream;
 use Mystique\Common\Ast\Node\NodeList;
+use Mystique\PHP\Node\PropertyNode;
+use Mystique\Common\Parser\ParserSub;
 
 class PropertyParser extends ParserSub
 {
     function parse(TokenStream $stream)
     {
-        $ret = new \Mystique\PHP\Node\PropertyNode();
+        $ret = new PropertyNode();
         while ($stream->match(array(T_STATIC, T_PUBLIC, T_PRIVATE, T_PROTECTED))) {
             switch ($stream->current()->type) {
                 case T_STATIC:

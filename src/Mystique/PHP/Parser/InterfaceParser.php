@@ -3,15 +3,15 @@
 namespace Mystique\PHP\Parser;
 
 use \Mystique\Common\Token\TokenStream;
-use \Mystique\PHP\Token\PairMatcher;
 use \Mystique\PHP\Node\InterfaceNode;
+use Mystique\Common\Parser\ParserBase;
 use \Mystique\PHP\Node\Raw;
 
 class InterfaceParser extends ParserBase
 {
-    function __construct($parent)
+    function __construct(ParserBase $parent)
     {
-        parent::__construct();
+        parent::__construct($parent->getExpressionParser());
         $this->parsers[]= new InterfaceMethodParser($parent);
         $this->parsers[]= new PropertyParser($parent);
         $this->parsers[]= new ConstantParser($parent);

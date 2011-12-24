@@ -4,6 +4,7 @@ namespace Mystique\PHP\Parser;
 
 use \Mystique\Common\Token\TokenStream;
 use \Mystique\PHP\Node\Statement;
+use Mystique\Common\Parser\ParserSub;
 
 class StatementParser extends ParserSub {
     function parse(TokenStream $stream) {

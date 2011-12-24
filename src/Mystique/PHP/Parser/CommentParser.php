@@ -2,6 +2,7 @@
 namespace Mystique\PHP\Parser;
 use \Mystique\Common\Token\TokenStream;
 use \Mystique\PHP\Node\Comment;
+use Mystique\Common\Parser\ParserSub;
 
 class CommentParser extends ParserSub {
     function parse(TokenStream $stream)

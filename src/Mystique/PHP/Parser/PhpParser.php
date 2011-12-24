@@ -6,11 +6,12 @@ use \Mystique\Common\Token\TokenStream;
 use \Mystique\PHP\Node\Raw;
 use \Mystique\PHP\Node\Php;
 use \Mystique\PHP\Parser\UseParser;
+use Mystique\Common\Parser\ParserBase;
 
 
 class PhpParser extends ParserBase {
     function __construct() {
-        parent::__construct();
+        parent::__construct(new ExpressionParser($this));
 
         $this->parsers = array(
             'class'         => new ClassParser($this),

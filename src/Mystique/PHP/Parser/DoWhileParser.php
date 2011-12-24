@@ -3,6 +3,7 @@ namespace Mystique\PHP\Parser;
 
 use \Mystique\Common\Token\TokenStream;
 use \Mystique\PHP\Node\DoWhileNode;
+use Mystique\Common\Parser\ParserSub;
 
 class DoWhileParser extends ParserSub {
     function parse(TokenStream $stream) {

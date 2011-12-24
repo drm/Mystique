@@ -6,6 +6,7 @@ use \Mystique\PHP\Node\SwitchNode;
 use \Mystique\PHP\Node\CaseNode;
 use \Mystique\PHP\Node\CaseDefaultNode;
 use \Mystique\Common\Token\TokenStream;
+use Mystique\Common\Parser\ParserSub;
 
 class SwitchParser extends ParserSub {
     function parse(TokenStream $stream) {

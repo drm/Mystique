@@ -3,6 +3,7 @@
 namespace Mystique\PHP\Parser;
 
 use \Mystique\Common\Token\TokenStream;
+use Mystique\Common\Parser\ParserSub;
 
 class ConstantParser extends ParserSub {
     function parse(TokenStream $stream)

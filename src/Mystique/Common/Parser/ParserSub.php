@@ -1,5 +1,6 @@
 <?php
-namespace Mystique\PHP\Parser;
+
+namespace Mystique\Common\Parser;
 
 abstract class ParserSub implements Parser {
     function __construct(ParserBase $parent) {

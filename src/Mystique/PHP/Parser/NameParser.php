@@ -4,6 +4,7 @@ namespace Mystique\PHP\Parser;
 use \Mystique\PHP\Node\Name;
 use \Mystique\PHP\Node\NamespacedName;
 use Mystique\Common\Token\TokenStream;
+use Mystique\Common\Parser\Parser;
 
 class NameParser implements Parser {
     public static $functionLikeConstructs = array(
