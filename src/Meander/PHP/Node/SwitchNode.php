@@ -16,7 +16,9 @@ class SwitchNode extends BranchAbstract {
         $compiler->compile($this->children[0]);
         $compiler->write(')');
         $compiler->write('{');
-        $compiler->compile($this->children[1]);
+        for($i = 1; $i < count($this->children); $i ++) {
+            $compiler->compile($this->children[$i]);
+        }
         $compiler->write('}');
     }
 
