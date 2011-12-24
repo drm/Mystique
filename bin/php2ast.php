@@ -14,11 +14,11 @@ if(empty($_SERVER['argv'][1])) {
 $file = $_SERVER['argv'][1];
 
 try {
-    $parser = new \Meander\PHP\Parser\PhpParser();
-    $root = $parser->parse(new \Meander\PHP\Token\TokenStream(\Meander\PHP\Token\Tokenizer::tokenize(file_get_contents($file))));
+    $parser = new \Mystique\PHP\Parser\PhpParser();
+    $root = $parser->parse(new \Mystique\PHP\Token\TokenStream(\Mystique\PHP\Token\Tokenizer::tokenize(file_get_contents($file))));
 
-    $xml = new \Meander\PHP\Compiler\XmlCompiler();
-    $walker = new \Meander\PHP\Node\Traverser($xml);
+    $xml = new \Mystique\PHP\Compiler\XmlCompiler();
+    $walker = new \Mystique\PHP\Node\Traverser($xml);
     $walker->traverse($root);
 
     echo $xml;

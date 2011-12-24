@@ -1,6 +1,6 @@
-# Meander: the PHP code analysis, generation, inspection and refactoring library #
+# Mystique: the PHP code analysis, generation, inspection and refactoring library #
 
-Meander is a library that provides tools for easily inspection, analyzing, generating and refactoring PHP code. The
+Mystique is a library that provides tools for easily inspection, analyzing, generating and refactoring PHP code. The
 library consists of five separate loosely coupled components: the **parser**, the **compiler**, the **inspector** and
 the **builder** and **refactoring**. Combining these components allow you to:
 
@@ -22,9 +22,9 @@ version accepts only one argument, which contains the same options as an array. 
 the following refactoring plugin:
 
 ````
-class FooNowAcceptsOnlyArrays implements \Meander\Refactoring\Refactoring {
+class FooNowAcceptsOnlyArrays implements \Mystique\Refactoring\Refactoring {
     function finder() {
-        return new \Meander\PHP\Inspector\Usage('\Foo', '__construct');
+        return new \Mystique\PHP\Inspector\Usage('\Foo', '__construct');
     }
 
 
@@ -60,27 +60,27 @@ The refactoring can generate a diff, or apply the changes directly.
 ### Aspect Oriented Programming and Mixins ###
 By providing annotations to pieces of code, you can add Aspect Oriented programming to PHP, which it natively does
 not support. It does so by Mixins, which simply process the classes, functions or methods you apply the mixin to.
-Meander comes with a set of default mixins that handle the dirty work for you. Of course, you can apply multiple
+Mystique comes with a set of default mixins that handle the dirty work for you. Of course, you can apply multiple
 mixins to a single method or class, they just get chained iteratively.
 
 /**
- * @Meander\Processor\Mixin(\My\Aspect)
+ * @Mystique\Processor\Mixin(\My\Aspect)
  */
 
 ### Auto-compilation ###
-Since Meander provides its own autoloader, there is a simple way to divert from standard autoloading and have the
+Since Mystique provides its own autoloader, there is a simple way to divert from standard autoloading and have the
 autoloader take care of class compilation for you. This way, you don't have to worry about compiling code before running
 it, the autoloader will take care of that. There are two default strategies available for auto-compilation.
 
 #### Same-folder compilation ####
-Following Python, Meander comes with "same folder compilation", which puts the compiled versions of files directly next
+Following Python, Mystique comes with "same folder compilation", which puts the compiled versions of files directly next
 to the source files. You can define your own renaming algorithm, but by default the .php suffix is replaced by a .c.php
 suffix. The autoloader works nice with this, so it detects whether a compiled file is available, and if not, recompiles
 it using your own compiler directives.
 
 ### Pre-processor directives ###
 PHP misses a simple feature that is available in C and C++. Preprocessing. PHP does, however, have a hash symbol that is
-rarely used for just comments. Meander comes with a set of preprocessing tools that allow you to add logic to the code
+rarely used for just comments. Mystique comes with a set of preprocessing tools that allow you to add logic to the code
 that you would not want available in all distributions of your code. For example, in production environments it would
 
 ## Roadmap ##
