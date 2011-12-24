@@ -5,7 +5,7 @@ use \Meander\Compiler\CompilerInterface;
 use \Meander\Compiler\Compilable;
 use InvalidArgumentException;
 
-class MethodDeclaration extends MemberDefinitionAbstract implements Compilable {
+class MethodDeclaration extends MemberDeclarationAbstract implements Compilable {
     protected $body;
 
     function __construct($name = null) {

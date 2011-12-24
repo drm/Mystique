@@ -395,3 +395,45 @@ OUT
 ---
 
 
+
+IN
+---
+<?php
+
+switch(true) {
+    case $a instanceof \Some\Cool\ClassName:
+        throw new Exception();
+}
+---
+OUT
+---
+<ast>
+    <php>
+        <switch>
+            <boolean>true</boolean>
+            <case>
+                <binary-expression>
+                    <variable>a</variable>
+                    <operator>instanceof</operator>
+                    <namespaced-name>
+                        <namespace>\Some\Cool\</namespace>
+                        <name>ClassName</name>
+                    </namespaced-name>
+                </binary-expression>
+                <body>
+                    <throw>
+                        <call>
+                            <unary-expression>
+                                <operator>new</operator>
+                                <name>Exception</name>
+                            </unary-expression>
+                        </call>
+                    </throw>
+                </body>
+            </case>
+        </switch>
+    </php>
+</ast>
+---
+
+

@@ -342,3 +342,110 @@ OUT
     </class>
 </ast>
 ---
+
+IN
+---
+class A {
+    public $property = 'value';
+}
+---
+OUT
+---
+<ast>
+    <class>
+        <declaration>
+            <name>A</name>
+        </declaration>
+        <definition>
+            <property>
+                <declaration visibility="public" />
+                <definition>
+                    <variable>property</variable>
+                    <string>value</string>
+                </definition>
+            </property>
+        </definition>
+    </class>
+</ast>
+---
+
+IN
+---
+class A {
+    static $property = 'value';
+}
+---
+OUT
+---
+<ast>
+    <class>
+        <declaration>
+            <name>A</name>
+        </declaration>
+        <definition>
+            <property>
+                <declaration static="true" />
+                <definition>
+                    <variable>property</variable>
+                    <string>value</string>
+                </definition>
+            </property>
+        </definition>
+    </class>
+</ast>
+---
+
+IN
+---
+class A {
+    public static $property = 'value';
+}
+---
+OUT
+---
+<ast>
+    <class>
+        <declaration>
+            <name>A</name>
+        </declaration>
+        <definition>
+            <property>
+                <declaration visibility="public" static="true" />
+                <definition>
+                    <variable>property</variable>
+                    <string>value</string>
+                </definition>
+            </property>
+        </definition>
+    </class>
+</ast>
+---
+IN
+---
+class A {
+    public static $property = 'value', $anotherProperty = 'anotherValue';
+}
+---
+OUT
+---
+<ast>
+    <class>
+        <declaration>
+            <name>A</name>
+        </declaration>
+        <definition>
+            <property>
+                <declaration visibility="public" static="true" />
+                <definition>
+                    <variable>property</variable>
+                    <string>value</string>
+                </definition>
+                <definition>
+                    <variable>anotherProperty</variable>
+                    <string>anotherValue</string>
+                </definition>
+            </property>
+        </definition>
+    </class>
+</ast>
+---

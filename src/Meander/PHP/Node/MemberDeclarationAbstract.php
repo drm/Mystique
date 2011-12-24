@@ -4,7 +4,7 @@ use \Meander\Compiler\Compilable;
 use \Meander\Compiler\Compiler;
 use InvalidArgumentException;
 
-abstract class MemberDefinitionAbstract extends BranchAbstract implements Compilable {
+abstract class MemberDeclarationAbstract extends BranchAbstract implements Compilable {
     const IS_PRIVATE    = 'private';
     const IS_PUBLIC     = 'public';
     const IS_PROTECTED  = 'protected';

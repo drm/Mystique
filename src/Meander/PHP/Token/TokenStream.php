@@ -208,14 +208,6 @@ class TokenStream implements Iterator, Countable
     public function assert($token, $value = null) {
         if (!$this->match($token, $value)) {
             $this->err($token, $value);
-//
-//            $msg = "Unexpected token {$this->current()->verbose()} near " . $this->getContext() . '; expected ';
-//            if($value) {
-//            } else {
-//                $msg .= '; expected ' . $token;
-//            }
-//
-//            throw new UnexpectedValueException($msg);
         }
     }
 

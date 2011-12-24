@@ -1,0 +1,92 @@
+IN
+---
+switch (true) {
+    case true:
+    case false:
+    default:
+}
+---
+OUT
+---
+<ast>
+    <switch>
+        <boolean>true</boolean>
+        <case>
+            <boolean>true</boolean>
+            <body />
+        </case>
+        <case>
+            <boolean>false</boolean>
+            <body />
+        </case>
+        <default>
+            <body />
+        </default>
+    </switch>
+</ast>
+---
+
+IN
+---
+switch (true) {
+    case true:
+        fn();
+        fn();
+}
+---
+OUT
+---
+<ast>
+    <switch>
+        <boolean>true</boolean>
+        <case>
+            <boolean>true</boolean>
+            <body>
+                <statement>
+                    <call>
+                        <name>fn</name>
+                    </call>
+                </statement>
+                <statement>
+                    <call>
+                        <name>fn</name>
+                    </call>
+                </statement>
+            </body>
+        </case>
+    </switch>
+</ast>
+---
+IN
+---
+switch (true) {
+    case true:
+        fn();
+        break;
+        fn();
+}
+---
+OUT
+---
+<ast>
+    <switch>
+        <boolean>true</boolean>
+        <case>
+            <boolean>true</boolean>
+            <body>
+                <statement>
+                    <call>
+                        <name>fn</name>
+                    </call>
+                </statement>
+                <break />
+                <statement>
+                    <call>
+                        <name>fn</name>
+                    </call>
+                </statement>
+            </body>
+        </case>
+    </switch>
+</ast>
+---

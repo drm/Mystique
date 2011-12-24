@@ -3,38 +3,29 @@ namespace Meander\PHP\Node;
 use \Meander\Compiler\Compilable;
 use \Meander\Compiler\CompilerInterface;
 
-class PropertyDefinition extends MemberDefinitionAbstract {
+class PropertyDefinition extends MemberDeclarationAbstract {
     protected $visibility = 'public';
-    private $name;
-    private $defaultValue;
-
-    function __construct($name = null) {
-        parent::__construct();
-        if(!is_null($name)) {
-            $this->name = $name;
-        }
-    }
 
 
     function setName($name) {
-        $this->name = $name;
+        $this->children[0] = $name;
     }
 
 
     function setDefaultValue(Compilable $defaultValue) {
-        $this->defaultValue = $defaultValue;
+        $this->children[1] = $defaultValue;
     }
 
 
     function compile(CompilerInterface $compiler) {
-        if(!$this->hasAttribute('visibility') && !$this->hasAttribute('static')) {
-            $this->setVisibility(self::IS_PUBLIC);
+        $compiler->compile($this->children[0]);
+        if(isset($this->children[1])) {
+            $compiler->write('=')->compile($this->children[1]);
         }
-        $this->compileDefinition($compiler);
-        $compiler->write('$' . $this->name);
-        if($this->defaultValue) {
-            $compiler->write('=')->compile($this->defaultValue);
-        }
-        $compiler->write(';');
+    }
+
+    function getNodeType()
+    {
+        return 'Definition';
     }
 }
