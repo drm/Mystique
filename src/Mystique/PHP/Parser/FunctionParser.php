@@ -1,7 +1,7 @@
 <?php
 
 namespace Mystique\PHP\Parser;
-use \Mystique\PHP\Token\TokenStream;
+use \Mystique\Common\Token\TokenStream;
 use \Mystique\PHP\Node\FunctionNode;
 use \Mystique\PHP\Node\ParameterDefinition;
 use \Mystique\PHP\Node\Variable;

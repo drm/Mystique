@@ -1,6 +1,7 @@
 <?php
 namespace Mystique\PHP\Builder;
 
+use Mystique\Common\Token\TokenStream;
 
 class PhpBuilder extends BuilderAbstract
 {
@@ -8,7 +9,7 @@ class PhpBuilder extends BuilderAbstract
     {
         $nameparser = new \Mystique\PHP\Parser\NameParser();
         $nameparserCallback = function($string) use($nameparser) {
-            return $nameparser->parse(new \Mystique\PHP\Token\TokenStream(\Mystique\PHP\Token\Tokenizer::tokenizePhp($string)));
+            return $nameparser->parse(new TokenStream(\Mystique\PHP\Token\Tokenizer::tokenizePhp($string)));
         };
         $this->methodMap = array(
             'cls' => new MethodMapper('add', 'ClassNode', 'ClassBuilder', new ParameterMapper(array($nameparserCallback))),

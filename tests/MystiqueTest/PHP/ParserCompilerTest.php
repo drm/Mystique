@@ -15,7 +15,7 @@ class ParserCompilerTest extends \MystiqueTest\TestCase {
     function testThatCompilingParsedDoesNotAffectSyntax($file) {
         $this->assertSyntaxEquals(
             file_get_contents($file),
-            $this->compiler->compile($this->parser->parse(new \Mystique\PHP\Token\TokenStream(\Mystique\PHP\Token\Tokenizer::tokenize(file_get_contents($file)))))->result
+            $this->compiler->compile($this->parser->parse(new \Mystique\Common\Token\TokenStream(\Mystique\PHP\Token\Tokenizer::tokenize(file_get_contents($file)))))->result
         );
     }
 

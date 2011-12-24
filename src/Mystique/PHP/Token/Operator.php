@@ -5,6 +5,7 @@ use \Mystique\Common\Compiler\CompilerInterface;
 
 use Mystique\Common\Ast\Node\Leaf;
 use Mystique\Common\Compiler\Compilable;
+use Mystique\Common\Token\Token;
 
 class Operator extends Token implements Leaf, Compilable {
     function __construct($token) {

@@ -2,10 +2,10 @@
 
 namespace Mystique\PHP\Formatter;
 
-use \Mystique\PHP\Token\Tokenizer;
-use \Mystique\PHP\Token\TokenStream;
 use \Mystique\Common\Compiler\Compiler;
-use \Mystique\PHP\Token\Token;
+use Mystique\Common\Token\Token;
+use Mystique\Common\Token\TokenStream;
+use Mystique\PHP\Token\Tokenizer;
 
 class Simple implements FormatterInterface {
     protected $indent = '    ';

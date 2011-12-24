@@ -2,9 +2,9 @@
 
 namespace Mystique\PHP\Parser;
 
-use \Mystique\PHP\Token\TokenStream;
+use \Mystique\Common\Token\TokenStream;
 use \Mystique\PHP\Node\Raw;
-use \Mystique\PHP\Token\PairMatcher;
+use Mystique\Common\Util\PairMatcher;
 
 class BlockParser implements Parser {
     function __construct($type) {

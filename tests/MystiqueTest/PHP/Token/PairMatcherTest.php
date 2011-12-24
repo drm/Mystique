@@ -3,8 +3,8 @@
 namespace MystiqueTest\PHP\Token;
 
 use \Mystique\PHP\Token\Tokenizer;
-use \Mystique\PHP\Token\TokenStream;
-use \Mystique\PHP\Token\PairMatcher;
+use \Mystique\Common\Token\TokenStream;
+use Mystique\Common\Util\PairMatcher;
 use PHPUnit_Framework_TestCase;
 
 

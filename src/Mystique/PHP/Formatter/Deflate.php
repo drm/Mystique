@@ -3,7 +3,7 @@
 namespace Mystique\PHP\Formatter;
 
 use \Mystique\PHP\Token\Tokenizer;
-use \Mystique\PHP\Token\TokenStream;
+use Mystique\Common\Token\TokenStream;
 
 class Deflate implements FormatterInterface {
     function __construct($stripComments = true) {

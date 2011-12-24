@@ -3,7 +3,7 @@
 namespace MystiqueTest\PHP\Parser;
 
 use \Mystique\PHP\Parser\ClassParser;
-use \Mystique\PHP\Token\TokenStream;
+use \Mystique\Common\Token\TokenStream;
 use \Mystique\PHP\Token\Tokenizer;
 use PHPUnit_Framework_TestCase;
 
@@ -59,7 +59,7 @@ class ClassParserTest extends \MystiqueTest\TestCase {
      */
     function testParserCases($code, $ast) {
         $parser = new ClassParser(new \Mystique\PHP\Parser\PhpParser());
-        $stream = new \Mystique\PHP\Token\TokenStream(\Mystique\PHP\Token\Tokenizer::tokenizePhp($code));
+        $stream = new \Mystique\Common\Token\TokenStream(\Mystique\PHP\Token\Tokenizer::tokenizePhp($code));
         $node = $parser->parse($stream);
         $this->assertASTEquals($ast, $node);
         if($stream->valid()) {

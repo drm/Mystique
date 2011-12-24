@@ -8,7 +8,7 @@ abstract class AbstractParserIntegrationTest extends \MystiqueTest\TestCase {
      * @dataProvider readTestCasesFromFile
      */
     function testParserCases($code, $ast) {
-        $stream = new \Mystique\PHP\Token\TokenStream(\Mystique\PHP\Token\Tokenizer::tokenizePhp($code));
+        $stream = new \Mystique\Common\Token\TokenStream(\Mystique\PHP\Token\Tokenizer::tokenizePhp($code));
         $node = $this->getParser()->parse($stream);
         $this->assertASTEquals($ast, $node);
     }

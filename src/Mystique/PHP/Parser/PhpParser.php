@@ -2,7 +2,7 @@
 
 namespace Mystique\PHP\Parser;
 
-use \Mystique\PHP\Token\TokenStream;
+use \Mystique\Common\Token\TokenStream;
 use \Mystique\PHP\Node\Raw;
 use \Mystique\PHP\Node\Php;
 use \Mystique\PHP\Parser\UseParser;

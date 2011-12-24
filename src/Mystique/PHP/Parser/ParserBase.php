@@ -3,7 +3,7 @@
 namespace Mystique\PHP\Parser;
 
 use Mystique\Common\Ast\Node\NodeList;
-use \Mystique\PHP\Token\TokenStream;
+use \Mystique\Common\Token\TokenStream;
 use \Mystique\PHP\Node\Raw;
 use Mystique\Common\Ast\Node\Node;
 

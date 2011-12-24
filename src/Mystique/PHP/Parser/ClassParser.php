@@ -2,8 +2,8 @@
 
 namespace Mystique\PHP\Parser;
 
-use \Mystique\PHP\Token\TokenStream;
-use \Mystique\PHP\Token\PairMatcher;
+use Mystique\Common\Token\TokenStream;
+use Mystique\Common\Util\PairMatcher;
 use \Mystique\PHP\Node\ClassNode;
 use \Mystique\PHP\Node\Raw;
 
@@ -25,7 +25,7 @@ class ClassParser extends ParserBase
 
 
     /**
-     * @param \Mystique\PHP\Token\TokenStream $stream
+     * @param \Mystique\Common\Token\TokenStream $stream
      * @return \Mystique\PHP\Node\ClassNode
      */
     function parse(TokenStream $stream)

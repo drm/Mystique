@@ -18,7 +18,7 @@ class ExpressionParserTest extends \MystiqueTest\TestCase {
      */
     function testParseArgumentList($arglist, $allowEmpty = false, $ast = null) {
         $p = new ExpressionParser(new BodyParser());
-        $stream = new \Mystique\PHP\Token\TokenStream(\Mystique\PHP\Token\Tokenizer::tokenizePhp($arglist));
+        $stream = new \Mystique\Common\Token\TokenStream(\Mystique\PHP\Token\Tokenizer::tokenizePhp($arglist));
         $stream->expect('(');
         $list = $p->parseList($stream, $allowEmpty);
         $stream->expect(')');
@@ -44,7 +44,7 @@ class ExpressionParserTest extends \MystiqueTest\TestCase {
      */
     function testParseName($strName) {
         $p = new ExpressionParser();
-        $stream = new \Mystique\PHP\Token\TokenStream(\Mystique\PHP\Token\Tokenizer::tokenizePhp($strName));
+        $stream = new \Mystique\Common\Token\TokenStream(\Mystique\PHP\Token\Tokenizer::tokenizePhp($strName));
         $p->parseName($stream);
         $this->assertFalse($stream->valid());
     }
@@ -63,7 +63,7 @@ class ExpressionParserTest extends \MystiqueTest\TestCase {
      */
     function testParseValue($strName) {
         $p = new ExpressionParser();
-        $stream = new \Mystique\PHP\Token\TokenStream(\Mystique\PHP\Token\Tokenizer::tokenizePhp($strName));
+        $stream = new \Mystique\Common\Token\TokenStream(\Mystique\PHP\Token\Tokenizer::tokenizePhp($strName));
         $p->parseValue($stream);
         $this->assertFalse($stream->valid());
     }
@@ -91,7 +91,7 @@ class ExpressionParserTest extends \MystiqueTest\TestCase {
      */
     function testParser($code, $ast) {
         $parser = new ExpressionParser(new BodyParser());
-        $stream = new \Mystique\PHP\Token\TokenStream(\Mystique\PHP\Token\Tokenizer::tokenizePhp($code));
+        $stream = new \Mystique\Common\Token\TokenStream(\Mystique\PHP\Token\Tokenizer::tokenizePhp($code));
         $node = $parser->parse($stream);
         $this->assertASTEquals($ast, $node);
         if($stream->valid()) {

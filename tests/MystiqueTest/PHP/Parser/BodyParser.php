@@ -1,6 +1,6 @@
 <?php
 namespace MystiqueTest\PHP\Parser;
-use \Mystique\PHP\Token\TokenStream;
+use \Mystique\Common\Token\TokenStream;
 
 class BodyParser extends \Mystique\PHP\Parser\ParserBase {
     function __construct()

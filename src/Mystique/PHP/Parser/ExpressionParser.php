@@ -4,21 +4,21 @@ namespace Mystique\PHP\Parser;
 
 use UnexpectedValueException;
 
-use \Mystique\PHP\Token\TokenStream;
+use \Mystique\Common\Util\PairMatcher;
+use \Mystique\Common\Token\TokenStream;
+use \Mystique\Common\Ast\Node\Expr\ExpressionAbstract;
+use \Mystique\Common\Ast\Node\Expr\BinaryExpression;
+use \Mystique\Common\Ast\Node\Expr\UnaryExpression;
+use \Mystique\Common\Ast\Node\Expr\ParenthesizedExpression;
+use \Mystique\Common\Ast\Node\Node;
+use \Mystique\PHP\Node\TernaryExpression;
+use \Mystique\PHP\Node\NestedVariable;
 use \Mystique\PHP\Token\Type;
 use \Mystique\PHP\Token\Operator;
-
 use \Mystique\PHP\Node\Value;
 use \Mystique\PHP\Node\Name;
 use \Mystique\PHP\Node\NamespacedName;
 use \Mystique\PHP\Node\Call;
-use Mystique\Common\Ast\Node\Expr\ExpressionAbstract;
-use Mystique\Common\Ast\Node\Expr\BinaryExpression;
-use Mystique\Common\Ast\Node\Expr\UnaryExpression;
-use Mystique\Common\Ast\Node\Expr\ParenthesizedExpression;
-use Mystique\Common\Ast\Node\Node;
-use Mystique\PHP\Node\TernaryExpression;
-use Mystique\PHP\Node\NestedVariable;
 
 
 class ExpressionParser implements Parser
@@ -53,7 +53,7 @@ class ExpressionParser implements Parser
                 $stream->next();
             } else {
                 $op = $stream->expect(Operator::$subscriptOperators);
-                $paren = \Mystique\PHP\Token\PairMatcher::parenOf($op);
+                $paren = PairMatcher::parenOf($op);
                 if (!$stream->match($paren)) {
                     $expr = $this->parse($stream);
                 } else {

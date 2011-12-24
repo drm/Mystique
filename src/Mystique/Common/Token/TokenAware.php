@@ -1,8 +1,7 @@
 <?php
+namespace Mystique\Common\Token;
 
-namespace Mystique\PHP\Token;
-
-use \Mystique\PHP\Token\TokenStream;
+use Mystique\Common\Token\TokenStream;
 
 interface TokenAware {
     function startTokenContext(TokenStream $stream);

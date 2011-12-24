@@ -5,7 +5,7 @@ namespace Mystique\PHP\Node;
 use Mystique\Common\Ast\Node\Expr\BinaryExpression;
 use Mystique\Common\Ast\Node\Node;
 use Mystique\Common\Ast\Node\BranchAbstract;
-use Mystique\PHP\Token\PairMatcher;
+use Mystique\Common\Util\PairMatcher;
 use Mystique\Common\Compiler\CompilerInterface;
 use Mystique\Common\Compiler\Compilable;
 

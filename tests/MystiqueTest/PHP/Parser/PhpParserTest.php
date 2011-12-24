@@ -11,7 +11,7 @@ class PhpParserTest extends \MystiqueTest\TestCase {
      */
     function testParser($code, $ast) {
         $parser = new PhpParser();
-        $stream = new \Mystique\PHP\Token\TokenStream(\Mystique\PHP\Token\Tokenizer::tokenize($code));
+        $stream = new \Mystique\Common\Token\TokenStream(\Mystique\PHP\Token\Tokenizer::tokenize($code));
         $node = $parser->parse($stream);
         $this->assertASTEquals($ast, $node);
     }

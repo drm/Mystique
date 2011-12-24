@@ -1,7 +1,7 @@
 <?php
 
 namespace Mystique\PHP\Parser;
-use \Mystique\PHP\Token\TokenStream;
+use \Mystique\Common\Token\TokenStream;
 
 class FileParser extends \Mystique\PHP\Parser\ParserBase {
     function __construct() {

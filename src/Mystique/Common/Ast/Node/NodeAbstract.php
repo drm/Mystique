@@ -2,8 +2,8 @@
 
 namespace Mystique\Common\Ast\Node;
 
-use \Mystique\PHP\Token\TokenAware;
-use Mystique\PHP\Token\TokenStream;
+use Mystique\Common\Token\TokenAware;
+use Mystique\Common\Token\TokenStream;
 
 abstract class NodeAbstract implements Node, TokenAware {
     protected $attributes = array(), $tokenContext = array();

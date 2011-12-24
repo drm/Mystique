@@ -3,7 +3,7 @@
 namespace MystiqueTest\PHP\Token;
 
 use PHPUnit_Framework_TestCase;
-use \Mystique\PHP\Token\Token;
+use Mystique\Common\Token\Token;
 
 
 /**

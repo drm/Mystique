@@ -1,7 +1,6 @@
 <?php
 
-namespace Mystique\PHP\Token;
-
+namespace Mystique\Common\Token;
 
 /**
  *
@@ -34,8 +33,8 @@ class Token
         if(!is_scalar($this->type)) {
             return $this->value;
         }
-        if(isset(Type::$types[$this->type])) {
-            return sprintf('[%s "%s"]', Type::$types[$this->type], str_replace(array("\n", "\r", "\t"), array('\n', '\r', '\t'), $this->value));
+        if(isset(\Mystique\PHP\Token\Type::$types[$this->type])) {
+            return sprintf('[%s "%s"]', \Mystique\PHP\Token\Type::$types[$this->type], str_replace(array("\n", "\r", "\t"), array('\n', '\r', '\t'), $this->value));
         }
         return $this->type;
     }

@@ -3,13 +3,13 @@
 namespace MystiqueTest\PHP\Token;
 use PHPUnit_Framework_TestCase;
 
-use \Mystique\PHP\Token\Token;
-use \Mystique\PHP\Token\TokenStream;
+use \Mystique\Common\Token\Token;
+use \Mystique\Common\Token\TokenStream;
 use \Mystique\PHP\Token\Tokenizer;
 
 
 /**
- * @covers \Mystique\PHP\Token\TokenStream
+ * @covers \Mystique\Common\Token\TokenStream
  */
 class TokenStreamTest extends PHPUnit_Framework_TestCase {
     function testToString() {

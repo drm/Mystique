@@ -1,7 +1,9 @@
 <?php
 
-namespace Mystique\PHP\Token;
+namespace Mystique\Common\Util;
 
+use Mystique\Common\Token\Token;
+use Mystique\Common\Token\TokenStream;
 use UnexpectedValueException;
 
 class PairMatcher {

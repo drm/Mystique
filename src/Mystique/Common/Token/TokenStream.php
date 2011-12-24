@@ -1,6 +1,6 @@
 <?php
 
-namespace Mystique\PHP\Token;
+namespace Mystique\Common\Token;
 
 use Iterator;
 use ArrayAccess;

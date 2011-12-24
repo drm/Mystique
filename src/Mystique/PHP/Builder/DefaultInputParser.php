@@ -3,7 +3,7 @@
 namespace Mystique\PHP\Builder;
 
 use \Mystique\PHP\Token\Tokenizer;
-use \Mystique\PHP\Token\TokenStream;
+use Mystique\Common\Token\TokenStream;
 
 class DefaultInputParser implements InputParser {
     function __construct() {

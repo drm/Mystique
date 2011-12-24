@@ -1,5 +1,6 @@
 <?php
-namespace Mystique\PHP\Token;
+
+namespace Mystique\Common\Token;
 
 class TokenSlice {
     function __construct(TokenStream $stream, $left, $length) {

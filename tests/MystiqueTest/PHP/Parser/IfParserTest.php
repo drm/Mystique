@@ -13,7 +13,7 @@ class IfParserTest extends \MystiqueTest\TestCase {
      */
     function testParser($code, $ast) {
         $parser = new IfParser(new \Mystique\PHP\Parser\PhpParser());
-        $stream = new \Mystique\PHP\Token\TokenStream(\Mystique\PHP\Token\Tokenizer::tokenizePhp($code));
+        $stream = new \Mystique\Common\Token\TokenStream(\Mystique\PHP\Token\Tokenizer::tokenizePhp($code));
         $node = $parser->parse($stream);
         $this->assertASTEquals($ast, $node);
     }

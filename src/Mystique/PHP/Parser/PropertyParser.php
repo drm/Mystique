@@ -1,7 +1,7 @@
 <?php
 namespace Mystique\PHP\Parser;
 
-use \Mystique\PHP\Token\TokenStream;
+use \Mystique\Common\Token\TokenStream;
 use Mystique\Common\Ast\Node\NodeList;
 
 class PropertyParser extends ParserSub

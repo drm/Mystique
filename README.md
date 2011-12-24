@@ -38,7 +38,7 @@ class FooNowAcceptsOnlyArrays implements \Mystique\Refactoring\Refactoring {
 }
 
 ````
-$ meander refactor -p FooNowAcceptsOnlyArrays
+$ mystique refactor -p FooNowAcceptsOnlyArrays
 Warning: searching for usages is not necessarily safe. Use -v to show possibly false positive usages
 1 usage found:
 my/lib/FooConsumer.php, line 12:     "        $foo = new Foo(new Bar(), new Baz(), new Qux());"
@@ -46,7 +46,7 @@ my/lib/FooConsumer.php, line 12:     "        $foo = new Foo(new Bar(), new Baz(
 1 refactoring available:
 my/lib/FooConsumer.php, line 12:     "        $foo = new Foo(array('baz' => new Bar(), 'bar' => new Baz(), 'qux' => new Qux()));"
 
-$ meander refactor -d FooNowAcceptsOnlyArrays
+$ mystique refactor -d FooNowAcceptsOnlyArrays
 Warning: searching for usages is not necessarily safe. Use -v to show possibly false positive usages
 1 usage found:
 my/lib/FooConsumer.php, line 12:     "        $foo = new Foo(new Bar(), new Baz(), new Qux());"

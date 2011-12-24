@@ -3,7 +3,7 @@
 namespace MystiqueTest\PHP\Parser;
 
 use \Mystique\PHP\Parser\ClosureParser;
-use \Mystique\PHP\Token\TokenStream;
+use \Mystique\Common\Token\TokenStream;
 use \Mystique\PHP\Token\Tokenizer;
 use PHPUnit_Framework_TestCase;
 
@@ -17,7 +17,7 @@ class ClosureParserTest extends \MystiqueTest\TestCase {
      */
     function testParserCases($code, $ast) {
         $parser = new ClosureParser(new BodyParser);
-        $stream = new \Mystique\PHP\Token\TokenStream(\Mystique\PHP\Token\Tokenizer::tokenizePhp($code));
+        $stream = new \Mystique\Common\Token\TokenStream(\Mystique\PHP\Token\Tokenizer::tokenizePhp($code));
         $node = $parser->parse($stream);
         $this->assertASTEquals($ast, $node);
         if($stream->valid()) {
@@ -31,7 +31,7 @@ class ClosureParserTest extends \MystiqueTest\TestCase {
 
     function testMatching() {
         $parser = new ClosureParser(new BodyParser);
-        $this->assertTrue($parser->match(new \Mystique\PHP\Token\TokenStream(\Mystique\PHP\Token\Tokenizer::tokenizePhp('function () {}'))));
-        $this->assertFalse($parser->match(new \Mystique\PHP\Token\TokenStream(\Mystique\PHP\Token\Tokenizer::tokenizePhp('function x () {}'))));
+        $this->assertTrue($parser->match(new \Mystique\Common\Token\TokenStream(\Mystique\PHP\Token\Tokenizer::tokenizePhp('function () {}'))));
+        $this->assertFalse($parser->match(new \Mystique\Common\Token\TokenStream(\Mystique\PHP\Token\Tokenizer::tokenizePhp('function x () {}'))));
     }
 }
