@@ -7,6 +7,9 @@ use \Mystique\PHP\Node\Raw;
 use Mystique\Common\Util\PairMatcher;
 use Mystique\Common\Parser\Parser;
 
+/**
+ * @deprecated
+ */
 class BlockParser implements Parser {
     function __construct($type) {
         $this->type = $type;

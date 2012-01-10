@@ -22,16 +22,20 @@ abstract class NodeAbstract implements Node, TokenAware {
         return $this->attributes;
     }
 
-    function startTokenContext(TokenStream $stream)
+    function startTokenContext(TokenStream $stream, $offset = null)
     {
         $this->tokenContext = array(
             'stream'    => $stream,
-            'start'     => $stream->key(),
+            'start'     => is_null($offset) ? $stream->key() : $offset,
             'end'       => null
         );
     }
 
+
     function endTokenContext(TokenStream $stream) {
+        if(!isset($this->tokenContext['start'])) {
+            throw new \LogicException("Token context ended, but the start was never registered for element [" . get_class($this) . "]");
+        }
         $this->tokenContext['end']= $stream->key();
     }
 

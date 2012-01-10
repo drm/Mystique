@@ -76,6 +76,7 @@ abstract class ParserBase implements Parser
         return $this->getExpressionParser()->parseName($stream);
     }
 
+
     function getExpressionParser()
     {
         if(is_null($this->expressionParser)) {

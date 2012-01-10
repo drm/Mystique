@@ -2,14 +2,22 @@
 
 namespace Mystique\PHP\Token;
 
+use Mystique\Common\Token\Tokenizer as BaseTokenizer;
 
-class Tokenizer {
-    static function tokenize($str) {
+class Tokenizer implements BaseTokenizer {
+    function tokenize($str) {
         return token_get_all($str);
     }
 
-    
-    static function tokenizePhp($str) {
+    function tokenizePhp($str) {
         return array_slice(token_get_all('<?php ' . $str), 1);
+    }
+
+    /**
+     * @return \Mystique\Common\Token\TokenStream
+     */
+    function getTokens($source)
+    {
+        return new \Mystique\Common\Token\TokenStream(self::tokenize($source));
     }
 }

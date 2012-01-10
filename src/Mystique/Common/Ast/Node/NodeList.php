@@ -13,11 +13,6 @@ class NodeList extends ArrayIterator implements Compilable {
     }
 
 
-    function append($node) {
-        parent::append($node);
-    }
-
-
     function compile(CompilerInterface $compiler)
     {
         foreach($this as $node) {

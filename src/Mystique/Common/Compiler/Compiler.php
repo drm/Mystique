@@ -40,4 +40,9 @@ class Compiler implements CompilerInterface
         // Example: $compiler->write('function')->write('foo') would render 'function foo' and not 'functionfoo'.
         return preg_match('/\w/', $str{0}) && preg_match('/\w/', substr($this->result, -1));
     }
+
+
+    function reset() {
+        $this->result = '';
+    }
 }

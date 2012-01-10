@@ -13,7 +13,7 @@ class FileParser extends ParserBase {
 
 
     function parse(TokenStream $stream) {
-        return $this->subparse($stream, function(){ return false; });
+        return new \Mystique\PHP\Node\PhpFile($this->subparse($stream, function(){ return false; }));
     }
 
 

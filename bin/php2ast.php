@@ -1,4 +1,5 @@
 <?php
+
 use Mystique\Common\Ast\AstToXml;
 use Mystique\Common\Ast\Traverser;
 
@@ -17,6 +18,7 @@ if(empty($_SERVER['argv'][1])) {
 $file = $_SERVER['argv'][1];
 
 try {
+    $lang = new \Mystique\PHP\Lang();
     $parser = new \Mystique\PHP\Parser\PhpParser();
     $root = $parser->parse(new \Mystique\Common\Token\TokenStream(\Mystique\PHP\Token\Tokenizer::tokenize(file_get_contents($file))));
 

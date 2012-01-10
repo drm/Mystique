@@ -11,8 +11,11 @@ use LogicException;
 
 class TokenStream implements Iterator, Countable
 {
+    public    $filename = '(unknown)';
+
     protected $ignoreTypes = array();
     protected $ptr;
+
 
     function __construct(array $tokens = array(), array $ignore = array(T_WHITESPACE, T_COMMENT, T_DOC_COMMENT))
     {
@@ -273,24 +276,24 @@ class TokenStream implements Iterator, Countable
     }
 
 
-    function getLine() {
+    function getLine($offset = null) {
         $fn = function($t) {
             return $t->type == T_WHITESPACE && strpos($t->value, "\n") !== false;
         };
-        $start = $this->nearest($fn, true);
-        $end = $this->nearest($fn);
+        $start = $this->nearest($fn, true, $offset);
+        $end = $this->nearest($fn, false, $offset);
 
         return preg_replace('/(?:.*\n)?(.*)/', '$1', rtrim($this->substr($start, $end - $start)));
     }
 
 
-    function getLineNumber() {
-        return substr_count($this->substr(0, $this->key()), "\n") +1;
+    function getLineNumber($offset = null) {
+        return substr_count($this->substr(0, is_null($offset) ? $this->key() : $offset), "\n") +1;
     }
 
 
-    function nearest($matcher, $reverse = false) {
-        for($i = $this->key(); $reverse ? $i > 0 : $i < $this->count() -1; $i += ($reverse ? -1 : 1)) {
+    function nearest($matcher, $reverse = false, $offset = null) {
+        for($i = ($offset ?: $this->key()); $reverse ? $i > 0 : $i < $this->count() -1; $i += ($reverse ? -1 : 1)) {
             if($matcher($this->tokenAt($i))) {
                 break;
             }
@@ -299,13 +302,12 @@ class TokenStream implements Iterator, Countable
     }
 
 
+    public function setFilename($filename) {
+        $this->filename = $filename;
+    }
 
-//
-//
-//    function getContext($index = -1) {
-//        if($index === -1) {
-//            $index = $this->key();
-//        }
-//        return (string)$this->substr(max(0, $index, min($this->count(), $index + 2)));
-//    }
+    public function getFilename()
+    {
+        return $this->filename;
+    }
 }

@@ -13,4 +13,13 @@ class TokenSlice {
     function __toString() {
         return $this->stream->substr($this->left, $this->length);
     }
+
+
+    function getLineNumber() {
+        return $this->stream->getLineNumber($this->left);
+    }
+
+    function getLine() {
+        return $this->stream->getLine($this->left);
+    }
 }

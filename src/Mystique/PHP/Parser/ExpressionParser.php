@@ -39,6 +39,7 @@ class ExpressionParser implements ExpressionParserInterface
     function parseSubscript(TokenStream $stream, Node $expression)
     {
         $ret = $expression;
+        $start = $stream->key();
 
         while ($stream->valid() && $stream->match(Operator::$subscriptOperators)) {
             if ($stream->match('(')) {
@@ -50,8 +51,10 @@ class ExpressionParser implements ExpressionParserInterface
                 }
                 $stream->expect(')');
                 $ret = new Call($ret, $arguments);
+                $ret->startTokenContext($stream, $start);
             } elseif ($stream->match(array(T_DEC, T_INC))) {
                 $ret = new \Mystique\PHP\Node\PostUnaryExpression(new Operator($stream->current()), $ret);
+                $ret->startTokenContext($stream, $start);
                 $stream->next();
             } else {
                 $op = $stream->expect(Operator::$subscriptOperators);
@@ -62,6 +65,7 @@ class ExpressionParser implements ExpressionParserInterface
                     $expr = null;
                 }
                 $ret = new \Mystique\PHP\Node\Subscript($ret, $expr, new Operator($op));
+                $ret->startTokenContext($stream, $start);
                 $stream->expect($paren);
             }
         }
@@ -71,6 +75,7 @@ class ExpressionParser implements ExpressionParserInterface
 
     function parse(TokenStream $stream, $haveLvalue = false)
     {
+        $start = $stream->key();
         if ($stream->match(Operator::$unaryOperators)) {
             $op = $stream->current();
             $operator = new Operator($op);
@@ -100,8 +105,9 @@ class ExpressionParser implements ExpressionParserInterface
         } else {
             $lValue = $this->parseValue($stream);
         }
-
+        $lValue->startTokenContext($stream, $start);
         $lValue = $this->parseSubscript($stream, $lValue);
+        $lValue->endTokenContext($stream);
 
         // special case ? ... :
         if($stream->valid() && $stream->match(':')) {
@@ -116,7 +122,10 @@ class ExpressionParser implements ExpressionParserInterface
             }
             $stream->expect(':');
             $rCase = $this->parse($stream);
-            return new TernaryExpression($lValue, $operator, $lCase, $rCase);
+            $ret = new TernaryExpression($lValue, $operator, $lCase, $rCase);
+            $ret->startTokenContext($stream, $start);
+            $ret->endTokenContext($stream);
+            return $ret;
         } elseif ($stream->valid() && $stream->match(Operator::$binaryOperators)) {
             $op = $stream->current();
             $stream->next();
@@ -128,20 +137,26 @@ class ExpressionParser implements ExpressionParserInterface
                 switch ($precedence) {
                     case 'right':
                         $ret = new BinaryExpression($lValue, $operator, $rValue);
+                        $ret->startTokenContext($stream, $start);
                         break;
                     case 'left':
                         $ret = $rValue;
-                        $ret->setLeft(new BinaryExpression($lValue, $operator, $ret->getLeft()));
+                        $tmp = new BinaryExpression($lValue, $operator, $ret->getLeft());
+                        $tmp->startTokenContext($stream, $ret->getLeft()->getTokenSlice()->left);
+                        $ret->setLeft($tmp);
+                        $ret->startTokenContext($stream, $start);
                         break;
                     default:
                         throw new \RuntimeException("Unexpected precedence $precedence");
                 }
             } else {
                 $ret = new BinaryExpression($lValue, new Operator($op), $rValue);
+                $ret->startTokenContext($stream, $start);
             }
         } else {
             $ret = $lValue;
         }
+        $ret->endTokenContext($stream);
         return $ret;
     }
 
