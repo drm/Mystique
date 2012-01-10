@@ -14,12 +14,5 @@ abstract class AbstractParserIntegrationTest extends \MystiqueTest\TestCase {
     }
 
 
-
-    function readTestCasesFromFile() {
-        $fn = __DIR__ . '/' . substr(get_class($this), strrpos(get_class($this), '\\') +1) . '.testcases';
-        return $this->getCases($fn);
-    }
-
-
     abstract function getParser();
 }

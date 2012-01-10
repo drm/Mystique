@@ -1,0 +1,217 @@
+IN
+---
+@If
+---
+OUT
+---
+<ast>
+    <annotation>
+        <name>If</name>
+    </annotation>
+</ast>
+---
+
+IN
+---
+@If()
+---
+OUT
+---
+<ast>
+    <annotation>
+        <name>If</name>
+        <arguments />
+    </annotation>
+</ast>
+---
+
+
+IN
+---
+@If(a="b")
+---
+OUT
+---
+<ast>
+    <annotation>
+        <name>If</name>
+        <arguments>
+            <name-value-pair>
+                <name>a</name>
+                <string>"b"</string>
+            </name-value-pair>
+        </arguments>
+    </annotation>
+</ast>
+---
+
+IN
+---
+@If(a={})
+---
+OUT
+---
+<ast>
+    <annotation>
+        <name>If</name>
+        <arguments>
+            <name-value-pair>
+                <name>a</name>
+                <dict />
+            </name-value-pair>
+        </arguments>
+    </annotation>
+</ast>
+---
+
+IN
+---
+@If({a="b"})
+---
+OUT
+---
+<ast>
+    <annotation>
+        <name>If</name>
+        <arguments>
+            <dict>
+                <name-value-pair>
+                    <name>a</name>
+                    <string>"b"</string>
+                </name-value-pair>
+            </dict>
+        </arguments>
+    </annotation>
+</ast>
+---
+
+
+IN
+---
+@If({a="b", b="c"})
+---
+OUT
+---
+<ast>
+    <annotation>
+        <name>If</name>
+        <arguments>
+            <dict>
+                <name-value-pair>
+                    <name>a</name>
+                    <string>"b"</string>
+                </name-value-pair>
+                <name-value-pair>
+                    <name>b</name>
+                    <string>"c"</string>
+                </name-value-pair>
+            </dict>
+        </arguments>
+    </annotation>
+</ast>
+---
+
+
+IN
+---
+@If (
+    {
+        a="b",
+        b="c"
+    }
+)
+---
+OUT
+---
+<ast>
+    <annotation>
+        <name>If</name>
+        <arguments>
+            <dict>
+                <name-value-pair>
+                    <name>a</name>
+                    <string>"b"</string>
+                </name-value-pair>
+                <name-value-pair>
+                    <name>b</name>
+                    <string>"c"</string>
+                </name-value-pair>
+            </dict>
+        </arguments>
+    </annotation>
+</ast>
+---
+
+IN
+---
+@If({a={a="b", b="c"}})
+---
+OUT
+---
+<ast>
+    <annotation>
+        <name>If</name>
+        <arguments>
+            <dict>
+                <name-value-pair>
+                    <name>a</name>
+                    <dict>
+                        <name-value-pair>
+                            <name>a</name>
+                            <string>"b"</string>
+                        </name-value-pair>
+                        <name-value-pair>
+                            <name>b</name>
+                            <string>"c"</string>
+                        </name-value-pair>
+                    </dict>
+                </name-value-pair>
+            </dict>
+        </arguments>
+    </annotation>
+</ast>
+---
+
+IN
+---
+@If(["a", "b", "c"])
+---
+OUT
+---
+<ast>
+    <annotation>
+        <name>If</name>
+        <arguments>
+            <list>
+                <string>"a"</string>
+                <string>"b"</string>
+                <string>"c"</string>
+            </list>
+        </arguments>
+    </annotation>
+</ast>
+---
+
+IN
+---
+@If(["a", "b", @nestedAnnotation()])
+---
+OUT
+---
+<ast>
+    <annotation>
+        <name>If</name>
+        <arguments>
+            <list>
+                <string>"a"</string>
+                <string>"b"</string>
+                <annotation>
+                    <name>nestedAnnotation</name>
+                    <arguments />
+                </annotation>
+            </list>
+        </arguments>
+    </annotation>
+</ast>
+---
+

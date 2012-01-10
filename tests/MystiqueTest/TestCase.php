@@ -24,6 +24,10 @@ class TestCase extends PHPUnit_Framework_TestCase
         return \MystiqueTest\PHP\Assert::assertSyntaxEquals($a, $b, $message);
     }
 
+    function readTestCasesFromFile() {
+        $refl = new \ReflectionClass($this);
+        return $this->getCases(str_replace('.php', '.testcases', $refl->getFileName()));
+    }
 
     protected function getCases($file)
     {

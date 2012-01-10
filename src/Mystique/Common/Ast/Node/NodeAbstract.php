@@ -11,7 +11,10 @@ abstract class NodeAbstract implements Node, TokenAware {
     function getNodeType() {
         $className = get_class($this);
         if(preg_match('/([^\\\\]+)$/', $className, $m)) {
-            return $m[1];
+            $className = $m[1];
+        }
+        if(substr($className, -4) == 'Node') {
+            $className = substr($className, 0, -4);
         }
         return $className;
     }
