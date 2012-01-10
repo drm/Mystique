@@ -7,24 +7,26 @@ use Mystique\Annotation\Node\NameValuePair;
 use Mystique\Common\Token\TokenStream;
 use Mystique\Concept\Node\Comment;
 
-class AnnotationParser implements \Mystique\Common\Parser\Parser {
-    function parse(TokenStream $stream) {
+class AnnotationParser implements \Mystique\Common\Parser\Parser
+{
+    function parse(TokenStream $stream)
+    {
         $stream->expect('@');
         $node = new AnnotationNode();
         $name = $stream->expect('name');
         $node->setName($name->value);
 
-        if($stream->valid() && $stream->match('(')) {
+        if ($stream->valid() && $stream->match('(')) {
             $stream->expect('(');
             $args = new \Mystique\Annotation\Node\ArgumentsNode();
 
-            while(!$stream->match(')')) {
-                if($stream->match('name')) {
+            while (!$stream->match(')')) {
+                if ($stream->match('name')) {
                     $args->children->append($this->parseNameValuePair($stream));
                 } else {
                     $args->children->append($this->parseValue($stream));
                 }
-                if(!$stream->match(')')) {
+                if (!$stream->match(')')) {
                     $stream->expect(',');
                 }
             }
@@ -36,7 +38,8 @@ class AnnotationParser implements \Mystique\Common\Parser\Parser {
     }
 
 
-    function parseNameValuePair($stream) {
+    function parseNameValuePair(TokenStream $stream)
+    {
         $pair = new NameValuePair();
         $pair->setName($stream->expect('name')->value);
         $stream->expect('=');
@@ -45,25 +48,26 @@ class AnnotationParser implements \Mystique\Common\Parser\Parser {
     }
 
 
-    function parseValue($stream) {
-        if($stream->match('{')) {
+    function parseValue(TokenStream $stream)
+    {
+        if ($stream->match('{')) {
             $ret = new \Mystique\Annotation\Node\Dict();
             $stream->next();
-            while(!$stream->match('}')) {
+            while (!$stream->match('}')) {
                 $ret->children->append($this->parseNameValuePair($stream));
-                if(!$stream->match('}')) {
+                if (!$stream->match('}')) {
                     $stream->expect(',');
                 }
             }
             $stream->expect('}');
             return $ret;
         }
-        if($stream->match('[')) {
+        if ($stream->match('[')) {
             $ret = new \Mystique\Annotation\Node\ListNode();
             $stream->next();
-            while(!$stream->match(']')) {
+            while (!$stream->match(']')) {
                 $ret->children->append($this->parseValue($stream));
-                if(!$stream->match(']')) {
+                if (!$stream->match(']')) {
                     $stream->expect(',');
                 }
             }
