@@ -2,6 +2,7 @@
 
 namespace Mystique\PHP\Node;
 use Mystique\Common\Ast\Node\BranchAbstract;
+use Mystique\Common\Compiler\CompilerInterface;
 
 class ElseNode extends BranchAbstract {
     function getNodeType()
@@ -14,6 +15,4 @@ class ElseNode extends BranchAbstract {
         $compiler->write('else');
         parent::compile($compiler);
     }
-
-
 }

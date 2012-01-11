@@ -17,6 +17,14 @@ class TokenStreamTest extends PHPUnit_Framework_TestCase {
             '<?php function foo() {}',
             (string)new TokenStream(token_get_all('<?php function foo() {}'))
         );
+        $this->assertEquals(
+            '<?php function foo() {}',
+            (string)new TokenStream(token_get_all('<?php function foo() {}'), array(T_WHITESPACE))
+        );
+        $this->assertEquals(
+            'a b c d',
+            (string)new TokenStream(preg_split('//', 'a b c d'), array('a', 'c'))
+        );
     }
 
 
@@ -236,56 +244,54 @@ class TokenStreamTest extends PHPUnit_Framework_TestCase {
     }
 
 
-
-//    function testMatchSignature() {
-//        $stream = new TokenStream(Tokenizer::tokenizePhp('  /** DOC */ final public static function'));
-//        $this->assertTrue($stream->matchSignature(T_FUNCTION, null, array(T_DOC_COMMENT, T_FINAL, T_PUBLIC, T_STATIC)));
-//        $stream->expect(T_DOC_COMMENT);
-//    }
-
-
     function testToStringDoesNotAffectState() {
-        $stream = new TokenStream(Tokenizer::tokenizePhp('a b c'));
+        $stream = new TokenStream(explode(' ', 'a b c'));
         $stream->next();
-        $this->assertEquals(2, $stream->key());
-        (string)$stream;
-        $this->assertEquals(2, $stream->key());
+        for($i = 0; $i < count($stream); $i++) {
+            $stream->rewind();
+            (string)$stream;
+            $stream->move($i);
+            $this->assertEquals($i, $stream->key());
+        }
     }
 
 
     function testSliceDoesNotAffectState() {
-        $stream = new TokenStream(Tokenizer::tokenizePhp('a b c'));
+        $stream = new TokenStream(explode(' ', 'a b c'));
         $stream->next();
-        $this->assertEquals(2, $stream->key());
-        $stream->slice(0);
-        $this->assertEquals(2, $stream->key());
+        for($i = 0; $i < count($stream); $i++) {
+            $stream->rewind();
+            $stream->slice(0);
+            $stream->move($i);
+            $this->assertEquals($i, $stream->key());
+        }
     }
 
 
 
     function testNearest() {
-        $stream = new TokenStream(Tokenizer::tokenizePhp('a b c b a'));
-        $stream->move(4);
+        $stream = new TokenStream(explode(' ', 'a b c b a'));
         $matcher = function($n) {
             return function($t) use ($n) {
-                return $t->type == T_STRING && $t->value == $n;
+                return $t->match($n);
             };
         };
+        $stream->move($stream->nearest($matcher('c')));
         $this->assertEquals(0, $stream->nearest($matcher('a'), true));
-        $this->assertEquals(2, $stream->nearest($matcher('b'), true));
-        $this->assertEquals(6, $stream->nearest($matcher('b')));
-        $this->assertEquals(8, $stream->nearest($matcher('a')));
+        $this->assertEquals(1, $stream->nearest($matcher('b'), true));
+        $this->assertEquals(3, $stream->nearest($matcher('b')));
+        $this->assertEquals(4, $stream->nearest($matcher('a')));
     }
 
 
     function testGetLine() {
         $matcher = function($n) {
             return function($t) use ($n) {
-                return $t->type == T_STRING && $t->value == $n;
+                return $t->match($n);
             };
         };
 
-        $stream = new TokenStream(Tokenizer::tokenizePhp("a a a\nb b b\nc c c"));
+        $stream = new TokenStream(preg_split('//', "a a a\nb b b\nc c c"));
         $stream->move($stream->nearest($matcher('b')));
         $this->assertEquals('b b b', $stream->getLine());
     }

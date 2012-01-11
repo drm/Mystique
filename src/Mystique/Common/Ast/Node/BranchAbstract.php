@@ -8,8 +8,10 @@ use Countable;
 /**
  * 
  */
-
 abstract class BranchAbstract extends NodeAbstract implements Branch, Countable, \Mystique\Common\Compiler\Compilable {
+    /**
+     * @var \Mystique\Common\Ast\Node\NodeList
+     */
     public $children;
 
     function __construct($list = null) {

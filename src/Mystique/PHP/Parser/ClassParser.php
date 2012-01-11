@@ -42,9 +42,6 @@ class ClassParser extends ParserBase
                 case T_ABSTRACT:
                     $definition->setAbstract();
                     break;
-                case T_DOC_COMMENT:
-                    $definition->setDoc($stream->current()->value);
-                    break;
             }
             $stream->next();
         }

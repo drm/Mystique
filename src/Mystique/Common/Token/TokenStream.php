@@ -17,7 +17,7 @@ class TokenStream implements Iterator, Countable
     protected $ptr;
 
 
-    function __construct(array $tokens = array(), array $ignore = array(T_WHITESPACE, T_COMMENT, T_DOC_COMMENT))
+    function __construct(array $tokens = array(), array $ignore = array())
     {
         $this->tokens = $tokens;
         $this->ignoreTypes = $ignore;
@@ -92,7 +92,7 @@ class TokenStream implements Iterator, Countable
             throw new OutOfBoundsException("Trying to advance pointer beyond end of stream");
         }
         if ($this->ptr < 0) {
-            throw new OutOfBoundsException("Trying to advance pointer under beginning of stream");
+            throw new OutOfBoundsException("Trying to rewind pointer before beginning of stream");
         }
     }
 
@@ -190,7 +190,8 @@ class TokenStream implements Iterator, Countable
             $expect = '';
             foreach($token as $i => $t) {
                 $expect == '' or $expect .= ($i == count($token) -1) ? ' or ' : ', ';
-                $expect .= isset(Type::$types[$t]) ? Type::$types[$t] : "'$t'";
+                $expect .= "'$t'";
+//                $expect .= isset(Type::$types[$t]) ? Type::$types[$t] : "'$t'";
             }
         } else {
             $expected = new Token($token, $value);
@@ -240,13 +241,6 @@ class TokenStream implements Iterator, Countable
 
     function slice($left, $length = null) {
         return new TokenSlice($this, $left, $length);
-//        return array_map(
-//            function ($element) use($self)
-//            {
-//                return $self->tokenAt($element);
-//            },
-//            array_slice(array_keys($this->tokens), $left, $length)
-//        );
     }
 
 
@@ -254,8 +248,7 @@ class TokenStream implements Iterator, Countable
         $self = $this;
         $ret = array_reduce(
             array_slice(array_keys($this->tokens), $left, $length),
-            function ($current, $element) use ($self)
-            {
+            function ($current, $element) use ($self) {
                 return $current . $self->tokenAt($element)->value;
             },
             ''
@@ -278,7 +271,7 @@ class TokenStream implements Iterator, Countable
 
     function getLine($offset = null) {
         $fn = function($t) {
-            return $t->type == T_WHITESPACE && strpos($t->value, "\n") !== false;
+            return strpos($t->value, "\n") !== false;
         };
         $start = $this->nearest($fn, true, $offset);
         $end = $this->nearest($fn, false, $offset);

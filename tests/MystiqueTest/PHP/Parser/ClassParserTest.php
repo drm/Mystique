@@ -7,6 +7,8 @@ use \Mystique\Common\Token\TokenStream;
 use \Mystique\PHP\Token\Tokenizer;
 use PHPUnit_Framework_TestCase;
 
+use \Mystique\PHP\Lang as Php;
+
 
 /**
  * @covers \Mystique\PHP\Parser\ClassParser
@@ -15,33 +17,18 @@ class ClassParserTest extends \MystiqueTest\TestCase {
     function testParseSimpleDeclaration() {
         $parser = new ClassParser(new \Mystique\PHP\Parser\PhpParser());
         /** @var \ClassNode\PHP\Node\ClassDefinition $classDef */
-        $classDef = $parser->parse(new TokenStream(Tokenizer::tokenizePhp('class a {}')));
+        $classDef = $parser->parse(new TokenStream(Tokenizer::tokenizePhp('class a {}'), array(T_DOC_COMMENT, T_COMMENT, T_WHITESPACE)));
         $this->assertFalse($classDef->isFinal());
         $this->assertFalse($classDef->isAbstract());
-        $this->assertNull($classDef->getDocBlock());
         $this->assertEquals('a', (string)$classDef->getName());
     }
 
 
-    function testGetDocBlock() {
-        $parser = new ClassParser(new \Mystique\PHP\Parser\PhpParser());
-        /** @var \ClassNode\PHP\Node\ClassDefinition $classDef */
-        $classDef = $parser->parse(new TokenStream(Tokenizer::tokenizePhp('/** documentation */ class a {}')));
-        $this->assertEquals('/** documentation */', $classDef->getDocBlock());
-    }
-
-
-//    function testDocComment() {
-//        $parser = new ClassParser(new \Mystique\PHP\Parser\PhpParser());
-//        /** @var \ClassNode\PHP\Node\ClassDefinition $classDef */
-//        $classDef = $parser->parse(new TokenStream(Tokenizer::tokenizePhp('/** Awesomeness! */ class a {}')));
-//        $this->assertEquals(new \Mystique\PHP\Node\DocBlock('/** Awesomeness! */'), $classDef->getDoc());
-//    }
 
     function testFinal() {
         $parser = new ClassParser(new \Mystique\PHP\Parser\PhpParser());
         /** @var \ClassNode\PHP\Node\ClassDefinition $classDef */
-        $classDef = $parser->parse(new TokenStream(Tokenizer::tokenizePhp('final class a {}')));
+        $classDef = $parser->parse(Php::tokenStreamPhp('final class a {}'));
         $this->assertTrue($classDef->isFinal());
     }
 
@@ -49,7 +36,7 @@ class ClassParserTest extends \MystiqueTest\TestCase {
     function testAbstract() {
         $parser = new ClassParser(new \Mystique\PHP\Parser\PhpParser());
         /** @var \ClassNode\PHP\Node\ClassDefinition $classDef */
-        $classDef = $parser->parse(new TokenStream(Tokenizer::tokenizePhp('abstract class a {}')));
+        $classDef = $parser->parse(Php::tokenStreamPhp('abstract class a {}'));
         $this->assertTrue($classDef->isAbstract());
     }
 
@@ -59,7 +46,7 @@ class ClassParserTest extends \MystiqueTest\TestCase {
      */
     function testParserCases($code, $ast) {
         $parser = new ClassParser(new \Mystique\PHP\Parser\PhpParser());
-        $stream = new \Mystique\Common\Token\TokenStream(\Mystique\PHP\Token\Tokenizer::tokenizePhp($code));
+        $stream = Php::tokenStreamPhp($code);
         $node = $parser->parse($stream);
         $this->assertASTEquals($ast, $node);
         if($stream->valid()) {

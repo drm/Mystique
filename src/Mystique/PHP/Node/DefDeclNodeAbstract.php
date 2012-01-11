@@ -4,7 +4,7 @@ namespace Mystique\PHP\Node;
 use Mystique\Common\Ast\Node\BranchAbstract;
 use Mystique\Common\Ast\Node\NodeList;
 
-abstract class DefDeclNodeAbstract extends BranchAbstract implements \Mystique\Common\Compiler\Compilable, DocumentedNode {
+abstract class DefDeclNodeAbstract extends BranchAbstract implements \Mystique\Common\Compiler\Compilable {
     function __construct() {
         parent::__construct();
         $this->setDeclaration();
@@ -46,17 +46,4 @@ abstract class DefDeclNodeAbstract extends BranchAbstract implements \Mystique\C
 
     abstract function setDeclaration();
     abstract function setDefinition(NodeList $definition);
-
-    function getDocBlock() {
-        if($slice = $this->getTokenSlice()) {
-            $i = $slice->left;
-            do {
-                $i --;
-            } while($i >= 0 && $slice->stream->tokenAt($i)->match(T_WHITESPACE));
-            if($i >= 0 && $slice->stream->tokenAt($i)->match(T_DOC_COMMENT)) {
-                return $slice->stream->tokenAt($i)->value;
-            }
-        }
-        return null;
-    }
 }

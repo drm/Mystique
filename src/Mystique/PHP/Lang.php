@@ -18,4 +18,14 @@ class Lang extends LangAbstract {
     {
         return new \Mystique\Common\Compiler\Compiler();
     }
+
+
+    function getTokenStream($input, $ignore = null, $scope = 'root') {
+        $ignore = $ignore ?: array(T_DOC_COMMENT, T_COMMENT, T_WHITESPACE);
+        if($scope == 'root') {
+            return new \Mystique\Common\Token\TokenStream(\Mystique\PHP\Token\Tokenizer::tokenize($input), $ignore);
+        } else {
+            return new \Mystique\Common\Token\TokenStream(\Mystique\PHP\Token\Tokenizer::tokenizePhp($input), $ignore);
+        }
+    }
 }

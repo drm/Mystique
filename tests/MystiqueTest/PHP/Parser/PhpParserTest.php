@@ -1,18 +1,10 @@
 <?php
 namespace Mystique\PHP\Parser;
 
-class PhpParserTest extends \MystiqueTest\TestCase {
-    function expressions() {
-        return $this->getCases(__DIR__.'/PhpParserTest.testcases');
-    }
+class PhpParserTest extends \MystiqueTest\PHP\Parser\AbstractParserIntegrationTest {
+    protected $isFullParser = true;
 
-    /**
-     * @dataProvider expressions
-     */
-    function testParser($code, $ast) {
-        $parser = new PhpParser();
-        $stream = new \Mystique\Common\Token\TokenStream(\Mystique\PHP\Token\Tokenizer::tokenize($code));
-        $node = $parser->parse($stream);
-        $this->assertASTEquals($ast, $node);
+    function getParser() {
+        return new PhpParser();
     }
 }

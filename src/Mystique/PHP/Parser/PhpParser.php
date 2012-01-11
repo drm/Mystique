@@ -28,7 +28,8 @@ class PhpParser extends ParserBase {
             'do'            => new DoWhileParser($this),
             'constructs'    => new LanguageConstructParser($this),
             'statement'     => new StatementParser($this),
-            'use'           => new UseParser($this)
+            'use'           => new UseParser($this),
+            'annotation'    => new AnnotationParser($this)
         );
     }
 

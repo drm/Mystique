@@ -12,13 +12,13 @@ use \Mystique\PHP\Token\Operator;
 use DOMDocument;
 
 
-class ExpressionParserTest extends \MystiqueTest\TestCase {
+class ExpressionParserTest extends AbstractParserIntegrationTest {
     /**
      * @dataProvider arglists
      */
     function testParseArgumentList($arglist, $allowEmpty = false, $ast = null) {
         $p = new ExpressionParser(new BodyParser());
-        $stream = new \Mystique\Common\Token\TokenStream(\Mystique\PHP\Token\Tokenizer::tokenizePhp($arglist));
+        $stream = \Mystique\PHP\Lang::tokenStreamPhp($arglist);
         $stream->expect('(');
         $list = $p->parseList($stream, $allowEmpty);
         $stream->expect(')');
@@ -82,20 +82,7 @@ class ExpressionParserTest extends \MystiqueTest\TestCase {
     }
 
 
-    function expressions() {
-        return $this->getCases(__DIR__.'/ExpressionParserTest.testcases');
-    }
-
-    /**
-     * @dataProvider expressions
-     */
-    function testParser($code, $ast) {
-        $parser = new ExpressionParser(new BodyParser());
-        $stream = new \Mystique\Common\Token\TokenStream(\Mystique\PHP\Token\Tokenizer::tokenizePhp($code));
-        $node = $parser->parse($stream);
-        $this->assertASTEquals($ast, $node);
-        if($stream->valid()) {
-            $this->fail("Stream did not reach end of data, " . $stream->current()->verbose(). " was found");
-        }
+    function getParser() {
+        return new ExpressionParser(new BodyParser());
     }
 }

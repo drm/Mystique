@@ -20,7 +20,7 @@ $file = $_SERVER['argv'][1];
 try {
     $lang = new \Mystique\PHP\Lang();
     $parser = new \Mystique\PHP\Parser\PhpParser();
-    $root = $parser->parse(new \Mystique\Common\Token\TokenStream(\Mystique\PHP\Token\Tokenizer::tokenize(file_get_contents($file))));
+    $root = $parser->parse($lang->getTokenStream(file_get_contents($file)));
 
     $xml = new AstToXml();
     $walker = new Traverser($xml);
