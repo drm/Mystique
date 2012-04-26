@@ -7,7 +7,7 @@ use PHPUnit_Framework_TestCase;
 class IteratorTest extends PHPUnit_Framework_TestCase {
     function testIterationWithoutChildrenIsEmpty() {
         $root = $this->getMock(
-            'Mystique\Common\Ast\Node\Branch',
+            '\Mystique\Common\Ast\Node\Branch',
             array('getNodeChildren', 'getNodeType', 'getNodeAttributes')
         );
         $root->expects($this->once())->method('getNodeChildren')->will($this->returnValue(array()));
@@ -17,14 +17,14 @@ class IteratorTest extends PHPUnit_Framework_TestCase {
 
     function testIterationWillYieldChildElements() {
         $root = $this->getMock(
-            'Mystique\Common\Ast\Node\Branch',
+            '\Mystique\Common\Ast\Node\Branch',
             array('getNodeChildren', 'getNodeType', 'getNodeAttributes')
         );
         $root->expects($this->once())->method('getNodeChildren')->will(
             $this->returnValue(
                 array(
-                    $child1 = $this->getMock('Meander\Common\Ast\Node\Node'),
-                    $child2 = $this->getMock('Meander\Common\Ast\Node\Node'),
+                    $child1 = $this->getMock('\Mystique\Common\Ast\Node\Node'),
+                    $child2 = $this->getMock('\Mystique\Common\Ast\Node\Node'),
                 )
             )
         );

@@ -4,6 +4,12 @@ namespace Mystique\PHP;
 use Mystique\Common\LangAbstract;
 
 class Lang extends LangAbstract {
+    public static function tokenStreamPhp($input) {
+        $t = new self();
+        return $t->getTokenStream($input, null, '');
+    }
+
+
     function getParser()
     {
         return new \Mystique\PHP\Parser\FileParser();

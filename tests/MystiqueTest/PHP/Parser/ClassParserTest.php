@@ -16,7 +16,7 @@ use \Mystique\PHP\Lang as Php;
 class ClassParserTest extends \MystiqueTest\TestCase {
     function testParseSimpleDeclaration() {
         $parser = new ClassParser(new \Mystique\PHP\Parser\PhpParser());
-        /** @var \ClassNode\PHP\Node\ClassDefinition $classDef */
+        /** @var \PHP\Node\ClassDefinition $classDef */
         $classDef = $parser->parse(new TokenStream(Tokenizer::tokenizePhp('class a {}'), array(T_DOC_COMMENT, T_COMMENT, T_WHITESPACE)));
         $this->assertFalse($classDef->isFinal());
         $this->assertFalse($classDef->isAbstract());

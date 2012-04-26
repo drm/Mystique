@@ -11,10 +11,11 @@ abstract class AbstractParserIntegrationTest extends \MystiqueTest\TestCase {
      * @dataProvider readTestCasesFromFile
      */
     function testParserCases($code, $ast) {
+        $l = new Php();
         if($this->isFullParser) {
-            $stream = Php::tokenStream($code);
+            $stream = $l->getTokenStream($code);
         } else {
-            $stream = Php::tokenStreamPhp($code);
+            $stream = $l->getTokenStream($code, null, '');
         }
         $node = $this->getParser()->parse($stream);
         $this->assertASTEquals($ast, $node);

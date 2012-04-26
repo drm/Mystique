@@ -44,7 +44,7 @@ abstract class NodeAbstract implements Node, TokenAware {
 
 
     /**
-     * @return \Mystique\PHP\Token\TokenSlice
+     * @return \Mystique\Common\Token\TokenSlice
      */
     function getTokenSlice() {
         if(isset($this->tokenContext['stream'])) {
