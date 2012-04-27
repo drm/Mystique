@@ -10,4 +10,7 @@
 * Compiling an AST into PHP
 * Compiling an AST into XML
 
-
+## Try it out ##
+* Clone the repo
+* Run `php bin/php2ast.php [sourcefile] > ast.xml`, e.g. `php ./bin/php2ast.php src/Mystique/PHP/Parser/ExpressionParser.php`
+* Open the XML file to see how the AST got parsed.
