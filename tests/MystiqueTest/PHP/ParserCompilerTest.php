@@ -12,10 +12,48 @@ class ParserCompilerTest extends \MystiqueTest\TestCase {
      * @return void
      */
     function testThatCompilingParsedDoesNotAffectSyntax($file) {
-        $this->markTestSkipped('Comments');
         $this->assertSyntaxEquals(
+            // remove comments from source
+            array_reduce(
+                array_filter(
+                    token_get_all(file_get_contents($file)),
+                    function ($token) {
+                        return !in_array($token[0], array(T_COMMENT, T_DOC_COMMENT));
+                    }
+                ),
+                function ($a, $b) {
+                    return $a . (isset($b[1]) ? $b[1] : $b);
+                },
+                ''
+            ),
+            $this->lang->getCompiler()->compile(
+                $this->lang->getParser()->parse(
+                    $this->lang->getTokenizer()->getTokens(
+                        file_get_contents($file),
+                        array(T_DOC_COMMENT, T_COMMENT, T_WHITESPACE)
+                    )
+                )
+            )->result
+        );
+    }
+
+    /**
+     * @dataProvider files
+     * @param $file
+     * @return void
+     */
+    function testThatCompilingParsedRetainsComments($file) {
+        $this->assertSyntaxEquals(
+        // remove comments from source
             file_get_contents($file),
-            $this->lang->getCompiler()->compile($this->lang->getParser()->parse($this->lang->getTokenizer()->getTokens(file_get_contents($file), array(T_DOC_COMMENT, T_COMMENT, T_WHITESPACE))))->result
+            $this->lang->getCompiler()->compile(
+                $this->lang->getParser()->parse(
+                    $this->lang->getTokenizer()->getTokens(
+                        file_get_contents($file),
+                        array(T_DOC_COMMENT, T_COMMENT, T_WHITESPACE)
+                    )
+                )
+            )->result
         );
     }
 

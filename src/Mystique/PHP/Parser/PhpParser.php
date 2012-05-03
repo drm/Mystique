@@ -40,11 +40,13 @@ class PhpParser extends ParserBase {
         if($stream->match(T_STRING, 'php')) { // TODO check if this is really ok :?
             $stream->next();
         }
-        $php = $this->subparse($stream, function($stream) { return !$stream->valid() || $stream->match(T_CLOSE_TAG); });
-        if($stream->valid()) {
-            $stream->expect(T_CLOSE_TAG);
+        if ($stream->valid()) {
+            $php = $this->subparse($stream, function($stream) { return !$stream->valid() || $stream->match(T_CLOSE_TAG); });
+            if($stream->valid()) {
+                $stream->expect(T_CLOSE_TAG);
+            }
+            $ret->children = $php;
         }
-        $ret->children = $php;
         $ret->endTokenContext($stream);
         return $ret;
     }
