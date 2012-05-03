@@ -44,7 +44,6 @@ class ParserCompilerTest extends \MystiqueTest\TestCase {
      */
     function testThatCompilingParsedRetainsComments($file) {
         $this->assertSyntaxEquals(
-        // remove comments from source
             file_get_contents($file),
             $this->lang->getCompiler()->compile(
                 $this->lang->getParser()->parse(
