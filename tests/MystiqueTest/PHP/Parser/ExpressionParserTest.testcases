@@ -149,6 +149,45 @@ OUT
 
 IN
 ---
+$a->{'b'}
+---
+OUT
+---
+<ast>
+    <binary-expression>
+        <variable>a</variable>
+        <operator>-></operator>
+        <paren type="{">
+            <string>b</string>
+        </paren>
+    </binary-expression>
+</ast>
+---
+
+IN
+---
+$a->{'b' . 'c'}
+---
+OUT
+---
+<ast>
+    <binary-expression>
+        <variable>a</variable>
+        <operator>-></operator>
+        <paren type="{">
+            <binary-expression>
+                <string>b</string>
+                <operator>.</operator>
+                <string>c</string>
+            </binary-expression>
+        </paren>
+    </binary-expression>
+</ast>
+---
+
+
+IN
+---
 @$a->b
 ---
 OUT

@@ -129,7 +129,15 @@ class ExpressionParser implements ExpressionParserInterface
         } elseif ($stream->valid() && $stream->match(Operator::$binaryOperators)) {
             $op = $stream->current();
             $stream->next();
-            $rValue = $this->parse($stream);
+
+            if ($op->value == '->' && $stream->match('{')) {
+                $stream->next();
+                $rValue = new ParenthesizedExpression($this->parse($stream), '{');
+                $stream->expect('}');
+            } else {
+                $rValue = $this->parse($stream);
+            }
+
             $operator = new Operator($op);
 
             if ($rValue instanceof ExpressionAbstract) {
