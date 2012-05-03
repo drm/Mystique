@@ -16,8 +16,14 @@ class ClosureParser extends FunctionParser {
             $stream->next();
             $stream->expect('(');
             do {
+                $param = new \Mystique\PHP\Node\ParameterDefinition();
+                if ($stream->match('&')) {
+                    $stream->next();
+                    $param->setByRef(true);
+                }
                 $var = $stream->expect(T_VARIABLE);
-                $useList->add(new \Mystique\PHP\Node\Variable(substr($var->value, 1)));
+                $param->setName(new \Mystique\PHP\Node\Variable(substr($var->value, 1)));
+                $useList->add($param);
                 if($haveMore = $stream->match(',')) {
                     $stream->expect(',');
                 }

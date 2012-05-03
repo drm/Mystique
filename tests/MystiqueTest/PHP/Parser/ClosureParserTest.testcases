@@ -28,7 +28,9 @@ OUT
         <declaration>
             <params />
             <use>
-                <variable>x</variable>
+                <param>
+                    <variable>x</variable>
+                </param>
             </use>
         </declaration>
         <definition />
@@ -53,8 +55,41 @@ OUT
                 </param>
             </params>
             <use>
-                <variable>x</variable>
-                <variable>y</variable>
+                <param>
+                    <variable>x</variable>
+                </param>
+                <param>
+                    <variable>y</variable>
+                </param>
+            </use>
+        </declaration>
+        <definition />
+    </closure>
+</ast>
+---
+
+IN
+---
+function ($a) use (&$x, &$y) {
+}
+---
+OUT
+---
+<ast>
+    <closure>
+        <declaration>
+            <params>
+                <param>
+                    <variable>a</variable>
+                </param>
+            </params>
+            <use>
+                <param by-ref="true">
+                    <variable>x</variable>
+                </param>
+                <param by-ref="true">
+                    <variable>y</variable>
+                </param>
             </use>
         </declaration>
         <definition />
