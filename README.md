@@ -1,3 +1,6 @@
+# Update (juli 2015) #
+See the https://github.com/drm/cg repository for some work in progress
+
 Mystique
 ========
 
